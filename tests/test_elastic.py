@@ -11,8 +11,7 @@ def test_elastic_process(elasticsearch_proc):
 
 def test_elasticsarch(elasticsearch):
     """Test if elasticsearch fixtures connects to process."""
-    info = elasticsearch.info()
-    assert info['status'] == 200
+    assert elasticsearch.cluster.health()['status'] == 'green'
 
 
 elasticsearch_proc_random = factories.elasticsearch_proc(port='?')
@@ -21,7 +20,7 @@ elasticsearch_random = factories.elasticsearch('elasticsearch_proc_random')
 
 def test_random_port(elasticsearch_random):
     """Test if elasticsearch fixture can be started on random port."""
-    assert elasticsearch_random.info()['status'] == 200
+    assert elasticsearch_random.cluster.health()['status'] == 'green'
 
 
 def test_default_configuration(request):
