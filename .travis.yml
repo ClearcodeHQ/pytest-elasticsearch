@@ -7,9 +7,9 @@ python:
 - pypy
 - pypy3
 install:
+- "pip install -r requirements-test.txt"
 - python setup.py develop
-- pip install pytest_elasticsearch[tests] coveralls pylama pyroma
-- pip install wheel
+- pip install pytest_elasticsearch[tests] coveralls wheel
 script:
 - py.test -v --cov pytest_elasticsearch tests/
 - pylama
