@@ -44,7 +44,9 @@ requirements = [
 ]
 
 test_requires = [
-    'pytest-cov'
+    'pytest-cov==2.2.1',
+    'pytest-xdist==1.14',
+    'pylama==7.0.9',
 ]
 
 extras_require = {
@@ -55,7 +57,7 @@ extras_require = {
 setup(
     name='pytest-elasticsearch',
     version=package_version,
-    description='Elasticsearch process and client fixtures fir py.test.',
+    description='Elasticsearch process and client fixtures for py.test.',
     long_description=(
         read('README.rst') + '\n\n' + read('CHANGES.rst')
     ),
