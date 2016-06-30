@@ -36,10 +36,13 @@ def read(fname):
     """
     return open(os.path.join(here, fname)).read()
 
-requirements = []
+requirements = [
+    'py.test',
+    'mirakuru',
+    'elasticsearch'
+]
 
 test_requires = [
-    'pytest',
     'pytest-cov'
 ]
 
@@ -49,17 +52,17 @@ extras_require = {
 }
 
 setup(
-    name='pytest_elasticsearch',
+    name='pytest-elasticsearch',
     version=package_version,
-    description='',
+    description='Elasticsearch process and client fixtures fir py.test.',
     long_description=(
         read('README.rst') + '\n\n' + read('CHANGES.rst')
     ),
-    keywords='',
+    keywords='tests py.test pytest fixture elasticsearch',
     author='Clearcode - The A Room',
     author_email='thearoom@clearcode.cc',
-    url='https://github.com/ClearcodeHQ/pytest_elasticsearch',
-    license='LGPL',
+    url='https://github.com/ClearcodeHQ/pytest-elasticsearch',
+    license='LGPLv3+',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
@@ -80,4 +83,8 @@ setup(
     include_package_data=True,
     zip_safe=False,
     extras_require=extras_require,
+    entry_points={
+        'pytest11': [
+            'pytest_elasticsearch = pytest_elasticsearch.plugin'
+        ]},
 )

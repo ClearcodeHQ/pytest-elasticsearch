@@ -1,5 +1,5 @@
 pytest_elasticsearch
-====
+====================
 
 .. image:: https://img.shields.io/pypi/v/pytest_elasticsearch.svg
     :target: https://pypi.python.org/pypi/pytest_elasticsearch/
