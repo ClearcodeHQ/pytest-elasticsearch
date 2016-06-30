@@ -1,0 +1,28 @@
+language: python
+python:
+- '2.7'
+- '3.3'
+- '3.4'
+- '3.5'
+- pypy
+- pypy3
+install:
+- python setup.py develop
+- pip install pytest_elasticsearch[tests] coveralls pylama pyroma
+- pip install wheel
+script:
+- py.test -v --cov pytest_elasticsearch tests/
+- pylama
+- pyroma
+after_success:
+- coveralls
+deploy:
+  provider: pypi
+  user: thearoom
+  password:
+    secure: KdmAwT3AoaSPtOsKirw6UJTS4b+48kqbcHltBqwgO9D3u9gl8NfnGAgAPMgZmsyaAd4nOj0dc5h/O9+vPQkD1Upy6Y1krGZWaP3UGfcJKZb5S94isFNSW6daCsLtZ7OfTCMkv4HBI5fTni9QdcFmC37EmycWnyTcthjetkfa6GYEcW/t+fnvdRR9NeIfEF5dFSif0cnK8SdXaysxp3wxG1MA0SaS1FtpLEfzm8DLBUknhgbPYpXFpp4XskCxLq6s0iKHHa83JYStvK3TY2LTFm9teg8LPoWCoMjo2Eazhw5jfDyNeuo9vwW3xRJRAaVTlx45WTJYCuSY4huRL/QckWna9R/7ufpag+9k02MCU47n/pzdRYQVUOwVXPSByFuTyYojzXQZCUUPPgjqN5xNMwIgp+9z8/1nv0YUK3rZG/OnfGPcSzmTFmWSRIe2Z+7ekdgWWsk/HK68I2xIzeHHfsX2b6tmMqb8u+J+DVTMNCbSZJXqD1WCCgG2AI+XtCwKuYM1fHhYhtL1d8RyAXjesNyB3bPAyeBtLD07MngeyQWW0AHsRhRtH1S/1iFV5lZ5hYZNrFp/soE1P4Z3az6/+TWEsx7kqRvLVvW3tptTs1iLQj0lj/g3mEFUV4hZt5M9DNh3ugTNV9H5KQsmHntStRgq9iZSbcK98BvAh3WU3NY=
+  on:
+    tags: true
+    all_branches: true
+    repo: ClearcodeHQ/pytest_elasticsearch
+  distributions: sdist bdist_wheel
