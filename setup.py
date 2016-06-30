@@ -16,14 +16,19 @@
 
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
+"""Installation file for pytest-elasticsearch."""
 
 import os
 import re
 from setuptools import setup, find_packages
 
 here = os.path.dirname(__file__)
-with open(os.path.join(here, 'src', 'pytest_elasticsearch', '__init__.py')) as v_file:
-    package_version = re.compile(r".*__version__ = '(.*?)'", re.S).match(v_file.read()).group(1)
+with open(os.path.join(
+        here, 'src', 'pytest_elasticsearch', '__init__.py'
+)) as v_file:
+    package_version = re.compile(
+        r".*__version__ = '(.*?)'", re.S
+    ).match(v_file.read()).group(1)
 
 
 def read(fname):
@@ -70,7 +75,8 @@ setup(
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
+        'License :: OSI Approved :: '
+        'GNU Lesser General Public License v3 or later (LGPLv3+)',
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
@@ -78,7 +84,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
-    package_dir = {'': 'src'},
+    package_dir={'': 'src'},
     packages=find_packages('src'),
     install_requires=requirements,
     tests_require=test_requires,
