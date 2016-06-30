@@ -128,7 +128,7 @@ def elasticsearch(process_fixture_name):
         if not process.running():
             process.start()
 
-        hosts = '%s:%s' % (process.host, process.port)
+        hosts = '{0!s}:{1!s}'.format(process.host, process.port)
 
         client = Elasticsearch(hosts=hosts)
 
