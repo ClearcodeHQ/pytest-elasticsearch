@@ -17,7 +17,7 @@ install:
 script:
 - py.test -n $XDIST --max-slave-restart=0 --showlocals --verbose --cov pytest_elasticsearch tests -p no:elasticsearch
 - pylama
-- pyroma
+- pyroma .
 after_success:
 - coveralls
 deploy:
