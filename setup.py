@@ -37,9 +37,10 @@ def read(fname):
     return open(os.path.join(here, fname)).read()
 
 requirements = [
-    'py.test',
+    'pytest',
     'mirakuru',
-    'elasticsearch'
+    'elasticsearch',
+    'path.py',
 ]
 
 test_requires = [
