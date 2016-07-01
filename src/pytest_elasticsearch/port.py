@@ -31,10 +31,13 @@ class InvalidPortsDefinition(Exception):
 
     def __str__(self):
         """String representation of a method."""
-        return ('Unknown format of ports: %s.\n'
-                'You should provide an exact port, ports range "4000-5000"'
-                'or a comma-separated ports list "4000,5000,6000-8000".'
-                % self.ports)
+        return (
+            'Unknown format of ports: {}.\n'
+            'You should provide an exact port, ports range "4000-5000"'
+            'or a comma-separated ports list "4000,5000,6000-8000".'.format(
+                self.ports
+            )
+        )
 
 
 def get_port(ports):
