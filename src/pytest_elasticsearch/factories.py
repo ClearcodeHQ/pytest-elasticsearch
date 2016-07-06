@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
 """Fixture factories."""
+# along with pytest-dbfixtures.  If not, see <http://www.gnu.org/licenses/>.
+import os
 import shutil
 
 import pytest
@@ -112,11 +114,17 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         else:
             multicast_enabled = config['discovery_zen_ping_multicast_enabled']
 
+        script_path = home_path + '/scripts'
+        conf_path = home_path + '/config'
+        if not os.path.exists(conf_path):
+            os.makedirs(conf_path)
+
         command_exec = '''
             {deamon} -p {pidfile} --http.port={port}
             --path.home={home_path}  --default.path.logs={logs_path}
             --default.path.work={work_path}
-            --default.path.conf=/etc/elasticsearch
+            --default.path.conf={conf_dir}
+            --default.path.scripts={script_dir}
             --cluster.name={cluster}
             --network.publish_host='{network_publish_host}'
             --discovery.zen.ping.multicast.enabled={multicast_enabled}
@@ -131,7 +139,9 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             cluster=elasticsearch_cluster_name,
             network_publish_host=elasticsearch_network_publish_host,
             multicast_enabled=multicast_enabled,
-            index_store_type=elasticsearch_index_store_type
+            index_store_type=elasticsearch_index_store_type,
+            conf_dir=conf_path,
+            script_dir=script_path
         )
 
         elasticsearch_executor = HTTPExecutor(
