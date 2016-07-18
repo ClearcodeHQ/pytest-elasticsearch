@@ -26,11 +26,21 @@ from mirakuru import HTTPExecutor
 from pytest_elasticsearch.port import get_port
 
 
+def return_config(request):
+    """Return a dictionary with config options."""
+    config = {}
+    logsdir = request.config.getoption('logsdir') or \
+        request.config.getini('elasticsearch_logsdir')
+    config['logsdir'] = logsdir
+    return config
+
+
 def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                        host='127.0.0.1', port=9201, cluster_name=None,
                        network_publish_host='127.0.0.1',
                        discovery_zen_ping_multicast_enabled=False,
-                       index_store_type='memory', logs_prefix=''):
+                       index_store_type='memory', logs_prefix='',
+                       elasticsearch_logsdir=None):
     """
     Create elasticsearch process fixture.
 
@@ -55,16 +65,24 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
     :param str index_store_type: index.store.type setting. *memory* by default
         to speed up tests
     :param str logs_prefix: prefix for log filename
+    :param str elasticsearch_logsdir: path for logs.
+            You can also use:
+                '--elasticsearch_logsdir' - command line option
+                'logsdir' var in your pytest.ini file
+            to set your own logs path.
     """
     @pytest.fixture(scope='session')
     def elasticsearch_proc_fixture(request):
         """Elasticsearch process starting fixture."""
+        config = return_config(request)
         elasticsearch_port = get_port(port)
 
         pidfile = '/tmp/elasticsearch.{0}.pid'.format(elasticsearch_port)
         home_path = '/tmp/elasticsearch_{0}'.format(elasticsearch_port)
-        logsdir = path(request.config.getvalue('logsdir'))
-        logs_path = logsdir / '{prefix}elasticsearch_{port}_logs'.format(
+
+        logsdir = elasticsearch_logsdir or config['logsdir']
+
+        logs_path = path(logsdir) / '{prefix}elasticsearch_{port}_logs'.format(
             prefix=logs_prefix,
             port=elasticsearch_port
         )
@@ -92,7 +110,6 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             network_publish_host=network_publish_host,
             multicast_enabled=multicast_enabled,
             index_store_type=index_store_type
-
         )
 
         elasticsearch_executor = HTTPExecutor(

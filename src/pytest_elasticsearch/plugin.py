@@ -17,15 +17,22 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
 """Pytest-elasticsearch py.test's plugin configuration."""
+import pytest  # noqa
+
 from pytest_elasticsearch import factories
 
 
 def pytest_addoption(parser):
     """Add plugin's configuration options."""
+    parser.addini(
+        name='elasticsearch_logsdir',
+        help='',
+        default='/tmp',
+    )
+
     parser.addoption(
         '--elasticsearch-logsdir',
         action='store',
-        default='/tmp',
         metavar='path',
         dest='logsdir',
     )

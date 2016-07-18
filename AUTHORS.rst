@@ -7,3 +7,4 @@ of pytest-elasticsearch along its history.
 * Grzegorz Sliwiński
 * Paweł Wilczyński
 * Tomasz Karbownicki
+* Karolina Blümke
