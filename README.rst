@@ -1,39 +1,35 @@
-pytest_elasticsearch
+pytest-elasticsearch
 ====================
 
-.. image:: https://img.shields.io/pypi/v/pytest_elasticsearch.svg
-    :target: https://pypi.python.org/pypi/pytest_elasticsearch/
+.. image:: https://img.shields.io/pypi/v/pytest-elasticsearch.svg
+    :target: https://pypi.python.org/pypi/pytest-elasticsearch/
     :alt: Latest PyPI version
 
-.. image:: https://readthedocs.org/projects/pytest_elasticsearch/badge/?version=v0.0.0
-    :target: http://pytest_elasticsearch.readthedocs.io/en/v0.0.0/
-    :alt: Documentation Status
-
-.. image:: https://img.shields.io/pypi/wheel/pytest_elasticsearch.svg
-    :target: https://pypi.python.org/pypi/pytest_elasticsearch/
+.. image:: https://img.shields.io/pypi/wheel/pytest-elasticsearch.svg
+    :target: https://pypi.python.org/pypi/pytest-elasticsearch/
     :alt: Wheel Status
 
-.. image:: https://img.shields.io/pypi/pyversions/pytest_elasticsearch.svg
-    :target: https://pypi.python.org/pypi/pytest_elasticsearch/
+.. image:: https://img.shields.io/pypi/pyversions/pytest-elasticsearch.svg
+    :target: https://pypi.python.org/pypi/pytest-elasticsearch/
     :alt: Supported Python Versions
 
-.. image:: https://img.shields.io/pypi/l/pytest_elasticsearch.svg
-    :target: https://pypi.python.org/pypi/pytest_elasticsearch/
+.. image:: https://img.shields.io/pypi/l/pytest-elasticsearch.svg
+    :target: https://pypi.python.org/pypi/pytest-elasticsearch/
     :alt: License
 
 Package status
 --------------
 
-.. image:: https://travis-ci.org/ClearcodeHQ/pytest_elasticsearch.svg?branch=v0.0.0
-    :target: https://travis-ci.org/ClearcodeHQ/pytest_elasticsearch
+.. image:: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch.svg?branch=v0.0.0
+    :target: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch
     :alt: Tests
 
-.. image:: https://coveralls.io/repos/ClearcodeHQ/pytest_elasticsearch/badge.png?branch=v0.0.0
-    :target: https://coveralls.io/r/ClearcodeHQ/pytest_elasticsearch?branch=v0.0.0
+.. image:: https://coveralls.io/repos/ClearcodeHQ/pytest-elasticsearch/badge.png?branch=v0.0.0
+    :target: https://coveralls.io/r/ClearcodeHQ/pytest-elasticsearch?branch=v0.0.0
     :alt: Coverage Status
 
-.. image:: https://requires.io/github/ClearcodeHQ/pytest_elasticsearch/requirements.svg?tag=v0.0.0
-     :target: https://requires.io/github/ClearcodeHQ/pytest_elasticsearch/requirements/?tag=v0.0.0
+.. image:: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements.svg?tag=v0.0.0
+     :target: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements/?tag=v0.0.0
      :alt: Requirements Status
 
 What is this?
