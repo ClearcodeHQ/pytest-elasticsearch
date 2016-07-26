@@ -71,7 +71,37 @@ To check if everything is ready to go, you can always test both fixtures:
 Configuration
 =============
 
-You can define your own path for elasticsearch logs directory. There are three ways to achieve this:
+You can define your settings in three ways, it's fixture factory argument, command line option and pytest.ini configuration option.
+You can pick which you prefer, but remember that these settings are handled in the following order:
+
+    * ``Fixture factory argument``
+    * ``Command line option``
+    * ``Configuration option in your pytest.ini file``
+
+    +----------------------+------------------------------------+----------------------------------------------------+--------------------------------------------------+--------------------------+
+    | Elasticsearch option |      Fixture factory argument      |                 Command line option                |         Configuration option in pytest.ini       |          Default         |
+    +----------------------+------------------------------------+----------------------------------------------------+--------------------------------------------------+--------------------------+
+    |    logs directory    |              logsdir               |              --elasticsearch-logsdir               |               elasticsearch_logsdir              |           /tmp           |
+    +----------------------+------------------------------------+----------------------------------------------------+--------------------------------------------------+--------------------------+
+    |        host          |                host                |                --elasticsearch-host                |                elasticsearch_host                |       '127.0.0.1'        |
+    +----------------------+------------------------------------+----------------------------------------------------+--------------------------------------------------+--------------------------+
+    |        port          |                port                |                --elasticsearch-port                |                elasticsearch_port                |           9201           |
+    +----------------------+------------------------------------+----------------------------------------------------+--------------------------------------------------+--------------------------+
+    |    cluster_name      |            cluster_name            |            --elasticsearch-cluster-name            |            elasticsearch_cluster_name            |elasticsearch_cluster_9201|
+    +----------------------+------------------------------------+----------------------------------------------------+--------------------------------------------------+--------------------------+
+    |  index store type    |          index_store_type          |          --elasticsearch-index-store-type          |          elasticsearch_index_store_type          |         'memory'         | 
+    +----------------------+------------------------------------+----------------------------------------------------+--------------------------------------------------+--------------------------+
+    | network publish host |        network_publish_host        |        --elasticsearch-network-publish-host        |        elasticsearch_network_publish_host        |       '127.0.0.1'        |
+    +----------------------+------------------------------------+----------------------------------------------------+--------------------------------------------------+--------------------------+
+    |     logs prefix      |              logs_prefix           |             --elasticsearch-logs-prefix            |             elasticsearch_logs_prefix            |            ''            |
+    +----------------------+------------------------------------+----------------------------------------------------+--------------------------------------------------+--------------------------+
+    |  discovery en ping   |                                    |                                                    |                                                  |                          |
+    |  multicast enabled   |discovery_zen_ping_multicast_enabled|--elasticsearch-discovery-zen-ping-multicast-enabled|elasticsearch_discovery_zen_ping_multicast_enabled|         'false'          |
+    |                      |                                    |                                                    |                                                  |                          |
+    +----------------------+------------------------------------+----------------------------------------------------+--------------------------------------------------+--------------------------+
+
+
+ Example of use: ``logs directory``:
 
 * pass it as an argument in your own fixture
 
@@ -95,13 +125,7 @@ You can define your own path for elasticsearch logs directory. There are three w
         elasticsearch_logsdir =
           /tmp/elasticsearch/logs
 
-If you don't want to define your own directory path in any given way, you can always use a default value,
-which is simply ``/tmp``. If you do, you have to remember about the order of priority: 
-
-    * ``fixture argument``
-    * ``--elasticsearch-logsdir``
-    * ``logsdir in pytest.ini``
-
+If you don't want to define your own settings in any given way, you can always use a default values. 
 
 Package resources
 -----------------

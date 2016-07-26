@@ -29,17 +29,26 @@ from pytest_elasticsearch.port import get_port
 def return_config(request):
     """Return a dictionary with config options."""
     config = {}
-    logsdir = request.config.getoption('logsdir') or \
-        request.config.getini('elasticsearch_logsdir')
-    config['logsdir'] = logsdir
+    options = [
+        'port', 'host', 'cluster_name',
+        'network_publish_host', 'discovery_zen_ping_multicast_enabled',
+        'index_store_type', 'logs_prefix', 'logsdir'
+    ]
+    for option in options:
+        conf = request.config.getoption(option) or \
+            request.config.getini('elasticsearch_{0}'.format(option))
+        if option == 'cluster_name' and not conf:
+            port = config['port']
+            conf = 'elasticsearch_cluster_{0}'.format(port)
+        config[option] = conf
     return config
 
 
 def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
-                       host='127.0.0.1', port=9201, cluster_name=None,
-                       network_publish_host='127.0.0.1',
-                       discovery_zen_ping_multicast_enabled=False,
-                       index_store_type='memory', logs_prefix='',
+                       host=None, port=None, cluster_name=None,
+                       network_publish_host=None,
+                       discovery_zen_ping_multicast_enabled=None,
+                       index_store_type=None, logs_prefix=None,
                        elasticsearch_logsdir=None):
     """
     Create elasticsearch process fixture.
@@ -50,11 +59,12 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
 
     :param str executable: elasticsearch's executable
     :param str host: host that the instance listens on
-    :param int|str port: exact port that the instance listens on (e.g. 8000),
-        or randomly selected port:
-            '?' - any random available port
-            '2000-3000' - random available port from a given range
-            '4002,4003' - random of 4002 or 4003 ports
+    :param str|int|tuple|set|list port:
+        exact port (e.g. '8000', 8000)
+        randomly selected port (None) - any random available port
+        [(2000,3000)] or (2000,3000) - random available port from a given range
+        [{4002,4003}] or {4002,4003} - random of 4002 or 4003 ports
+        [(2000,3000), {4002,4003}] -random of given orange and set
     :param str cluster_name: name of a cluser this node should work on.
         Used for autodiscovery. By default each node is in it's own cluser.
     :param str network_publish_host: host to publish itself within cluser
@@ -66,29 +76,41 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         to speed up tests
     :param str logs_prefix: prefix for log filename
     :param str elasticsearch_logsdir: path for logs.
-            You can also use:
-                '--elasticsearch_logsdir' - command line option
-                'logsdir' var in your pytest.ini file
-            to set your own logs path.
+    :param elasticsearch_logsdir: path for elasticsearch logs
     """
     @pytest.fixture(scope='session')
     def elasticsearch_proc_fixture(request):
         """Elasticsearch process starting fixture."""
         config = return_config(request)
-        elasticsearch_port = get_port(port)
 
-        pidfile = '/tmp/elasticsearch.{0}.pid'.format(elasticsearch_port)
-        home_path = '/tmp/elasticsearch_{0}'.format(elasticsearch_port)
+        elasticsearch_host = host or config['host']
+
+        if port is not None:
+            elasticsearch_port = get_port(port)
+        else:
+            elasticsearch_port = get_port(config['port'])
+        elasticsearch_cluster_name = cluster_name or config['cluster_name']
+        elasticsearch_logs_prefix = logs_prefix or config['logs_prefix']
+        elasticsearch_index_store_type = index_store_type or \
+            config['index_store_type']
+        elasticsearch_network_publish_host = network_publish_host or \
+            config['network_publish_host']
 
         logsdir = elasticsearch_logsdir or config['logsdir']
-
         logs_path = path(logsdir) / '{prefix}elasticsearch_{port}_logs'.format(
-            prefix=logs_prefix,
+            prefix=elasticsearch_logs_prefix,
             port=elasticsearch_port
         )
-        work_path = '/tmp/elasticsearch_{0}_tmp'.format(elasticsearch_port)
-        cluster = cluster_name or 'dbfixtures.{0}'.format(elasticsearch_port)
-        multicast_enabled = str(discovery_zen_ping_multicast_enabled).lower()
+
+        home_path = '/tmp/elasticsearch_{0}'.format(elasticsearch_port)
+        pidfile = '{0}.pid'.format(home_path.replace('_', '.'))
+        work_path = '{0}_tmp'.format(home_path)
+
+        if discovery_zen_ping_multicast_enabled is not None:
+            multicast_enabled = str(
+                discovery_zen_ping_multicast_enabled).lower()
+        else:
+            multicast_enabled = config['discovery_zen_ping_multicast_enabled']
 
         command_exec = '''
             {deamon} -p {pidfile} --http.port={port}
@@ -106,15 +128,15 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             home_path=home_path,
             logs_path=logs_path,
             work_path=work_path,
-            cluster=cluster,
-            network_publish_host=network_publish_host,
+            cluster=elasticsearch_cluster_name,
+            network_publish_host=elasticsearch_network_publish_host,
             multicast_enabled=multicast_enabled,
-            index_store_type=index_store_type
+            index_store_type=elasticsearch_index_store_type
         )
 
         elasticsearch_executor = HTTPExecutor(
             command_exec, 'http://{host}:{port}'.format(
-                host=host,
+                host=elasticsearch_host,
                 port=elasticsearch_port
             ),
             timeout=60,

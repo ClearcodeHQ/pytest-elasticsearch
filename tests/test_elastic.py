@@ -29,6 +29,13 @@ def test_default_configuration(request):
     config = factories.return_config(request)
 
     assert config['logsdir'] == '/tmp'
+    assert config['port'] == 9201
+    assert config['host'] == '127.0.0.1'
+    assert config['cluster_name'] == 'elasticsearch_cluster_9201'
+    assert config['network_publish_host'] == '127.0.0.1'
+    assert config['discovery_zen_ping_multicast_enabled'] == 'false'
+    assert config['index_store_type'] == 'memory'
+    assert config['logs_prefix'] == ''
 
     logsdir_ini = request.config.getini('elasticsearch_logsdir')
     logsdir_option = request.config.getoption('logsdir')
