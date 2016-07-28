@@ -48,7 +48,6 @@ def get_port(ports):
     does not check if port is available.  When a range or list
     of ports is passed `port_for` external package is used in order
     to find a free port.
-
     :param int|str ports: e.g. 3000, '3000', '3000-3100', '3000,3002', '?'
     :returns: a random free port
     """

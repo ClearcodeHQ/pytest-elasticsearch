@@ -27,7 +27,48 @@ def pytest_addoption(parser):
     parser.addini(
         name='elasticsearch_logsdir',
         help='',
-        default='/tmp',
+        default='/tmp'
+    )
+
+    parser.addini(
+        name='elasticsearch_host',
+        help='',
+        default='127.0.0.1'
+    )
+
+    parser.addini(
+        name='elasticsearch_cluster_name',
+        help='',
+        default=''
+    )
+
+    parser.addini(
+        name='elasticsearch_index_store_type',
+        help='',
+        default='memory'
+    )
+
+    parser.addini(
+        name='elasticsearch_network_publish_host',
+        help='',
+        default='127.0.0.1')
+
+    parser.addini(
+        name='elasticsearch_logs_prefix',
+        help='',
+        default=''
+    )
+
+    parser.addini(
+        name='elasticsearch_discovery_zen_ping_multicast_enabled',
+        help='',
+        default='false',
+    )
+
+    parser.addini(
+        name='elasticsearch_port',
+        help='',
+        default=9201,
     )
 
     parser.addoption(
@@ -35,6 +76,48 @@ def pytest_addoption(parser):
         action='store',
         metavar='path',
         dest='logsdir',
+    )
+
+    parser.addoption(
+        '--elasticsearch-host',
+        action='store',
+        dest='host',
+    )
+
+    parser.addoption(
+        '--elasticsearch-cluster-name',
+        action='store',
+        dest='cluster_name',
+    )
+
+    parser.addoption(
+        '--elasticsearch-index-store-type',
+        action='store',
+        dest='index_store_type',
+    )
+
+    parser.addoption(
+        '--elasticsearch-network-publish-host)',
+        action='store',
+        dest='network_publish_host',
+    )
+
+    parser.addoption(
+        '--elasticsearch-logs-prefix',
+        action='store',
+        dest='logs_prefix',
+    )
+
+    parser.addoption(
+        '--elasticsearch-discovery-zen-ping-multicast-enabled',
+        action='store',
+        dest='discovery_zen_ping_multicast_enabled',
+    )
+
+    parser.addoption(
+        '--elasticsearch-port',
+        action='store',
+        dest='port'
     )
 
 elasticsearch_proc = factories.elasticsearch_proc()
