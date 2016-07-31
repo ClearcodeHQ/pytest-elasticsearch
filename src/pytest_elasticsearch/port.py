@@ -15,78 +15,70 @@
 
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-dbfixtures.  If not, see <http://www.gnu.org/licenses/>.
-"""Port parsing helpers."""
+from itertools import chain
+
 import port_for
 
 
-class InvalidPortsDefinition(Exception):
+class InvalidPortsDefinition(ValueError):
     """Exception raised if ports definition is not a valid string."""
-    def __init__(self, ports):
-        """
-        Exception initalisation.
 
-        :param ports: passed exception value.
-        """
+    def __init__(self, ports):
         self.ports = ports
 
     def __str__(self):
-        """String representation of a method."""
-        return (
-            'Unknown format of ports: {}.\n'
-            'You should provide an exact port, ports range "4000-5000"'
-            'or a comma-separated ports list "4000,5000,6000-8000".'.format(
-                self.ports
-            )
-        )
+        return ('Unknown format of ports: %s.\n'
+                'You should provide a ports range "[(4000,5000)]"'
+                'or "(4000,5000)" or a comma-separated ports set'
+                '"[{4000,5000,6000}]" or list of ints "[400,5000,6000,8000]"'
+                'or all of them "[(20000, 30000), {48889, 50121}, 4000, 4004]"'
+                % self.ports)
 
 
 def get_port(ports):
     """
-    Return a random available port.
+    Retun a random available port.
 
     If there's only one port passed (e.g. 5000 or '5000') function
-    does not check if port is available.  When a range or list
-    of ports is passed `port_for` external package is used in order
-    to find a free port.
-    :param int|str ports: e.g. 3000, '3000', '3000-3100', '3000,3002', '?'
+    does not check if port is available.
+    it there's -1 passed as an argument, function returns None.
+    When a range or list of ports is passed `port_for` external package
+    is used in order to find a free port.
+
+    :param str|int|tuple|set|list port:
+        exact port (e.g. '8000', 8000)
+        randomly selected port (None) - any random available port
+        [(2000,3000)] or (2000,3000) - random available port from a given range
+        [{4002,4003}] or {4002,4003} - random of 4002 or 4003 ports
+        [(2000,3000), {4002,4003}] -random of given orange and set
     :returns: a random free port
+    :raises: ValueError
     """
+    if ports == -1:
+        return None
+    elif not ports:
+        return port_for.select_random(None)
+
     try:
         return int(ports)
-    except ValueError:
+    except TypeError:
         pass
 
-    return port_for.select_random(parse_ports(ports))
+    ports_set = set()
+
+    try:
+        if not isinstance(ports, list):
+            ports = [ports]
+        ranges = port_for.utils.ranges_to_set(filter_by_type(ports, tuple))
+        nums = set(filter_by_type(ports, int))
+        sets = set(chain(*filter_by_type(ports, (set, frozenset))))
+        ports_set = ports_set.union(ranges, sets, nums)
+    except ValueError:
+        raise InvalidPortsDefinition
+
+    return port_for.select_random(ports_set)
 
 
-def parse_ports(ports):
-    """
-    Parse ports expression.
-
-    :param str ports: e.g. '3000', '3000-3100', '3000,3002', '?'
-    :returns: ports set reflecting specifified ports list/range.
-    :rtype set
-    """
-    if ports == '?':
-        return None
-
-    port_set = set()
-
-    for p in ports.split(','):
-        if '-' not in p:
-            # single, comma-separated port:
-            try:
-                port_set.add(int(p))
-            except ValueError:
-                raise InvalidPortsDefinition(ports)
-        else:
-            # range of ports:
-            try:
-                start, end = p.split('-')
-            except ValueError:
-                raise InvalidPortsDefinition(ports)
-            if end < start:
-                raise InvalidPortsDefinition(ports)
-            port_set.update(range(int(start), int(end) + 1))
-
-    return port_set
+def filter_by_type(lst, type_of):
+    """Return a list of elements with given type."""
+    return [e for e in lst if isinstance(e, type_of)]

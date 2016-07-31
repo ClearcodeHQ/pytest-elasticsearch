@@ -15,7 +15,7 @@ def test_elasticsarch(elasticsearch):
     assert info['status'] == 200
 
 
-elasticsearch_proc_random = factories.elasticsearch_proc(port='?')
+elasticsearch_proc_random = factories.elasticsearch_proc(port=None)
 elasticsearch_random = factories.elasticsearch('elasticsearch_proc_random')
 
 
@@ -58,7 +58,7 @@ def test_ini_option_configuration(request):
     assert '/test2' == factories.return_config(request)['logsdir']
 
 elasticsearch_proc_args = factories.elasticsearch_proc(
-    port='?', elasticsearch_logsdir='/tmp')
+    port=None, elasticsearch_logsdir='/tmp')
 
 
 @patch('pytest_elasticsearch.plugin.pytest.config')
