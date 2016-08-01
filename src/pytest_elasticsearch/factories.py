@@ -45,7 +45,7 @@ def return_config(request):
 
 
 def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
-                       host=None, port=None, cluster_name=None,
+                       host=None, port=-1, cluster_name=None,
                        network_publish_host=None,
                        discovery_zen_ping_multicast_enabled=None,
                        index_store_type=None, logs_prefix=None,
@@ -64,7 +64,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         randomly selected port (None) - any random available port
         [(2000,3000)] or (2000,3000) - random available port from a given range
         [{4002,4003}] or {4002,4003} - random of 4002 or 4003 ports
-        [(2000,3000), {4002,4003}] -random of given orange and set
+        [(2000,3000), {4002,4003}] -random of given range and set
     :param str cluster_name: name of a cluser this node should work on.
         Used for autodiscovery. By default each node is in it's own cluser.
     :param str network_publish_host: host to publish itself within cluser
@@ -85,10 +85,8 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
 
         elasticsearch_host = host or config['host']
 
-        if port is not None:
-            elasticsearch_port = get_port(port)
-        else:
-            elasticsearch_port = get_port(config['port'])
+        elasticsearch_port = get_port(port) or get_port(config['port'])
+
         elasticsearch_cluster_name = cluster_name or config['cluster_name']
         elasticsearch_logs_prefix = logs_prefix or config['logs_prefix']
         elasticsearch_index_store_type = index_store_type or \

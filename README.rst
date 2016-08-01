@@ -45,28 +45,31 @@ How to use
 
 You can set and run elasticsearch process with your own settings (i.e. use random port or define your own logsdir)
 
-.. code-block:: 
+.. code-block:: python
+
     elasticsearch_proc = factories.elasticsearch_proc(
-        port='?', logsdir='/tmp')
+        port=None, logsdir='/tmp')
 
 You can use elasticsearch client fixture to run your test. (Remember that client fixture requires a process fixture to work properly.)
 
-.. code-block::
+.. code-block:: python
+
     elasticsearch = factories.elasticsearch(elasticsearch_proc)
 
 To check if everything is ready to go, you can always test both fixtures:
 
-    .. code-block::
-        def test_elastic_process(elasticsearch_proc):
-            """Simple test for starting elasticsearch_proc."""
-            assert elasticsearch_proc.running() is True
+.. code-block:: python
+
+    def test_elastic_process(elasticsearch_proc):
+        """Simple test for starting elasticsearch_proc."""
+        assert elasticsearch_proc.running() is True
 
 
-        def test_elasticsarch(elasticsearch):
-            """Tests if elasticsearch fixtures connects to process."""
+    def test_elasticsarch(elasticsearch):
+        """Tests if elasticsearch fixtures connects to process."""
 
-            info = elasticsearch.info()
-            assert info['status'] == 200
+        info = elasticsearch.info()
+        assert info['status'] == 200
 
 Configuration
 =============
@@ -105,13 +108,15 @@ You can pick which you prefer, but remember that these settings are handled in t
 
 * pass it as an argument in your own fixture
 
-    .. code-block:: fixture
+    .. code-block:: python
+
         elasticsearch_proc = factories.elasticsearch_proc(
             logsdir='/tmp')
 
 * use ``--elasticsearch-logsdir`` command line option when you run your tests
 
-    .. code-block:: command_line
+    .. code-block::
+
         py.test tests --elasticsearch-logsdir=/tmp
 
 
