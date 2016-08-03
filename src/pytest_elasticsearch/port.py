@@ -27,12 +27,13 @@ class InvalidPortsDefinition(ValueError):
         self.ports = ports
 
     def __str__(self):
-        return ('Unknown format of ports: %s.\n'
-                'You should provide a ports range "[(4000,5000)]"'
-                'or "(4000,5000)" or a comma-separated ports set'
-                '"[{4000,5000,6000}]" or list of ints "[400,5000,6000,8000]"'
-                'or all of them "[(20000, 30000), {48889, 50121}, 4000, 4004]"'
-                % self.ports)
+        return (
+            'Unknown format of ports: {0}.\n'
+            'You should provide a ports range "[(4000,5000)]"'
+            'or "(4000,5000)" or a comma-separated ports set'
+            '"[{4000,5000,6000}]" or list of ints "[400,5000,6000,8000]"'
+            'or all of them "[(20000, 30000), {48889, 50121}, 4000, 4004]"'
+        ).format(self.ports)
 
 
 def get_port(ports):
