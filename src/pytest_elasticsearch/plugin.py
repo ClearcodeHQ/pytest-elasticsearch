@@ -45,7 +45,7 @@ def pytest_addoption(parser):
     parser.addini(
         name='elasticsearch_index_store_type',
         help='',
-        default='memory'
+        default=''
     )
 
     parser.addini(
