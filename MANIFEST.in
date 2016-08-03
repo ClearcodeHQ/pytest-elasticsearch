@@ -1,4 +1,4 @@
-include *.rst *.py
+include *.rst *.py COPYING*
 recursive-include src/pytest_elasticsearch *.py
 recursive-include docs *
 prune docs/build
