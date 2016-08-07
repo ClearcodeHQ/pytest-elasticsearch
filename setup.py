@@ -50,7 +50,7 @@ requirements = [
 ]
 
 test_requires = [
-    'pytest-cov==2.3.0',
+    'pytest-cov==2.3.1',
     'pytest-xdist==1.14',
     'pylama==7.0.9',
     'mock==2.0.0',
