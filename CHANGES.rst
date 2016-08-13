@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-unreleased
+1.0.0
 -------
 
 - [feature] pytest.ini option for every command line option
