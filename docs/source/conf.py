@@ -66,7 +66,7 @@ copyright = u'2016, ' + author
 #
 # The short X.Y version.
 
-from pypt import __version__
+from pytest_elasticsearch import __version__
 
 # The full version, including alpha/beta/rc tags.
 release = __version__

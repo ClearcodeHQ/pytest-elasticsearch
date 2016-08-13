@@ -19,16 +19,9 @@
 """Installation file for pytest-elasticsearch."""
 
 import os
-import re
 from setuptools import setup, find_packages
 
 here = os.path.dirname(__file__)
-with open(os.path.join(
-        here, 'src', 'pytest_elasticsearch', '__init__.py'
-)) as v_file:
-    package_version = re.compile(
-        r".*__version__ = '(.*?)'", re.S
-    ).match(v_file.read()).group(1)
 
 
 def read(fname):
@@ -63,7 +56,7 @@ extras_require = {
 
 setup(
     name='pytest-elasticsearch',
-    version=package_version,
+    version='0.0.0',
     description='Elasticsearch process and client fixtures for py.test.',
     long_description=(
         read('README.rst') + '\n\n' + read('CHANGES.rst')
