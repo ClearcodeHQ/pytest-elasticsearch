@@ -98,9 +98,7 @@ You can pick which you prefer, but remember that these settings are handled in t
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+----------------------------+
 |     logs prefix      |               logs_prefix            |             --elasticsearch-logs-prefix              |             elasticsearch_logs_prefix              |                            |
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+----------------------------+
-|  discovery en ping   |                                      |                                                      |                                                    |                            |
-|  multicast enabled   | discovery_zen_ping_multicast_enabled | --elasticsearch-discovery-zen-ping-multicast-enabled | elasticsearch_discovery_zen_ping_multicast_enabled |         False              |
-|                      |                                      |                                                      |                                                    |                            |
+| enable zen discovery | discovery_zen_ping_multicast_enabled | --elasticsearch-discovery-zen-ping-multicast-enabled | elasticsearch_discovery_zen_ping_multicast_enabled |         False              |
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+----------------------------+
 
 

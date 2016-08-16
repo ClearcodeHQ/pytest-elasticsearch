@@ -4,6 +4,7 @@ CHANGELOG
 unreleased
 -------
 
+- [docs] added description to all command line and ini options
 - [bugfix] made command line option's dests more distinc, to prevent from influencing other pytest plugins
 
 1.0.0
