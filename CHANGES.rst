@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+unreleased
+-------
+
+- [bugfix] made command line option's dests more distinc, to prevent from influencing other pytest plugins
+
 1.0.0
 -------
 

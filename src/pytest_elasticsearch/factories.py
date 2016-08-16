@@ -30,13 +30,14 @@ def return_config(request):
     """Return a dictionary with config options."""
     config = {}
     options = [
-        'port', 'host', 'cluster_name',
-        'network_publish_host', 'discovery_zen_ping_multicast_enabled',
-        'index_store_type', 'logs_prefix', 'logsdir'
+        'port', 'host', 'cluster_name', 'network_publish_host',
+        'discovery_zen_ping_multicast_enabled', 'index_store_type',
+        'logs_prefix', 'logsdir'
     ]
     for option in options:
-        conf = request.config.getoption(option) or \
-            request.config.getini('elasticsearch_{0}'.format(option))
+        option_name = 'elasticsearch_' + option
+        conf = request.config.getoption(option_name) or \
+            request.config.getini(option_name)
         if option == 'cluster_name' and not conf:
             port = config['port']
             conf = 'elasticsearch_cluster_{0}'.format(port)

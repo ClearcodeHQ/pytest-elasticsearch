@@ -75,49 +75,49 @@ def pytest_addoption(parser):
         '--elasticsearch-logsdir',
         action='store',
         metavar='path',
-        dest='logsdir',
+        dest='elasticsearch_logsdir',
     )
 
     parser.addoption(
         '--elasticsearch-host',
         action='store',
-        dest='host',
+        dest='elasticsearch_host',
     )
 
     parser.addoption(
         '--elasticsearch-cluster-name',
         action='store',
-        dest='cluster_name',
+        dest='elasticsearch_cluster_name',
     )
 
     parser.addoption(
         '--elasticsearch-index-store-type',
         action='store',
-        dest='index_store_type',
+        dest='elasticsearch_index_store_type',
     )
 
     parser.addoption(
-        '--elasticsearch-network-publish-host)',
+        '--elasticsearch-network-publish-host',
         action='store',
-        dest='network_publish_host',
+        dest='elasticsearch_network_publish_host',
     )
 
     parser.addoption(
         '--elasticsearch-logs-prefix',
         action='store',
-        dest='logs_prefix',
+        dest='elasticsearch_logs_prefix',
     )
 
     parser.addoption(
         '--elasticsearch-discovery-zen-ping-multicast-enabled',
         action='store',
-        dest='discovery_zen_ping_multicast_enabled',
+        dest='elasticsearch_discovery_zen_ping_multicast_enabled',
     )
 
     parser.addoption(
         '--elasticsearch-port',
         action='store',
-        dest='port'
+        dest='elasticsearch_port'
     )
 
 elasticsearch_proc = factories.elasticsearch_proc()
