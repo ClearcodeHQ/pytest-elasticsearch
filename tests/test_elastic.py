@@ -38,7 +38,7 @@ def test_default_configuration(request):
     assert config['logs_prefix'] == ''
 
     logsdir_ini = request.config.getini('elasticsearch_logsdir')
-    logsdir_option = request.config.getoption('logsdir')
+    logsdir_option = request.config.getoption('elasticsearch_logsdir')
 
     assert logsdir_ini == '/tmp'
     assert logsdir_option is None
