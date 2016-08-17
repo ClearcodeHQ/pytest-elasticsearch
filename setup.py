@@ -38,7 +38,7 @@ requirements = [
     'pytest',
     'mirakuru',
     'elasticsearch',
-    'path.py',
+    'path.py>=6.2',
     'port-for',
 ]
 

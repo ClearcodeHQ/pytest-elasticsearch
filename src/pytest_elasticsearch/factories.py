@@ -20,7 +20,7 @@ import shutil
 from tempfile import gettempdir
 
 import pytest
-from path import path
+from path import Path
 
 from elasticsearch import Elasticsearch
 from mirakuru import HTTPExecutor
@@ -83,7 +83,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
     @pytest.fixture(scope='session')
     def elasticsearch_proc_fixture(request):
         """Elasticsearch process starting fixture."""
-        tmpdir = path(gettempdir())
+        tmpdir = Path(gettempdir())
         config = return_config(request)
 
         elasticsearch_host = host or config['host']
@@ -98,7 +98,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             config['network_publish_host']
 
         logsdir = elasticsearch_logsdir or config['logsdir']
-        logs_path = path(logsdir) / '{prefix}elasticsearch_{port}_logs'.format(
+        logs_path = Path(logsdir) / '{prefix}elasticsearch_{port}_logs'.format(
             prefix=elasticsearch_logs_prefix,
             port=elasticsearch_port
         )
