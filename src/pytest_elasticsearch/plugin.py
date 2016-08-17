@@ -21,24 +21,35 @@ import pytest  # noqa
 
 from pytest_elasticsearch import factories
 
+_help_logsdir = 'Elasticsearch logs directory'
+_help_host = 'Elasticsearch host'
+_help_port = 'Elasticsearch port'
+_help_cluster_name = 'Cluster name of the elasticsearch process fixture'
+_help_index_store_type = \
+    'type of the index to use in the elasticsearch process fixture'
+_help_network_publish_host = \
+    'network host to which elasticsearch publish to connect to cluseter'
+_help_logs_prefix = 'prefix for the logs file'
+_help_discovery_zen_ping_multicast_enabled = 'Use zen discovery'
+
 
 def pytest_addoption(parser):
     """Add plugin's configuration options."""
     parser.addini(
         name='elasticsearch_logsdir',
-        help='',
+        help=_help_logsdir,
         default='/tmp'
     )
 
     parser.addini(
         name='elasticsearch_host',
-        help='',
+        help=_help_host,
         default='127.0.0.1'
     )
 
     parser.addini(
         name='elasticsearch_cluster_name',
-        help='',
+        help=_help_cluster_name,
         default=''
     )
 
@@ -67,7 +78,7 @@ def pytest_addoption(parser):
 
     parser.addini(
         name='elasticsearch_port',
-        help='',
+        help=_help_port,
         default=9201,
     )
 
@@ -76,18 +87,21 @@ def pytest_addoption(parser):
         action='store',
         metavar='path',
         dest='elasticsearch_logsdir',
+        help=_help_logsdir
     )
 
     parser.addoption(
         '--elasticsearch-host',
         action='store',
         dest='elasticsearch_host',
+        help=_help_host,
     )
 
     parser.addoption(
         '--elasticsearch-cluster-name',
         action='store',
         dest='elasticsearch_cluster_name',
+        help=_help_cluster_name,
     )
 
     parser.addoption(
@@ -117,7 +131,8 @@ def pytest_addoption(parser):
     parser.addoption(
         '--elasticsearch-port',
         action='store',
-        dest='elasticsearch_port'
+        dest='elasticsearch_port',
+        help=_help_port
     )
 
 elasticsearch_proc = factories.elasticsearch_proc()
