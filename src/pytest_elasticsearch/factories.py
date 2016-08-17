@@ -17,6 +17,7 @@
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
 """Fixture factories."""
 import shutil
+from tempfile import gettempdir
 
 import pytest
 from path import path
@@ -82,6 +83,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
     @pytest.fixture(scope='session')
     def elasticsearch_proc_fixture(request):
         """Elasticsearch process starting fixture."""
+        tmpdir = path(gettempdir())
         config = return_config(request)
 
         elasticsearch_host = host or config['host']
@@ -101,8 +103,8 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             port=elasticsearch_port
         )
 
-        home_path = '/tmp/elasticsearch_{0}'.format(elasticsearch_port)
-        pidfile = '{0}.pid'.format(home_path.replace('_', '.'))
+        pidfile = tmpdir / 'elasticsearch.{0}.pid'.format(elasticsearch_port)
+        home_path = tmpdir / 'elasticsearch_{0}'.format(elasticsearch_port)
         work_path = '{0}_tmp'.format(home_path)
 
         if discovery_zen_ping_multicast_enabled is not None:

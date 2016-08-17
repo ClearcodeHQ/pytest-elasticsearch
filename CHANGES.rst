@@ -4,6 +4,7 @@ CHANGELOG
 unreleased
 -------
 
+- [feature] use tmpfile.gettempdir instead of hardcoded /tmp directory
 - [docs] added description to all command line and ini options
 - [bugfix] made command line option's dests more distinc, to prevent from influencing other pytest plugins
 
