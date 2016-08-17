@@ -20,16 +20,16 @@ pytest-elasticsearch
 Package status
 --------------
 
-.. image:: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch.svg?branch=v1.0.0
+.. image:: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch.svg?branch=v1.1.0
     :target: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch
     :alt: Tests
 
-.. image:: https://coveralls.io/repos/ClearcodeHQ/pytest-elasticsearch/badge.png?branch=v1.0.0
-    :target: https://coveralls.io/r/ClearcodeHQ/pytest-elasticsearch?branch=v1.0.0
+.. image:: https://coveralls.io/repos/ClearcodeHQ/pytest-elasticsearch/badge.png?branch=v1.1.0
+    :target: https://coveralls.io/r/ClearcodeHQ/pytest-elasticsearch?branch=v1.1.0
     :alt: Coverage Status
 
-.. image:: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements.svg?tag=v1.0.0
-     :target: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements/?tag=v1.0.0
+.. image:: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements.svg?tag=v1.1.0
+     :target: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements/?tag=v1.1.0
      :alt: Requirements Status
 
 What is this?

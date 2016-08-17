@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-unreleased
+1.1.0
 -------
 
 - [feature] use tmpfile.gettempdir instead of hardcoded /tmp directory
