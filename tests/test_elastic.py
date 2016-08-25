@@ -1,4 +1,6 @@
 """Pytest-elasticsearch tests."""
+from tempfile import gettempdir
+
 from mock import patch
 
 from pytest_elasticsearch import factories
@@ -28,7 +30,7 @@ def test_default_configuration(request):
     """Test default configuration."""
     config = factories.return_config(request)
 
-    assert config['logsdir'] == '/tmp'
+    assert config['logsdir'] == gettempdir()
     assert not config['port']
     assert config['host'] == '127.0.0.1'
     assert not config['cluster_name']

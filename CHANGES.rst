@@ -4,6 +4,7 @@ CHANGELOG
 unreleased
 -------
 
+- [feature] - default logsdir to $TMPDIR
 - [feature] - run process on random port by default - enhances xdist experience
 
 1.1.0
