@@ -7,15 +7,15 @@ python:
 - pypy
 - pypy3
 env:
-  - XDIST=1
-  # unfortunatelly, xdist hangs if there's any error in the slave threads, and there, pytest fires all the hooks
-  - XDIST=0
+- XDIST=1 INSTALL=install
+# unfortunatelly, xdist hangs if there's any error in the slave threads, and there, pytest fires all the hooks
+- XDIST=0 INSTALL=develop
 install:
 - "pip install -r requirements-test.txt"
-- python setup.py install
+- python setup.py $INSTALL
 - pip install pytest_elasticsearch[tests] coveralls wheel
 script:
-- py.test -n $XDIST --max-slave-restart=0 --showlocals --verbose --cov pytest_elasticsearch tests -p no:elasticsearch
+- py.test -n $XDIST --showlocals --verbose --cov src/pytest_elasticsearch
 - pylama
 - pyroma .
 after_success:
