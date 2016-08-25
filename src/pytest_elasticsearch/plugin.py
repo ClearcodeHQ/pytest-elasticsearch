@@ -79,7 +79,7 @@ def pytest_addoption(parser):
     parser.addini(
         name='elasticsearch_port',
         help=_help_port,
-        default=9201,
+        default=None,
     )
 
     parser.addoption(

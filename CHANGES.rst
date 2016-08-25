@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+unreleased
+-------
+
+- [feature] - run process on random port by default - enhances xdist experience
+
 1.1.0
 -------
 

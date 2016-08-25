@@ -29,9 +29,9 @@ def test_default_configuration(request):
     config = factories.return_config(request)
 
     assert config['logsdir'] == '/tmp'
-    assert config['port'] == 9201
+    assert not config['port']
     assert config['host'] == '127.0.0.1'
-    assert config['cluster_name'] == 'elasticsearch_cluster_9201'
+    assert not config['cluster_name']
     assert config['network_publish_host'] == '127.0.0.1'
     assert config['discovery_zen_ping_multicast_enabled'] == 'false'
     assert config['index_store_type'] == 'memory'
