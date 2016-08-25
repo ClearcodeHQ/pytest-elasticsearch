@@ -39,9 +39,6 @@ def return_config(request):
         option_name = 'elasticsearch_' + option
         conf = request.config.getoption(option_name) or \
             request.config.getini(option_name)
-        if option == 'cluster_name' and not conf:
-            port = config['port']
-            conf = 'elasticsearch_cluster_{0}'.format(port)
         config[option] = conf
     return config
 
@@ -90,7 +87,9 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
 
         elasticsearch_port = get_port(port) or get_port(config['port'])
 
-        elasticsearch_cluster_name = cluster_name or config['cluster_name']
+        elasticsearch_cluster_name = \
+            cluster_name or config['cluster_name'] or \
+            'elasticsearch_cluster_{0}'.format(elasticsearch_port)
         elasticsearch_logs_prefix = logs_prefix or config['logs_prefix']
         elasticsearch_index_store_type = index_store_type or \
             config['index_store_type']
