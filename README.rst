@@ -35,41 +35,37 @@ Package status
 What is this?
 =============
 
-This is a pytest plugin, that enables you test your code that relies on an Elasticsearch search engine.
+This is a pytest plugin, that enables you to test your code that relies on a running Elasticsearch search engine.
 It allows you to specify fixtures for Elasticsearch process and client.
 
 How to use
 ==========
 
-``Warning`` This fixture requires at least version 1.0 of elasticsearch to work.
+.. warning::
 
-You can set and run elasticsearch process with your own settings (i.e. use random port or define your own logsdir)
+    This fixture requires at least version 1.0 of elasticsearch to work.
+
+Plugin contains two fixtures
+
+* **elasticsearch** - it's a client fixture that has functional scope, and which cleans Elasticsearch at the end of each test.
+* **elasticsearch_proc** - session scoped fixture, that starts Elasticsearch instance at it's first use and stops at the end of the tests.
+
+Simply include one of these fixtures into your tests fixture list.
+
+You can also create additional elasticsearch client and process fixtures if you'd need to:
+
 
 .. code-block:: python
 
-    elasticsearch_proc = factories.elasticsearch_proc(
+    from pytest_elasticsearch import factories
+
+    elasticsearch_my_proc = factories.elasticsearch_proc(
         port=None, logsdir='/tmp')
+    elasticsearch_my = factories.elasticsearch('elasticsearch_my_proc')
 
-You can use elasticsearch client fixture to run your test. (Remember that client fixture requires a process fixture to work properly.)
+.. note::
 
-.. code-block:: python
-
-    elasticsearch = factories.elasticsearch(elasticsearch_proc)
-
-To check if everything is ready to go, you can always test both fixtures:
-
-.. code-block:: python
-
-    def test_elastic_process(elasticsearch_proc):
-        """Simple test for starting elasticsearch_proc."""
-        assert elasticsearch_proc.running() is True
-
-
-    def test_elasticsarch(elasticsearch):
-        """Tests if elasticsearch fixtures connects to process."""
-
-        info = elasticsearch.info()
-        assert info['status'] == 200
+    Each elasticsearch process fixture can be configured in a different way than the others through the fixture factory arguments.
 
 Configuration
 =============
@@ -101,40 +97,35 @@ You can pick which you prefer, but remember that these settings are handled in t
 | enable zen discovery | discovery_zen_ping_multicast_enabled | --elasticsearch-discovery-zen-ping-multicast-enabled | elasticsearch_discovery_zen_ping_multicast_enabled | False                        |
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
 
-
- Example of use: ``logs directory``:
+Example usage:
 
 * pass it as an argument in your own fixture
 
     .. code-block:: python
 
         elasticsearch_proc = factories.elasticsearch_proc(
-            logsdir='/tmp')
+            cluster_name='awsome_cluster)
 
 * use ``--elasticsearch-logsdir`` command line option when you run your tests
 
     .. code-block::
 
-        py.test tests --elasticsearch-logsdir=/tmp
+        py.test tests --elasticsearch-cluster-name=awsome_cluster
 
 
-* specify your directory as ``logsdir`` in your ``pytest.ini`` file.
+* specify your directory as ``elasticsearch_cluster_name`` in your ``pytest.ini`` file.
 
     To do so, put a line like the following under the ``[pytest]`` section of your ``pytest.ini``:
 
     .. code-block:: ini
 
         [pytest]
-        elasticsearch_logsdir =
-          /tmp/elasticsearch/logs
-
-If you don't want to define your own settings in any given way, you can always use a default values. 
+        elasticsearch_cluster_name = awsome_cluster
 
 Package resources
 -----------------
 
-* Bug tracker: https://github.com/ClearcodeHQ/pytest_elasticsearch/issues
-* Documentation: http://pytest_elasticsearch.readthedocs.org/
+* Bug tracker: https://github.com/ClearcodeHQ/pytest-elasticsearch/issues
 
 
 Travis-ci
