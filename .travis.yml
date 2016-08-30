@@ -8,10 +8,9 @@ python:
 - pypy3
 env:
 - XDIST=1 INSTALL=install
-# unfortunatelly, xdist hangs if there's any error in the slave threads, and there, pytest fires all the hooks
 - XDIST=0 INSTALL=develop
 install:
-- "pip install -r requirements-test.txt"
+- pip install -r requirements-test.txt
 - python setup.py $INSTALL
 - pip install pytest_elasticsearch[tests] coveralls wheel
 script:
@@ -24,7 +23,7 @@ deploy:
   provider: pypi
   user: thearoom
   password:
-    secure: KdmAwT3AoaSPtOsKirw6UJTS4b+48kqbcHltBqwgO9D3u9gl8NfnGAgAPMgZmsyaAd4nOj0dc5h/O9+vPQkD1Upy6Y1krGZWaP3UGfcJKZb5S94isFNSW6daCsLtZ7OfTCMkv4HBI5fTni9QdcFmC37EmycWnyTcthjetkfa6GYEcW/t+fnvdRR9NeIfEF5dFSif0cnK8SdXaysxp3wxG1MA0SaS1FtpLEfzm8DLBUknhgbPYpXFpp4XskCxLq6s0iKHHa83JYStvK3TY2LTFm9teg8LPoWCoMjo2Eazhw5jfDyNeuo9vwW3xRJRAaVTlx45WTJYCuSY4huRL/QckWna9R/7ufpag+9k02MCU47n/pzdRYQVUOwVXPSByFuTyYojzXQZCUUPPgjqN5xNMwIgp+9z8/1nv0YUK3rZG/OnfGPcSzmTFmWSRIe2Z+7ekdgWWsk/HK68I2xIzeHHfsX2b6tmMqb8u+J+DVTMNCbSZJXqD1WCCgG2AI+XtCwKuYM1fHhYhtL1d8RyAXjesNyB3bPAyeBtLD07MngeyQWW0AHsRhRtH1S/1iFV5lZ5hYZNrFp/soE1P4Z3az6/+TWEsx7kqRvLVvW3tptTs1iLQj0lj/g3mEFUV4hZt5M9DNh3ugTNV9H5KQsmHntStRgq9iZSbcK98BvAh3WU3NY=
+    secure: bnwnaeGFmI8ebzVb1JicY61Tm4gnAKGbgpwBxn0miBR/G4Zqx+ZbTtfFpfhFIrkHE3GZso1yi+Ctfx/ICaOL2lnQRkLugO0sTnWNACCsiklOfjuNDGL3uM7e96uYlUv5kUemlD8pCMym2EYrZhGfcpGU6DWD/yKm1ydzbDMDlEAjyb2SBNuvyvD/qxQCEpUg964Y22RIy6/l29I+2z9KizlHzFWyc/xV28R7kLl9BAXaqyHhaCGP/KenJdkMpb74XCXULHIUtP4K9+bVpZAV/OQnXJWeTBOFv1yHp4qjUvS9B09EzvuB6ixa2JL2LbVB1t/fHb5+8nysFbHJH+jhwECSsg0gsRUQcYHlTwzrW2F/OjxEweO+DX9uDFQXDcVATbLN4SkByNv0mIjHXqngj06T21czyC0kEgdpmrCXnPEV/lcet8IcM0P8Oo05MRpy0p1cIzHMmdE1Ryfg9soMHRgCz1/wu/esnN482/AnDpyFyN6W66GkYOH//tSuQBTxvUZeqGBz70nZKz7LB/BOYmLodfHUgnjoSH37jPGmD/p+OHV9vMg8T6LSYE1vDf+Voj3gaD1WZR8UsPGpxoOLxUxlZSPRyM9c+BcUKh6EmGH+Kr89JUIf6Ks+oEDxV7wwlK9cT7fXEPB3oqVPTv6hko/IS28btlBr/3JyfbENZkM=
   on:
     tags: true
     all_branches: true
