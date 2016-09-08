@@ -45,7 +45,7 @@ requirements = [
 test_requires = [
     'pytest-cov==2.3.1',
     'pytest-xdist==1.15.0',
-    'pylama==7.0.9',
+    'pylama==7.1.0',
     'mock==2.0.0',
 ]
 
