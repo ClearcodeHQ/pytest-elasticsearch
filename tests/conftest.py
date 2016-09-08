@@ -1,1 +1,1 @@
-from pytest_elasticsearch.plugin import *  # noqa
+"""Tests main conftest file."""
