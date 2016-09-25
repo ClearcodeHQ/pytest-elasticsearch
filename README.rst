@@ -126,9 +126,3 @@ Package resources
 -----------------
 
 * Bug tracker: https://github.com/ClearcodeHQ/pytest-elasticsearch/issues
-
-
-Travis-ci
----------
-
-After creating package on github, move to tracis-ci.org, and turn on ci builds for given package.
