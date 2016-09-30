@@ -10,6 +10,7 @@ env:
 - XDIST=1 INSTALL=install
 - XDIST=0 INSTALL=develop
 install:
+- pip install "setuptools>=18.0.0"
 - "pip install -r requirements-test.txt"
 - python setup.py $INSTALL
 - pip install pytest_elasticsearch[tests] coveralls wheel
