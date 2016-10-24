@@ -35,7 +35,7 @@ def read(fname):
     return open(os.path.join(here, fname)).read()
 
 requirements = [
-    'pytest',
+    'pytest>=3.0.0',
     'mirakuru',
     'elasticsearch',
     'path.py>=6.2',

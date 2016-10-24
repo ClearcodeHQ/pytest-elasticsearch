@@ -163,7 +163,7 @@ def elasticsearch(process_fixture_name):
     @pytest.fixture
     def elasticsearch_fixture(request):
         """Elasticsearch client fixture."""
-        process = request.getfuncargvalue(process_fixture_name)
+        process = request.getfixturevalue(process_fixture_name)
         if not process.running():
             process.start()
 
