@@ -4,6 +4,7 @@ CHANGELOG
 unreleased
 -------
 
+- [feature] - migrate usage of getfuncargvalue to getfixturevalue. require at least pytest 3.0.0
 - [feature] - default logsdir to $TMPDIR
 - [feature] - run process on random port by default - enhances xdist experience
 
