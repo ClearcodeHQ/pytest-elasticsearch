@@ -34,6 +34,7 @@ def read(fname):
     """
     return open(os.path.join(here, fname)).read()
 
+
 requirements = [
     'pytest>=3.0.0',
     'mirakuru',

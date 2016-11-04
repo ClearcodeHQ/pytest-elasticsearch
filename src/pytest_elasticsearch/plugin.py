@@ -137,5 +137,6 @@ def pytest_addoption(parser):
         help=_help_port
     )
 
+
 elasticsearch_proc = factories.elasticsearch_proc()
 elasticsearch = factories.elasticsearch('elasticsearch_proc')
