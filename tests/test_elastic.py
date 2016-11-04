@@ -59,6 +59,7 @@ def test_ini_option_configuration(request):
 
     assert '/test2' == factories.return_config(request)['logsdir']
 
+
 elasticsearch_proc_args = factories.elasticsearch_proc(
     port=None, elasticsearch_logsdir='/tmp')
 
