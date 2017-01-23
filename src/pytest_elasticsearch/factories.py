@@ -16,11 +16,11 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
 """Fixture factories."""
+import os.path
 import shutil
 from tempfile import gettempdir
 
 import pytest
-from path import Path
 
 from elasticsearch import Elasticsearch
 from mirakuru import HTTPExecutor
@@ -80,7 +80,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
     @pytest.fixture(scope='session')
     def elasticsearch_proc_fixture(request):
         """Elasticsearch process starting fixture."""
-        tmpdir = Path(gettempdir())
+        tmpdir = gettempdir()
         config = return_config(request)
 
         elasticsearch_host = host or config['host']
@@ -97,13 +97,16 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             config['network_publish_host']
 
         logsdir = elasticsearch_logsdir or config['logsdir']
-        logs_path = Path(logsdir) / '{prefix}elasticsearch_{port}_logs'.format(
-            prefix=elasticsearch_logs_prefix,
-            port=elasticsearch_port
-        )
+        logs_path = os.path.join(
+            logsdir, '{prefix}elasticsearch_{port}_logs'.format(
+                prefix=elasticsearch_logs_prefix,
+                port=elasticsearch_port
+            ))
 
-        pidfile = tmpdir / 'elasticsearch.{0}.pid'.format(elasticsearch_port)
-        home_path = tmpdir / 'elasticsearch_{0}'.format(elasticsearch_port)
+        pidfile = os.path.join(
+            tmpdir, 'elasticsearch.{0}.pid'.format(elasticsearch_port))
+        home_path = os.path.join(
+            tmpdir, 'elasticsearch_{0}'.format(elasticsearch_port))
         work_path = '{0}_tmp'.format(home_path)
 
         if discovery_zen_ping_multicast_enabled is not None:
