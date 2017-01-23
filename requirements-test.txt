@@ -6,6 +6,6 @@ pydocstyle==1.1.1
 pycodestyle==2.2.0
 mccabe==0.5.3
 pyroma==2.2
-pytest==3.0.5 #  rq.filter: !=2.9.0,!=2.9.1,!=2.9.2
+pytest==3.0.6 #  rq.filter: !=2.9.0,!=2.9.1,!=2.9.2
 path.py==10.0
 port-for==0.3.1
