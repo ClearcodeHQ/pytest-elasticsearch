@@ -35,7 +35,7 @@ Package status
 What is this?
 =============
 
-This is a pytest plugin, that enables you to test your code that relies on a running Elasticsearch search engine.
+This is a pytest plugin that enables you to test your code that relies on a running Elasticsearch search engine.
 It allows you to specify fixtures for Elasticsearch process and client.
 
 How to use
@@ -45,10 +45,10 @@ How to use
 
     This fixture requires at least version 1.0 of elasticsearch to work.
 
-Plugin contains two fixtures
+The plugin contains two fixtures:
 
-* **elasticsearch** - it's a client fixture that has functional scope, and which cleans Elasticsearch at the end of each test.
-* **elasticsearch_proc** - session scoped fixture, that starts Elasticsearch instance at it's first use and stops at the end of the tests.
+* **elasticsearch** - a client fixture that has functional scope, and which cleans Elasticsearch at the end of each test.
+* **elasticsearch_proc** - a session scoped fixture, that starts Elasticsearch instance at its first use and stops at the end of the tests.
 
 Simply include one of these fixtures into your tests fixture list.
 
@@ -73,9 +73,9 @@ Configuration
 You can define your settings in three ways, it's fixture factory argument, command line option and pytest.ini configuration option.
 You can pick which you prefer, but remember that these settings are handled in the following order:
 
-    * ``Fixture factory argument``
-    * ``Command line option``
-    * ``Configuration option in your pytest.ini file``
+1. Fixture factory argument
+2. Command line option
+3. Configuration option in your pytest.ini file
 
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
 | Elasticsearch option | Fixture factory argument             | Command line option                                  | pytest.ini option                                  | Default                      |
