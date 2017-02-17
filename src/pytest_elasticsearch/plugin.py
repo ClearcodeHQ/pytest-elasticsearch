@@ -24,6 +24,7 @@ import pytest  # noqa
 from pytest_elasticsearch import factories
 
 _help_logsdir = 'Elasticsearch logs directory'
+_help_confdir = 'Elasticsearch config directory'
 _help_host = 'Elasticsearch host'
 _help_port = 'Elasticsearch port'
 _help_cluster_name = 'Cluster name of the elasticsearch process fixture'
@@ -44,6 +45,12 @@ def pytest_addoption(parser):
     )
 
     parser.addini(
+        name='elasticsearch_confdir',
+        help=_help_confdir,
+        default=None
+    )
+
+    parser.addini(
         name='elasticsearch_host',
         help=_help_host,
         default='127.0.0.1'
@@ -58,7 +65,7 @@ def pytest_addoption(parser):
     parser.addini(
         name='elasticsearch_index_store_type',
         help='',
-        default='memory'
+        default=None
     )
 
     parser.addini(
@@ -90,6 +97,14 @@ def pytest_addoption(parser):
         metavar='path',
         dest='elasticsearch_logsdir',
         help=_help_logsdir
+    )
+
+    parser.addoption(
+        '--elasticsearch-confdir',
+        action='store',
+        metavar='path',
+        dest='elasticsearch_confdir',
+        help=_help_confdir
     )
 
     parser.addoption(

@@ -40,6 +40,7 @@ requirements = [
     'mirakuru',
     'elasticsearch',
     'port-for',
+    'semver'
 ]
 
 test_requires = [
