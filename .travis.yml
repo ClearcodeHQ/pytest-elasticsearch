@@ -10,6 +10,10 @@ python:
 env:
 - XDIST=1 INSTALL=install
 - XDIST=0 INSTALL=develop
+# blocklist branches
+branches:
+  except:
+  - requires-io-master
 install:
 - pip install "setuptools>=18.0.0,<30.0.0" # pypy support
 - "pip install -r requirements-test.txt"
