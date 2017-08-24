@@ -16,8 +16,13 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
 """Fixture factories."""
+import errno
+import multiprocessing
 import os.path
+import re
+import semver
 import shutil
+import subprocess
 from tempfile import gettempdir
 
 import pytest
@@ -27,28 +32,96 @@ from mirakuru import HTTPExecutor
 from pytest_elasticsearch.port import get_port
 
 
+def _get_elastic_version(executable):
+    """Return the Elasticsearch version from executable"""
+    # ES 1.x uses '-v' to get the version, while 5.x uses '-V'
+    p = subprocess.Popen([executable, "-v -V"], stdout=subprocess.PIPE)
+    out, _ = p.communicate()
+    if not out.startswith('Version'):   # ES 2.x only knows '--version'
+        p = subprocess.Popen([executable, "--version"], stdout=subprocess.PIPE)
+        out, _ = p.communicate()
+
+    m = re.match(r'Version: (.+), Build', out)
+    return semver.parse_version_info(m.group(1))
+
+
 def return_config(request):
     """Return a dictionary with config options."""
     config = {}
     options = [
         'port', 'host', 'cluster_name', 'network_publish_host',
         'discovery_zen_ping_multicast_enabled', 'index_store_type',
-        'logs_prefix', 'logsdir'
+        'logs_prefix', 'logsdir', 'confdir'
     ]
     for option in options:
         option_name = 'elasticsearch_' + option
-        conf = request.config.getoption(option_name) or \
-            request.config.getini(option_name)
-        config[option] = conf
+        try:
+            conf = request.config.getoption(option_name) or \
+                   request.config.getini(option_name)
+            config[option] = conf
+        except ValueError:
+            config[option] = None
     return config
 
 
-def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
+def _generate_es_cmdline(es_version, executable, pid_file, **kwargs):
+    es_params_to_args = {
+        'http.port': 'port',
+        'http.host': 'host',
+        'default.path.logs': 'logs_path',
+        'default.path.conf': 'conf_path',
+        'cluster.name': 'cluster',
+        'network.publish_host': 'network_publish_host',
+        'index.store.type': 'index_store_type'
+    }
+
+    if es_version.major < 5:
+        es_params_to_args.update({
+            'path.home': 'home_path',           # not allowed to change it in 5.x
+            'default.path.work': 'work_path',   # doesn't exist in 5.x
+            'discovery.zen.ping.multicast.enabled': 'multicast_enabled',
+        })
+
+        cmdline_opts = ["--%s=%s" % (es_param, kwargs[arg])
+                        for es_param, arg in es_params_to_args.items()
+                        if kwargs.get(arg) is not None]
+    else:
+        es_params_to_args.update({
+            'node.max_local_storage_nodes': 'max_local_storage_nodes'
+        })
+
+        cmdline_opts = ["-E %s=%s" % (es_param, kwargs[arg])
+                        for es_param, arg in es_params_to_args.items()
+                        if kwargs.get(arg) is not None]
+
+    return "{daemon} -p {pid_file} {opts}".format(
+        daemon=executable,
+        pid_file=pid_file,
+        opts=' '.join(cmdline_opts)
+    )
+
+
+def _default_index_store(es_version):
+    if es_version.major < 2:
+        return 'memory'
+    else:
+        return 'fs'
+
+
+def _default_conf_dir(es_version):
+    if es_version.major == 2:
+        return '/etc/elasticsearch'
+    else:
+        return None
+
+
+def elasticsearch_proc(executable='elasticsearch',
                        host=None, port=-1, cluster_name=None,
                        network_publish_host=None,
                        discovery_zen_ping_multicast_enabled=None,
                        index_store_type=None, logs_prefix=None,
-                       elasticsearch_logsdir=None):
+                       elasticsearch_logsdir=None,
+                       elasticsearch_confdir=None):
     """
     Create elasticsearch process fixture.
 
@@ -71,17 +144,18 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
     :param bool discovery_zen_ping_multicast_enabled: whether to enable or
         disable host discovery
         http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-discovery-zen.html
-    :param str index_store_type: index.store.type setting. *memory* by default
-        to speed up tests
+    :param str index_store_type: index.store.type setting. *memory* (ES < 5.0) or *fs* (ES >= 5.0) by default
     :param str logs_prefix: prefix for log filename
     :param str elasticsearch_logsdir: path for logs.
-    :param elasticsearch_logsdir: path for elasticsearch logs
+    :param str elasticsearch_confdir: path for Elasticsearch config.
     """
+
     @pytest.fixture(scope='session')
     def elasticsearch_proc_fixture(request):
         """Elasticsearch process starting fixture."""
         tmpdir = gettempdir()
         config = return_config(request)
+        es_ver = _get_elastic_version(executable)
 
         elasticsearch_host = host or config['host']
 
@@ -90,18 +164,20 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         elasticsearch_cluster_name = \
             cluster_name or config['cluster_name'] or \
             'elasticsearch_cluster_{0}'.format(elasticsearch_port)
-        elasticsearch_logs_prefix = logs_prefix or config['logs_prefix']
+        elasticsearch_logs_prefix = logs_prefix or config['logs_prefix'] or ''
         elasticsearch_index_store_type = index_store_type or \
-            config['index_store_type']
+                                         config['index_store_type'] or _default_index_store(es_ver)
         elasticsearch_network_publish_host = network_publish_host or \
-            config['network_publish_host']
+                                             config['network_publish_host']
 
-        logsdir = elasticsearch_logsdir or config['logsdir']
+        logsdir = elasticsearch_logsdir or config['logsdir'] or tmpdir
         logs_path = os.path.join(
             logsdir, '{prefix}elasticsearch_{port}_logs'.format(
                 prefix=elasticsearch_logs_prefix,
                 port=elasticsearch_port
             ))
+
+        conf_path = elasticsearch_confdir or config['confdir'] or _default_conf_dir(es_ver)
 
         pidfile = os.path.join(
             tmpdir, 'elasticsearch.{0}.pid'.format(elasticsearch_port))
@@ -115,26 +191,19 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         else:
             multicast_enabled = config['discovery_zen_ping_multicast_enabled']
 
-        command_exec = '''
-            {deamon} -p {pidfile} --http.port={port}
-            --path.home={home_path}  --default.path.logs={logs_path}
-            --default.path.work={work_path}
-            --default.path.conf=/etc/elasticsearch
-            --cluster.name={cluster}
-            --network.publish_host='{network_publish_host}'
-            --discovery.zen.ping.multicast.enabled={multicast_enabled}
-            --index.store.type={index_store_type}
-            '''.format(
-            deamon=executable,
-            pidfile=pidfile,
+        command_exec = _generate_es_cmdline(
+            es_ver, executable=executable, pid_file=pidfile,
+            host=elasticsearch_host,
             port=elasticsearch_port,
             home_path=home_path,
             logs_path=logs_path,
+            conf_path=conf_path,
             work_path=work_path,
             cluster=elasticsearch_cluster_name,
             network_publish_host=elasticsearch_network_publish_host,
             multicast_enabled=multicast_enabled,
-            index_store_type=elasticsearch_index_store_type
+            index_store_type=elasticsearch_index_store_type,
+            max_local_storage_nodes=multiprocessing.cpu_count()
         )
 
         elasticsearch_executor = HTTPExecutor(
@@ -142,14 +211,18 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                 host=elasticsearch_host,
                 port=elasticsearch_port
             ),
-            timeout=60,
+            timeout=60
         )
 
         elasticsearch_executor.start()
 
         def finalize_elasticsearch():
             elasticsearch_executor.stop()
-            shutil.rmtree(home_path)
+            try:
+                shutil.rmtree(home_path)
+            except OSError as e:
+                if e.errno != errno.ENOENT:
+                    raise
 
         request.addfinalizer(finalize_elasticsearch)
         return elasticsearch_executor
@@ -163,6 +236,7 @@ def elasticsearch(process_fixture_name):
 
     :param str process_fixture_name: elasticsearch process fixture name
     """
+
     @pytest.fixture
     def elasticsearch_fixture(request):
         """Elasticsearch client fixture."""
