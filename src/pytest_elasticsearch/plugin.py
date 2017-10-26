@@ -33,6 +33,7 @@ _help_network_publish_host = \
     'network host to which elasticsearch publish to connect to cluseter'
 _help_logs_prefix = 'prefix for the logs file'
 _help_discovery_zen_ping_multicast_enabled = 'Use zen discovery'
+_help_conf_path = 'Path for elasticsearch configuration'
 
 
 def pytest_addoption(parser):
@@ -84,6 +85,12 @@ def pytest_addoption(parser):
         default=None,
     )
 
+    parser.addini(
+        'elasticsearch_conf_path',
+        help=_help_conf_path,
+        default='/etc/elasticsearch'
+    )
+
     parser.addoption(
         '--elasticsearch-logsdir',
         action='store',
@@ -128,6 +135,13 @@ def pytest_addoption(parser):
         '--elasticsearch-discovery-zen-ping-multicast-enabled',
         action='store',
         dest='elasticsearch_discovery_zen_ping_multicast_enabled',
+    )
+
+    parser.addoption(
+        '--elasticsearch-conf-path',
+        action='store',
+        dest='elasticsearch_conf_path',
+        help=_help_conf_path
     )
 
     parser.addoption(
