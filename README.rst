@@ -96,6 +96,8 @@ You can pick which you prefer, but remember that these settings are handled in t
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
 | enable zen discovery | discovery_zen_ping_multicast_enabled | --elasticsearch-discovery-zen-ping-multicast-enabled | elasticsearch_discovery_zen_ping_multicast_enabled | False                        |
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
+| default.conf.path    | conf_path                            | --elasticsearch-conf-path                            | elasticsearch_conf_path                            | /etc/elasticsearch           |
++----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
 
 Example usage:
 

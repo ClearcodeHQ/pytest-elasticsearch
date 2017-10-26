@@ -48,7 +48,8 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                        network_publish_host=None,
                        discovery_zen_ping_multicast_enabled=None,
                        index_store_type=None, logs_prefix=None,
-                       elasticsearch_logsdir=None):
+                       elasticsearch_logsdir=None,
+                       conf_path='/etc/elasticsearch'):
     """
     Create elasticsearch process fixture.
 
@@ -76,6 +77,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
     :param str logs_prefix: prefix for log filename
     :param str elasticsearch_logsdir: path for logs.
     :param elasticsearch_logsdir: path for elasticsearch logs
+    :param conf_path: path for elasticsearch configuration
     """
     @pytest.fixture(scope='session')
     def elasticsearch_proc_fixture(request):
@@ -119,7 +121,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             {deamon} -p {pidfile} --http.port={port}
             --path.home={home_path}  --default.path.logs={logs_path}
             --default.path.work={work_path}
-            --default.path.conf=/etc/elasticsearch
+            --default.path.conf={conf_path}
             --cluster.name={cluster}
             --network.publish_host='{network_publish_host}'
             --discovery.zen.ping.multicast.enabled={multicast_enabled}
@@ -131,6 +133,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             home_path=home_path,
             logs_path=logs_path,
             work_path=work_path,
+            conf_path=conf_path,
             cluster=elasticsearch_cluster_name,
             network_publish_host=elasticsearch_network_publish_host,
             multicast_enabled=multicast_enabled,
