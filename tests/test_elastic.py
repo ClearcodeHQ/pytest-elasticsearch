@@ -6,18 +6,23 @@ from mock import patch
 
 from pytest_elasticsearch import factories
 
-ELASTICSEARCH_EXECUTABLE_1_5_2 = '/opt/elasticsearch1.5.2/bin/elasticsearch'
-ELASTICSEARCH_EXECUTABLE_6_2_3 = '/opt/elasticsearch6.2.3/bin/elasticsearch'
+ELASTICSEARCH_PATH_1_5_2 = '/opt/elasticsearch-1.5.2/'
+ELASTICSEARCH_CONF_PATH_1_5_2 = ELASTICSEARCH_PATH_1_5_2 + 'config'
+ELASTICSEARCH_EXECUTABLE_1_5_2 = ELASTICSEARCH_PATH_1_5_2 + 'bin/elasticsearch'
+ELASTICSEARCH_EXECUTABLE_6_2_3 = '/opt/elasticsearch-6.2.3/bin/elasticsearch'
 
-elasticsearch_proc_1_5_2 = factories.elasticsearch_proc(ELASTICSEARCH_EXECUTABLE_1_5_2, port=None)
+elasticsearch_proc_1_5_2 = factories.elasticsearch_proc(
+    ELASTICSEARCH_EXECUTABLE_1_5_2, port=None,
+    configuration_path=ELASTICSEARCH_CONF_PATH_1_5_2
+)
 elasticsearch_1_5_2 = factories.elasticsearch('elasticsearch_proc_1_5_2')
 
-elasticsearch_proc_6_2_3 = factories.elasticsearch_proc(ELASTICSEARCH_EXECUTABLE_6_2_3, port=None)
+elasticsearch_proc_6_2_3 = factories.elasticsearch_proc(
+    ELASTICSEARCH_EXECUTABLE_6_2_3, port=None)
 elasticsearch_6_2_3 = factories.elasticsearch('elasticsearch_proc_6_2_3')
 
 
 @pytest.mark.parametrize('elasticsearch_proc_name', (
-    'elasticsearch_proc',  # this one is using system elasticsearch version
     'elasticsearch_proc_1_5_2',
     'elasticsearch_proc_6_2_3'
 ))
@@ -28,7 +33,6 @@ def test_elastic_process(request, elasticsearch_proc_name):
 
 
 @pytest.mark.parametrize('elasticsearch_name', (
-    'elasticsearch',  # this one is using system elasticsearch version
     'elasticsearch_1_5_2',
     'elasticsearch_6_2_3'
 ))
@@ -45,10 +49,15 @@ def test_elasticsarch(request, elasticsearch_name):
 ))
 def test_version_extraction(executable, expected_version):
     """Verfiy if we can properly extract elasticsearch version."""
-    assert '{major}.{minor}.{patch}'.format(**factories.get_version_parts(executable)) == expected_version
+    assert '{major}.{minor}.{patch}'.format(
+        **factories.get_version_parts(executable)
+    ) == expected_version
 
 
-elasticsearch_proc_random = factories.elasticsearch_proc(port=None)
+elasticsearch_proc_random = factories.elasticsearch_proc(
+    ELASTICSEARCH_EXECUTABLE_1_5_2, port=None,
+    configuration_path=ELASTICSEARCH_CONF_PATH_1_5_2
+)
 elasticsearch_random = factories.elasticsearch('elasticsearch_proc_random')
 
 
@@ -92,7 +101,10 @@ def test_ini_option_configuration(request):
 
 
 elasticsearch_proc_args = factories.elasticsearch_proc(
-    port=None, elasticsearch_logsdir='/tmp')
+    ELASTICSEARCH_EXECUTABLE_1_5_2,
+    configuration_path=ELASTICSEARCH_CONF_PATH_1_5_2,
+    port=None, elasticsearch_logsdir='/tmp'
+)
 
 
 @patch('pytest_elasticsearch.plugin.pytest.config')

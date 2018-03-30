@@ -90,6 +90,12 @@ def pytest_addoption(parser):
         default=None
     )
 
+    parser.addini(
+        'elasticsearch_configuration_path',
+        help='',
+        default=None
+    )
+
     parser.addoption(
         '--elasticsearch-logsdir',
         action='store',
@@ -148,6 +154,13 @@ def pytest_addoption(parser):
         action='store',
         dest='elasticsearch_transport_tcp_port',
     )
+
+    parser.addoption(
+        '--elasticsearch-configuration-path',
+        action='store',
+        dest='elasticsearch_configuration_path'
+    )
+
 
 elasticsearch_proc = factories.elasticsearch_proc()
 elasticsearch = factories.elasticsearch('elasticsearch_proc')

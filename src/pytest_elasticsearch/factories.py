@@ -33,9 +33,9 @@ def return_config(request):
     """Return a dictionary with config options."""
     config = {}
     options = [
-        'port', 'transport_tcp_port', 'host', 'cluster_name', 'network_publish_host',
-        'discovery_zen_ping_multicast_enabled', 'index_store_type',
-        'logs_prefix', 'logsdir'
+        'port', 'transport_tcp_port', 'host', 'cluster_name',
+        'network_publish_host', 'discovery_zen_ping_multicast_enabled',
+        'index_store_type', 'logs_prefix', 'logsdir', 'configuration_path'
     ]
     for option in options:
         option_name = 'elasticsearch_' + option
@@ -48,21 +48,27 @@ def return_config(request):
 def get_version_parts(executable):
     """Get the given elasticsearch executable version parts."""
     try:
-        output = subprocess.check_output([executable, '-Vv'])
-        match = re.match('Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d)', output)
+        output = subprocess.check_output([executable, '-Vv']).decode('utf-8')
+        match = re.match(
+            'Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d)', output
+        )
         if not match:
-            raise RuntimeError("Elasticsearch version  not be recognized. It is probably not supported.")
+            raise RuntimeError("Elasticsearch version is not recognized. "
+                               "It is probably not supported.")
         return match.groupdict()
     except OSError:
-        raise RuntimeError("'%s' does not point to elasticsearch." % executable)
+        raise RuntimeError(
+            "'%s' does not point to elasticsearch." % executable
+        )
 
 
 def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
-                       host=None, port=-1, transport_tcp_port=None, cluster_name=None,
-                       network_publish_host=None,
+                       host=None, port=-1, transport_tcp_port=None,
+                       cluster_name=None, network_publish_host=None,
                        discovery_zen_ping_multicast_enabled=None,
                        index_store_type=None, logs_prefix=None,
-                       elasticsearch_logsdir=None):
+                       elasticsearch_logsdir=None,
+                       configuration_path='/etc/elasticsearch'):
     """
     Create elasticsearch process fixture.
 
@@ -100,7 +106,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         --default.path.logs={logs_path} \
         --default.path.work={work_path} \
         --default.path.data={work_path} \
-        --default.path.conf=/etc/elasticsearch \
+        --default.path.conf={conf_path} \ \
         --cluster.name={cluster} \
         --network.publish_host='{network_publish_host}' \
         --discovery.zen.ping.multicast.enabled={multicast_enabled} \
@@ -127,7 +133,8 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         elasticsearch_host = host or config['host']
 
         elasticsearch_port = get_port(port) or get_port(config['port'])
-        elasticsearch_transport_port = get_port(transport_tcp_port) or get_port(config['transport_tcp_port'])
+        elasticsearch_transport_port = get_port(transport_tcp_port) or \
+            get_port(config['transport_tcp_port'])
 
         elasticsearch_cluster_name = \
             cluster_name or config['cluster_name'] or \
@@ -150,6 +157,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         home_path = os.path.join(
             tmpdir, 'elasticsearch_{0}'.format(elasticsearch_port))
         work_path = '{0}_tmp'.format(home_path)
+        conf_path = configuration_path or config['configuration_path']
 
         if discovery_zen_ping_multicast_enabled is not None:
             multicast_enabled = str(
@@ -161,8 +169,11 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         major_minor = '{major}.{minor}'.format(**version_parts)
         major = '{major}'.format(**version_parts)
 
-        # try exact version if there is such; otherwise fallback to minor; as final step fallback to major
-        command = commands_exec.get(exact) or commands_exec.get(major_minor) or commands_exec.get(major)
+        # try exact version if there is such; otherwise fallback to minor;
+        # as final step fallback to major
+        command = commands_exec.get(exact) or \
+            commands_exec.get(major_minor) or \
+            commands_exec.get(major)
         if not command:
             raise RuntimeError("Elasticsearch could not be started.")
 
@@ -171,6 +182,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             pidfile=pidfile,
             port=elasticsearch_port,
             transport_tcp_port=elasticsearch_transport_port,
+            conf_path=conf_path,
             home_path=home_path,
             logs_path=logs_path,
             work_path=work_path,

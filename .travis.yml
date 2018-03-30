@@ -1,3 +1,4 @@
+sudo: true
 language: python
 python:
 - '2.7'
@@ -19,6 +20,8 @@ install:
 - "pip install -r requirements-test.txt"
 - python setup.py $INSTALL
 - pip install pytest_elasticsearch[tests] coveralls wheel
+before_script:
+- bash .travis.install-elasticsearch.sh
 script:
 - py.test -n $XDIST --cov src/pytest_elasticsearch
 - pylama
