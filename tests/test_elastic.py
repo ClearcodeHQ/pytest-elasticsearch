@@ -6,9 +6,9 @@ from mock import patch
 
 from pytest_elasticsearch import factories
 
-ELASTICSEARCH_PATH_1_5_2 = '/opt/elasticsearch-1.5.2/'
-ELASTICSEARCH_CONF_PATH_1_5_2 = ELASTICSEARCH_PATH_1_5_2 + 'config'
-ELASTICSEARCH_EXECUTABLE_1_5_2 = ELASTICSEARCH_PATH_1_5_2 + 'bin/elasticsearch'
+ELASTICSEARCH_CONF_PATH_1_5_2 = '/opt/elasticsearch-1.5.2/config'
+ELASTICSEARCH_CONF_PATH_2_4_6 = '/opt/elasticsearch-2.4.6/config'
+ELASTICSEARCH_EXECUTABLE_1_5_2 = '/opt/elasticsearch-1.5.2/bin/elasticsearch'
 ELASTICSEARCH_EXECUTABLE_2_4_6 = '/opt/elasticsearch-2.4.6/bin/elasticsearch'
 ELASTICSEARCH_EXECUTABLE_5_6_7 = '/opt/elasticsearch-5.6.7/bin/elasticsearch'
 ELASTICSEARCH_EXECUTABLE_6_2_3 = '/opt/elasticsearch-6.2.3/bin/elasticsearch'
@@ -26,7 +26,8 @@ elasticsearch_proc_1_5_2, elasticsearch_1_5_2 = elasticsearch_fixture_factory(
     port=None, configuration_path=ELASTICSEARCH_CONF_PATH_1_5_2
 )
 elasticsearch_proc_2_4_6, elasticsearch_2_4_6 = elasticsearch_fixture_factory(
-    ELASTICSEARCH_EXECUTABLE_2_4_6, 'elasticsearch_proc_2_4_6', port=None
+    ELASTICSEARCH_EXECUTABLE_2_4_6, 'elasticsearch_proc_2_4_6',
+    port=None, configuration_path=ELASTICSEARCH_CONF_PATH_2_4_6
 )
 elasticsearch_proc_5_6_7, elasticsearch_5_6_7 = elasticsearch_fixture_factory(
     ELASTICSEARCH_EXECUTABLE_5_6_7, 'elasticsearch_proc_5_6_7', port=None
