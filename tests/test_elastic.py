@@ -9,21 +9,37 @@ from pytest_elasticsearch import factories
 ELASTICSEARCH_PATH_1_5_2 = '/opt/elasticsearch-1.5.2/'
 ELASTICSEARCH_CONF_PATH_1_5_2 = ELASTICSEARCH_PATH_1_5_2 + 'config'
 ELASTICSEARCH_EXECUTABLE_1_5_2 = ELASTICSEARCH_PATH_1_5_2 + 'bin/elasticsearch'
+ELASTICSEARCH_EXECUTABLE_2_4_6 = '/opt/elasticsearch-2.4.6/bin/elasticsearch'
+ELASTICSEARCH_EXECUTABLE_5_6_7 = '/opt/elasticsearch-5.6.7/bin/elasticsearch'
 ELASTICSEARCH_EXECUTABLE_6_2_3 = '/opt/elasticsearch-6.2.3/bin/elasticsearch'
 
-elasticsearch_proc_1_5_2 = factories.elasticsearch_proc(
-    ELASTICSEARCH_EXECUTABLE_1_5_2, port=None,
-    configuration_path=ELASTICSEARCH_CONF_PATH_1_5_2
-)
-elasticsearch_1_5_2 = factories.elasticsearch('elasticsearch_proc_1_5_2')
 
-elasticsearch_proc_6_2_3 = factories.elasticsearch_proc(
-    ELASTICSEARCH_EXECUTABLE_6_2_3, port=None)
-elasticsearch_6_2_3 = factories.elasticsearch('elasticsearch_proc_6_2_3')
+def elasticsearch_fixture_factory(executable, proc_name, port, **kwargs):
+    """Create elasticsearch fixture pairs."""
+    proc = factories.elasticsearch_proc(executable, port=port, **kwargs)
+    elasticsearch = factories.elasticsearch(proc_name)
+    return proc, elasticsearch
+
+
+elasticsearch_proc_1_5_2, elasticsearch_1_5_2 = elasticsearch_fixture_factory(
+    ELASTICSEARCH_EXECUTABLE_1_5_2, 'elasticsearch_proc_1_5_2',
+    port=None, configuration_path=ELASTICSEARCH_CONF_PATH_1_5_2
+)
+elasticsearch_proc_2_4_6, elasticsearch_2_4_6 = elasticsearch_fixture_factory(
+    ELASTICSEARCH_EXECUTABLE_2_4_6, 'elasticsearch_proc_2_4_6', port=None
+)
+elasticsearch_proc_5_6_7, elasticsearch_5_6_7 = elasticsearch_fixture_factory(
+    ELASTICSEARCH_EXECUTABLE_5_6_7, 'elasticsearch_proc_5_6_7', port=None
+)
+elasticsearch_proc_6_2_3, elasticsearch_6_2_3 = elasticsearch_fixture_factory(
+    ELASTICSEARCH_EXECUTABLE_6_2_3, 'elasticsearch_proc_6_2_3', port=None
+)
 
 
 @pytest.mark.parametrize('elasticsearch_proc_name', (
     'elasticsearch_proc_1_5_2',
+    'elasticsearch_proc_2_4_6',
+    'elasticsearch_proc_5_6_7',
     'elasticsearch_proc_6_2_3'
 ))
 def test_elastic_process(request, elasticsearch_proc_name):
@@ -34,6 +50,8 @@ def test_elastic_process(request, elasticsearch_proc_name):
 
 @pytest.mark.parametrize('elasticsearch_name', (
     'elasticsearch_1_5_2',
+    'elasticsearch_2_4_6',
+    'elasticsearch_5_6_7',
     'elasticsearch_6_2_3'
 ))
 def test_elasticsarch(request, elasticsearch_name):
@@ -45,6 +63,8 @@ def test_elasticsarch(request, elasticsearch_name):
 
 @pytest.mark.parametrize('executable, expected_version', (
     (ELASTICSEARCH_EXECUTABLE_1_5_2, '1.5.2'),
+    (ELASTICSEARCH_EXECUTABLE_2_4_6, '2.4.6'),
+    (ELASTICSEARCH_EXECUTABLE_5_6_7, '5.6.7'),
     (ELASTICSEARCH_EXECUTABLE_6_2_3, '6.2.3')
 ))
 def test_version_extraction(executable, expected_version):

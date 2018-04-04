@@ -97,31 +97,54 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
     :param str elasticsearch_logsdir: path for logs.
     :param elasticsearch_logsdir: path for elasticsearch logs
     """
-    commands_exec = {}
-    commands_exec['1.5'] = '''
-        {deamon} -p {pidfile}
-        --http.port={port}
-        --path.home={home_path}
-        --transport.tcp.port={transport_tcp_port}
-        --default.path.logs={logs_path}
-        --default.path.work={work_path}
-        --default.path.data={work_path}
-        --default.path.conf={conf_path}
-        --cluster.name={cluster}
-        --network.publish_host='{network_publish_host}'
-        --discovery.zen.ping.multicast.enabled={multicast_enabled}
-        --index.store.type={index_store_type}
-    '''
-    commands_exec['6.2'] = '''
-        {deamon} -p {pidfile}
-        -E http.port={port}
-        -E transport.tcp.port={transport_tcp_port}
-        -E path.logs={logs_path}
-        -E path.data={work_path}
-        -E cluster.name={cluster}
-        -E network.host='{network_publish_host}'
-        -E index.store.type={index_store_type}
-    '''
+    def command_from(version):
+        """
+        Get command to run elasticsearch binary based on the version.
+
+            :param tuple version elasticsearch version
+        """
+        if version < ('2', '0', '0'):
+            return '''
+                {deamon} -p {pidfile}
+                --http.port={port}
+                --path.home={home_path}
+                --transport.tcp.port={transport_tcp_port}
+                --default.path.logs={logs_path}
+                --default.path.work={work_path}
+                --default.path.data={work_path}
+                --default.path.conf={conf_path}
+                --cluster.name={cluster}
+                --network.publish_host='{network_publish_host}'
+                --index.store.type={index_store_type}
+                --discovery.zen.ping.multicast.enabled={multicast_enabled}
+            '''
+        elif version < ('3', '0', '0'):
+            return '''
+                {deamon} -p {pidfile}
+                --http.port={port}
+                --path.home={home_path}
+                --transport.tcp.port={transport_tcp_port}
+                --default.path.logs={logs_path}
+                --default.path.work={work_path}
+                --default.path.data={work_path}
+                --default.path.conf={conf_path}
+                --cluster.name={cluster}
+                --network.publish_host='{network_publish_host}'
+                --index.store.type={index_store_type}
+            '''
+        elif version <= ('6', '2', '3'):  # it is known to work for 5.x.x; 6.x.x;
+            return '''
+                {deamon} -p {pidfile}
+                -E http.port={port}
+                -E transport.tcp.port={transport_tcp_port}
+                -E path.logs={logs_path}
+                -E path.data={work_path}
+                -E cluster.name={cluster}
+                -E network.host='{network_publish_host}'
+                -E index.store.type={index_store_type}
+            '''
+        else:
+            raise RuntimeError("This elasticsearch version is not supported.")
 
     @pytest.fixture(scope='session')
     def elasticsearch_proc_fixture(request):
@@ -165,17 +188,12 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         else:
             multicast_enabled = config['discovery_zen_ping_multicast_enabled']
 
-        exact = '{major}.{minor}.{patch}'.format(**version_parts)
-        major_minor = '{major}.{minor}'.format(**version_parts)
-        major = '{major}'.format(**version_parts)
-
-        # try exact version if there is such; otherwise fallback to minor;
-        # as final step fallback to major
-        command = commands_exec.get(exact) or \
-            commands_exec.get(major_minor) or \
-            commands_exec.get(major)
-        if not command:
-            raise RuntimeError("Elasticsearch could not be started.")
+        command = command_from(
+            version=(
+                version_parts['major'],
+                version_parts['minor'],
+                version_parts['patch']
+            ))
 
         command_exec = command.format(
             deamon=executable,

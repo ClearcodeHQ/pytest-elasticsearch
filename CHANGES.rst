@@ -4,7 +4,7 @@ CHANGELOG
 Unreleased
 -------
 
-- [feature] - Support for elasticsearch version 6.2.3
+- [feature] - Support for major elasticsearch versions
 
 
 1.2.1
