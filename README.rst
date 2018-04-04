@@ -20,16 +20,16 @@ pytest-elasticsearch
 Package status
 --------------
 
-.. image:: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch.svg?branch=v1.2.1
+.. image:: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch.svg?branch=v1.3.0
     :target: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch
     :alt: Tests
 
-.. image:: https://coveralls.io/repos/ClearcodeHQ/pytest-elasticsearch/badge.png?branch=v1.2.1
-    :target: https://coveralls.io/r/ClearcodeHQ/pytest-elasticsearch?branch=v1.2.1
+.. image:: https://coveralls.io/repos/ClearcodeHQ/pytest-elasticsearch/badge.png?branch=v1.3.0
+    :target: https://coveralls.io/r/ClearcodeHQ/pytest-elasticsearch?branch=v1.3.0
     :alt: Coverage Status
 
-.. image:: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements.svg?tag=v1.2.1
-     :target: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements/?tag=v1.2.1
+.. image:: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements.svg?tag=v1.3.0
+     :target: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements/?tag=v1.3.0
      :alt: Requirements Status
 
 What is this?
@@ -95,6 +95,10 @@ You can pick which you prefer, but remember that these settings are handled in t
 | logs prefix          | logs_prefix                          | --elasticsearch-logs-prefix                          | elasticsearch_logs_prefix                          |                              |
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
 | enable zen discovery | discovery_zen_ping_multicast_enabled | --elasticsearch-discovery-zen-ping-multicast-enabled | elasticsearch_discovery_zen_ping_multicast_enabled | False                        |
++----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
+| transport tcp port   | transport_tcp_port                   | --elasticsearch-transport-tcp-port                   | elasticsearch_transport_tcp_port                   | random                       |
++----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
+| configuration path   | configuration_path                   | --elasticsearch-configuration-path                   | elasticsearch_configuration_path                   | /etc/elasticsearch           |
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
 
 Example usage:
