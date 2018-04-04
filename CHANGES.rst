@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-Unreleased
+1.3.0
 -------
 
 - [feature] - Support for major elasticsearch versions
