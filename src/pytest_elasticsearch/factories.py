@@ -133,7 +133,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                 --index.store.type={index_store_type}
             '''
         # it is known to work for 5.x.x; 6.x.x;
-        elif version <= ('6', '2', '3'):
+        elif version <= ('7', '0', '0'):
             return '''
                 {deamon} -p {pidfile}
                 -E http.port={port}
