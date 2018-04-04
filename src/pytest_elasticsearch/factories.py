@@ -132,7 +132,8 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                 --network.publish_host='{network_publish_host}'
                 --index.store.type={index_store_type}
             '''
-        elif version <= ('6', '2', '3'):  # it is known to work for 5.x.x; 6.x.x;
+        # it is known to work for 5.x.x; 6.x.x;
+        elif version <= ('6', '2', '3'):
             return '''
                 {deamon} -p {pidfile}
                 -E http.port={port}
