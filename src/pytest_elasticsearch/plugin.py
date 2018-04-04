@@ -33,6 +33,9 @@ _help_network_publish_host = \
     'network host to which elasticsearch publish to connect to cluseter'
 _help_logs_prefix = 'prefix for the logs file'
 _help_discovery_zen_ping_multicast_enabled = 'Use zen discovery'
+_help_elasticsearch_transport_tcp_port = 'The tcp ansport port used \
+    for internal communication between nodes within the cluster'
+_help_configuration_path = 'Config file location'
 
 
 def pytest_addoption(parser):
@@ -86,13 +89,13 @@ def pytest_addoption(parser):
 
     parser.addini(
         'elasticsearch_transport_tcp_port',
-        help='',
+        help=_help_elasticsearch_transport_tcp_port,
         default=None
     )
 
     parser.addini(
         'elasticsearch_configuration_path',
-        help='',
+        help=_help_configuration_path,
         default=None
     )
 
@@ -150,7 +153,7 @@ def pytest_addoption(parser):
     )
 
     parser.addoption(
-        '--elasticsearch-transport_tcp_port',
+        '--elasticsearch-transport-tcp-port',
         action='store',
         dest='elasticsearch_transport_tcp_port',
     )

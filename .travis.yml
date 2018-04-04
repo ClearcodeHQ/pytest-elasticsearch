@@ -16,7 +16,7 @@ branches:
   except:
   - requires-io-master
 install:
-- pip install "setuptools>=18.5.0,<30.0.0" # pypy support
+- pip install "setuptools>=18.5.0" # pypy support
 - "pip install -r requirements-test.txt"
 - python setup.py $INSTALL
 - pip install pytest_elasticsearch[tests] coveralls wheel
