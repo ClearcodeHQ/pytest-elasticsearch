@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+Unreleased
+-------
+
+- [feature] - Support for major elasticsearch versions
+
+
 1.2.1
 -------
 
