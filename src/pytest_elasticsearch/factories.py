@@ -100,27 +100,27 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
     commands_exec = {}
     commands_exec['1.5'] = '''
         {deamon} -p {pidfile}
-        --http.port={port} \
-        --path.home={home_path} \
-        --transport.tcp.port={transport_tcp_port} \
-        --default.path.logs={logs_path} \
-        --default.path.work={work_path} \
-        --default.path.data={work_path} \
-        --default.path.conf={conf_path} \ \
-        --cluster.name={cluster} \
-        --network.publish_host='{network_publish_host}' \
-        --discovery.zen.ping.multicast.enabled={multicast_enabled} \
-        --index.store.type={index_store_type} \
+        --http.port={port}
+        --path.home={home_path}
+        --transport.tcp.port={transport_tcp_port}
+        --default.path.logs={logs_path}
+        --default.path.work={work_path}
+        --default.path.data={work_path}
+        --default.path.conf={conf_path}
+        --cluster.name={cluster}
+        --network.publish_host='{network_publish_host}'
+        --discovery.zen.ping.multicast.enabled={multicast_enabled}
+        --index.store.type={index_store_type}
     '''
     commands_exec['6.2'] = '''
-        {deamon} -p {pidfile} \
-        -E http.port={port} \
-        -E transport.tcp.port={transport_tcp_port} \
-        -E path.logs={logs_path} \
-        -E path.data={work_path} \
-        -E cluster.name={cluster} \
-        -E network.host='{network_publish_host}' \
-        -E index.store.type={index_store_type} \
+        {deamon} -p {pidfile}
+        -E http.port={port}
+        -E transport.tcp.port={transport_tcp_port}
+        -E path.logs={logs_path}
+        -E path.data={work_path}
+        -E cluster.name={cluster}
+        -E network.host='{network_publish_host}'
+        -E index.store.type={index_store_type}
     '''
 
     @pytest.fixture(scope='session')
