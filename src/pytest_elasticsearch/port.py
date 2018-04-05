@@ -25,6 +25,7 @@ class InvalidPortsDefinition(ValueError):
     """Exception raised if ports definition is not a valid string."""
 
     def __init__(self, ports):
+        """Construct InvalidPortsDefinition exception."""
         self.ports = ports
 
     def __str__(self):
