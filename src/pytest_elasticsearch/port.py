@@ -15,6 +15,7 @@
 
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
+"""Helpers for port-for package."""
 from itertools import chain
 
 import port_for
