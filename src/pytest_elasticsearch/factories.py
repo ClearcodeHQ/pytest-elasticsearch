@@ -50,7 +50,7 @@ def get_version_parts(executable):
     try:
         output = subprocess.check_output([executable, '-Vv']).decode('utf-8')
         match = re.match(
-            'Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d)', output
+            r'Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d)', output
         )
         if not match:
             raise RuntimeError("Elasticsearch version is not recognized. "
