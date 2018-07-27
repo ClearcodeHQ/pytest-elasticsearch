@@ -8,34 +8,40 @@ python:
 - '3.6'
 - pypy-5.3.1
 - pypy3.5-5.8.0
-env:
-- XDIST=1 INSTALL=install
-- XDIST=0 INSTALL=develop
 # blocklist branches
 branches:
   except:
   - requires-io-master
 install:
-- pip install "setuptools>=18.5.0,<40" # pypy support, py3.4 and up
-- "pip install -r requirements-test.txt"
-- python setup.py $INSTALL
-- pip install pytest_elasticsearch[tests] coveralls wheel
+- pip install "setuptools>=18.5.0,<40"
+- pip install -r requirements-test.txt
+- pip install -e .[tests] coveralls wheel
 before_script:
 - bash .travis.install-elasticsearch.sh
 script:
-- py.test -n $XDIST --cov src/pytest_elasticsearch
+- py.test -n 0 --cov src/pytest_elasticsearch
 - pylama
 - pyroma .
 after_success:
 - coveralls
-deploy:
-  provider: pypi
-  user: thearoom
-  password:
-    secure: bnwnaeGFmI8ebzVb1JicY61Tm4gnAKGbgpwBxn0miBR/G4Zqx+ZbTtfFpfhFIrkHE3GZso1yi+Ctfx/ICaOL2lnQRkLugO0sTnWNACCsiklOfjuNDGL3uM7e96uYlUv5kUemlD8pCMym2EYrZhGfcpGU6DWD/yKm1ydzbDMDlEAjyb2SBNuvyvD/qxQCEpUg964Y22RIy6/l29I+2z9KizlHzFWyc/xV28R7kLl9BAXaqyHhaCGP/KenJdkMpb74XCXULHIUtP4K9+bVpZAV/OQnXJWeTBOFv1yHp4qjUvS9B09EzvuB6ixa2JL2LbVB1t/fHb5+8nysFbHJH+jhwECSsg0gsRUQcYHlTwzrW2F/OjxEweO+DX9uDFQXDcVATbLN4SkByNv0mIjHXqngj06T21czyC0kEgdpmrCXnPEV/lcet8IcM0P8Oo05MRpy0p1cIzHMmdE1Ryfg9soMHRgCz1/wu/esnN482/AnDpyFyN6W66GkYOH//tSuQBTxvUZeqGBz70nZKz7LB/BOYmLodfHUgnjoSH37jPGmD/p+OHV9vMg8T6LSYE1vDf+Voj3gaD1WZR8UsPGpxoOLxUxlZSPRyM9c+BcUKh6EmGH+Kr89JUIf6Ks+oEDxV7wwlK9cT7fXEPB3oqVPTv6hko/IS28btlBr/3JyfbENZkM=
-  on:
-    tags: true
-    all_branches: true
-    repo: ClearcodeHQ/pytest-elasticsearch
-    python: 3.6
-  distributions: sdist bdist_wheel
+jobs:
+  include:
+    - stage: xdist
+      python: 3.6
+      script: py.test -n 1 --cov src/pytest_elasticsearch tests
+    - stage: deploy
+      python: 3.6
+      if: tag IS present
+      before_script: skip
+      script: skip
+      deploy:
+        provider: pypi
+        user: thearoom
+        password:
+          secure: bnwnaeGFmI8ebzVb1JicY61Tm4gnAKGbgpwBxn0miBR/G4Zqx+ZbTtfFpfhFIrkHE3GZso1yi+Ctfx/ICaOL2lnQRkLugO0sTnWNACCsiklOfjuNDGL3uM7e96uYlUv5kUemlD8pCMym2EYrZhGfcpGU6DWD/yKm1ydzbDMDlEAjyb2SBNuvyvD/qxQCEpUg964Y22RIy6/l29I+2z9KizlHzFWyc/xV28R7kLl9BAXaqyHhaCGP/KenJdkMpb74XCXULHIUtP4K9+bVpZAV/OQnXJWeTBOFv1yHp4qjUvS9B09EzvuB6ixa2JL2LbVB1t/fHb5+8nysFbHJH+jhwECSsg0gsRUQcYHlTwzrW2F/OjxEweO+DX9uDFQXDcVATbLN4SkByNv0mIjHXqngj06T21czyC0kEgdpmrCXnPEV/lcet8IcM0P8Oo05MRpy0p1cIzHMmdE1Ryfg9soMHRgCz1/wu/esnN482/AnDpyFyN6W66GkYOH//tSuQBTxvUZeqGBz70nZKz7LB/BOYmLodfHUgnjoSH37jPGmD/p+OHV9vMg8T6LSYE1vDf+Voj3gaD1WZR8UsPGpxoOLxUxlZSPRyM9c+BcUKh6EmGH+Kr89JUIf6Ks+oEDxV7wwlK9cT7fXEPB3oqVPTv6hko/IS28btlBr/3JyfbENZkM=
+        on:
+          tags: true
+          all_branches: true
+          repo: ClearcodeHQ/pytest-elasticsearch
+          python: 3.6
+        distributions: bdist_wheel
