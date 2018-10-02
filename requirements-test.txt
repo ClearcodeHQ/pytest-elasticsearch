@@ -1,6 +1,6 @@
 # test runs requirements (versions we'll be testing against) - automatically updated by requires.io
 coverage==4.5.1 # pytest-cov
-pylama==7.5.0
+pylama==7.5.5
 pyflakes==2.0.0
 pydocstyle==2.1.1
 pycodestyle==2.4.0
