@@ -1,4 +1,4 @@
 # test runs requirements (versions we'll be testing against) - automatically updated by requires.io
 coverage==4.5.2 # pytest-cov
-pytest==4.0.0 #  rq.filter: !=2.9.0,!=2.9.1,!=2.9.2
+pytest==4.0.0
 port-for==0.4

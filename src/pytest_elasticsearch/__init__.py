@@ -17,10 +17,4 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
 """Main packge for pytest-elasticsearch."""
-
-import logging
-
 __version__ = '1.3.0'
-
-
-logger = logging.getLogger(__name__)
