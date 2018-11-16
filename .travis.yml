@@ -2,7 +2,6 @@ sudo: true
 language: python
 python:
 - '2.7'
-- '3.3'
 - '3.4'
 - '3.5'
 - '3.6'
@@ -20,8 +19,6 @@ before_script:
 - bash .travis.install-elasticsearch.sh
 script:
 - py.test -n 0 --cov src/pytest_elasticsearch
-- pylama
-- pyroma .
 after_success:
 - coveralls
 jobs:
@@ -29,6 +26,17 @@ jobs:
     - stage: xdist
       python: 3.6
       script: py.test -n 1 --cov src/pytest_elasticsearch tests
+    - stage: linters
+      python: 3.6
+      install:
+      - pip install -r requirements-lint.txt
+      - pip install .[tests]
+      script:
+      - pycodestyle
+      - pydocstyle
+      - pylint pytest_elasticsearch tests
+      - pyroma .
+      after_success: skip
     - stage: deploy
       python: 3.6
       if: tag IS present
