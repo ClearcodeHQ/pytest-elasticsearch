@@ -1,0 +1,18 @@
+[
+  "tests/test_elastic.py::test_elastic_process[elasticsearch_proc_1_5_2]",
+  "tests/test_elastic.py::test_elastic_process[elasticsearch_proc_2_4_6]",
+  "tests/test_elastic.py::test_elastic_process[elasticsearch_proc_5_6_7]",
+  "tests/test_elastic.py::test_elastic_process[elasticsearch_proc_6_2_3]",
+  "tests/test_elastic.py::test_elasticsarch[elasticsearch_1_5_2]",
+  "tests/test_elastic.py::test_elasticsarch[elasticsearch_2_4_6]",
+  "tests/test_elastic.py::test_elasticsarch[elasticsearch_5_6_7]",
+  "tests/test_elastic.py::test_elasticsarch[elasticsearch_6_2_3]",
+  "tests/test_elastic.py::test_version_extraction[/opt/elasticsearch-1.5.2/bin/elasticsearch-1.5.2]",
+  "tests/test_elastic.py::test_version_extraction[/opt/elasticsearch-2.4.6/bin/elasticsearch-2.4.6]",
+  "tests/test_elastic.py::test_version_extraction[/opt/elasticsearch-5.6.7/bin/elasticsearch-5.6.7]",
+  "tests/test_elastic.py::test_version_extraction[/opt/elasticsearch-6.2.3/bin/elasticsearch-6.2.3]",
+  "tests/test_elastic.py::test_random_port",
+  "tests/test_elastic.py::test_default_configuration",
+  "tests/test_elastic.py::test_ini_option_configuration",
+  "tests/test_elastic.py::test_fixture_arg_is_first"
+]

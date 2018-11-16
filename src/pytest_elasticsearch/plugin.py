@@ -19,10 +19,9 @@
 """Pytest-elasticsearch py.test's plugin configuration."""
 from tempfile import gettempdir
 
-import pytest  # noqa
-
 from pytest_elasticsearch import factories
 
+# pylint:disable=invalid-name
 _help_logsdir = 'Elasticsearch logs directory'
 _help_host = 'Elasticsearch host'
 _help_port = 'Elasticsearch port'

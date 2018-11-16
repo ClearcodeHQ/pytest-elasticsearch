@@ -23,7 +23,7 @@ from tempfile import gettempdir
 import subprocess
 
 import pytest
-
+from pkg_resources import parse_version
 from elasticsearch import Elasticsearch
 from mirakuru import HTTPExecutor
 from pytest_elasticsearch.port import get_port
@@ -55,7 +55,10 @@ def get_version_parts(executable):
         if not match:
             raise RuntimeError("Elasticsearch version is not recognized. "
                                "It is probably not supported.")
-        return match.groupdict()
+        version = match.groupdict()
+        return parse_version(
+            '.'.join([version['major'], version['minor'], version['patch']])
+        )
     except OSError:
         raise RuntimeError(
             "'%s' does not point to elasticsearch." % executable
@@ -103,7 +106,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
 
             :param tuple version elasticsearch version
         """
-        if version < ('2', '0', '0'):
+        if version < parse_version('2.0.0'):
             return '''
                 {deamon} -p {pidfile}
                 --http.port={port}
@@ -118,7 +121,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                 --index.store.type={index_store_type}
                 --discovery.zen.ping.multicast.enabled={multicast_enabled}
             '''
-        elif version < ('3', '0', '0'):
+        if version < parse_version('3.0.0'):
             return '''
                 {deamon} -p {pidfile}
                 --http.port={port}
@@ -133,7 +136,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                 --index.store.type={index_store_type}
             '''
         # it is known to work for 5.x.x; 6.x.x;
-        elif version <= ('7', '0', '0'):
+        if version <= parse_version('7.0.0'):
             return '''
                 {deamon} -p {pidfile}
                 -E http.port={port}
@@ -144,16 +147,12 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                 -E network.host='{network_publish_host}'
                 -E index.store.type={index_store_type}
             '''
-        else:
-            raise RuntimeError("This elasticsearch version is not supported.")
+        raise RuntimeError("This elasticsearch version is not supported.")
 
     @pytest.fixture(scope='session')
     def elasticsearch_proc_fixture(request):
         """Elasticsearch process starting fixture."""
-        tmpdir = gettempdir()
         config = return_config(request)
-        version_parts = get_version_parts(executable)
-
         elasticsearch_host = host or config['host']
 
         elasticsearch_port = get_port(port) or get_port(config['port'])
@@ -177,9 +176,9 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             ))
 
         pidfile = os.path.join(
-            tmpdir, 'elasticsearch.{0}.pid'.format(elasticsearch_port))
+            gettempdir(), 'elasticsearch.{0}.pid'.format(elasticsearch_port))
         home_path = os.path.join(
-            tmpdir, 'elasticsearch_{0}'.format(elasticsearch_port))
+            gettempdir(), 'elasticsearch_{0}'.format(elasticsearch_port))
         work_path = '{0}_tmp'.format(home_path)
         conf_path = configuration_path or config['configuration_path']
 
@@ -189,12 +188,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         else:
             multicast_enabled = config['discovery_zen_ping_multicast_enabled']
 
-        command = command_from(
-            version=(
-                version_parts['major'],
-                version_parts['minor'],
-                version_parts['patch']
-            ))
+        command = command_from(version=get_version_parts(executable))
 
         command_exec = command.format(
             deamon=executable,

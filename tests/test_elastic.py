@@ -1,8 +1,6 @@
 """Pytest-elasticsearch tests."""
-import pytest
 from tempfile import gettempdir
-
-from mock import patch
+import pytest
 
 from pytest_elasticsearch import factories
 
@@ -21,6 +19,7 @@ def elasticsearch_fixture_factory(executable, proc_name, port, **kwargs):
     return proc, elasticsearch
 
 
+# pylint:disable=invalid-name
 elasticsearch_proc_1_5_2, elasticsearch_1_5_2 = elasticsearch_fixture_factory(
     ELASTICSEARCH_EXECUTABLE_1_5_2, 'elasticsearch_proc_1_5_2',
     port=None, configuration_path=ELASTICSEARCH_CONF_PATH_1_5_2
@@ -35,6 +34,13 @@ elasticsearch_proc_5_6_7, elasticsearch_5_6_7 = elasticsearch_fixture_factory(
 elasticsearch_proc_6_2_3, elasticsearch_6_2_3 = elasticsearch_fixture_factory(
     ELASTICSEARCH_EXECUTABLE_6_2_3, 'elasticsearch_proc_6_2_3', port=None
 )
+
+elasticsearch_proc_random = factories.elasticsearch_proc(
+    ELASTICSEARCH_EXECUTABLE_1_5_2, port=None,
+    configuration_path=ELASTICSEARCH_CONF_PATH_1_5_2
+)
+elasticsearch_random = factories.elasticsearch('elasticsearch_proc_random')
+# pylint:enable=invalid-name
 
 
 @pytest.mark.parametrize('elasticsearch_proc_name', (
@@ -70,19 +76,13 @@ def test_elasticsarch(request, elasticsearch_name):
 ))
 def test_version_extraction(executable, expected_version):
     """Verfiy if we can properly extract elasticsearch version."""
-    assert '{major}.{minor}.{patch}'.format(
-        **factories.get_version_parts(executable)
-    ) == expected_version
+    ver = factories.get_version_parts(executable)
+    assert ver.base_version == expected_version
 
 
-elasticsearch_proc_random = factories.elasticsearch_proc(
-    ELASTICSEARCH_EXECUTABLE_1_5_2, port=None,
-    configuration_path=ELASTICSEARCH_CONF_PATH_1_5_2
-)
-elasticsearch_random = factories.elasticsearch('elasticsearch_proc_random')
-
-
-def test_random_port(elasticsearch_random):
+def test_random_port(  # pylint:disable=redefined-outer-name
+        elasticsearch_random
+):
     """Test if elasticsearch fixture can be started on random port."""
     assert elasticsearch_random.cluster.health()['status'] == 'green'
 
@@ -105,39 +105,3 @@ def test_default_configuration(request):
 
     assert logsdir_ini == '/tmp'
     assert logsdir_option is None
-
-
-@patch('pytest_elasticsearch.plugin.pytest.config')
-def test_ini_option_configuration(request):
-    """Test if ini and option configuration works in proper way."""
-    request.config.getoption.return_value = None
-    request.config.getini.return_value = '/test1'
-
-    assert '/test1' == factories.return_config(request)['logsdir']
-
-    request.config.getoption.return_value = '/test2'
-    request.config.getini.return_value = None
-
-    assert '/test2' == factories.return_config(request)['logsdir']
-
-
-elasticsearch_proc_args = factories.elasticsearch_proc(
-    ELASTICSEARCH_EXECUTABLE_1_5_2,
-    configuration_path=ELASTICSEARCH_CONF_PATH_1_5_2,
-    port=None, elasticsearch_logsdir='/tmp'
-)
-
-
-@patch('pytest_elasticsearch.plugin.pytest.config')
-def test_fixture_arg_is_first(request, elasticsearch_proc_args):
-    """Test if arg comes first than opt and ini."""
-    request.config.getoption.return_value = '/test1'
-    request.config.getini.return_value = '/test2'
-    conf_dict = factories.return_config(request)
-
-    port = elasticsearch_proc_args.port
-    command = ' '.join(elasticsearch_proc_args.command_parts)
-    path_logs = 'path.logs=/tmp/elasticsearch_{}_logs'.format(port)
-
-    assert conf_dict['logsdir'] == '/test1'
-    assert path_logs in command
