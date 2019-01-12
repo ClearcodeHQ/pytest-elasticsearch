@@ -1,4 +1,4 @@
 # test runs requirements (versions we'll be testing against) - automatically updated by requires.io
 coverage==4.5.2 # pytest-cov
-pytest==4.1.0
+pytest==4.1.1
 port-for==0.4
