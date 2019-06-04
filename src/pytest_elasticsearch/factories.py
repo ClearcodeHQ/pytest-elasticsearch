@@ -226,13 +226,13 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
     return elasticsearch_proc_fixture
 
 
-def elasticsearch(process_fixture_name):
+def elasticsearch(process_fixture_name, scope='function'):
     """
     Create Elasticsearch client fixture.
 
     :param str process_fixture_name: elasticsearch process fixture name
     """
-    @pytest.fixture
+    @pytest.fixture(scope=scope)
     def elasticsearch_fixture(request):
         """Elasticsearch client fixture."""
         process = request.getfixturevalue(process_fixture_name)
