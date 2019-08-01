@@ -1,5 +1,5 @@
 # test runs requirements (versions we'll be testing against) - automatically updated by requires.io
-coverage==4.5.3 # pytest-cov
+coverage==4.5.4 # pytest-cov
 pytest==5.0.1; python_version>'3.4'
 pytest>=4.4.0; python_version<='3.4' # rq.filter: <5.0.0
 port-for==0.4
