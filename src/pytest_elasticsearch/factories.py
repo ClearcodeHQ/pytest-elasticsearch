@@ -50,11 +50,13 @@ def get_version_parts(executable):
     try:
         output = subprocess.check_output([executable, '-Vv']).decode('utf-8')
         match = re.match(
-            r'Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d)', output
+            r'Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d+)', output
         )
         if not match:
-            raise RuntimeError("Elasticsearch version is not recognized. "
-                               "It is probably not supported.")
+            raise RuntimeError(
+                "Elasticsearch version is not recognized. "
+                "It is probably not supported. \n"
+                "Output is: " + output)
         version = match.groupdict()
         return parse_version(
             '.'.join([version['major'], version['minor'], version['patch']])
@@ -136,7 +138,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                 --index.store.type={index_store_type}
             '''
         # it is known to work for 5.x.x; 6.x.x;
-        if version <= parse_version('7.0.0'):
+        if version >= parse_version('5.0.0'):
             return '''
                 {deamon} -p {pidfile}
                 -E http.port={port}
