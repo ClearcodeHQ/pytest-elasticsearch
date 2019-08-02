@@ -4,9 +4,9 @@ import pytest
 
 from pytest_elasticsearch import factories
 
-ELASTICSEARCH_EXECUTABLE_5_6 = '/opt/elasticsearch-5.6.16/bin/elasticsearch'
-ELASTICSEARCH_EXECUTABLE_6_8 = '/opt/elasticsearch-6.8.2/bin/elasticsearch'
-ELASTICSEARCH_EXECUTABLE_7_3 = '/opt/elasticsearch-7.3.0/bin/elasticsearch'
+ELASTICSEARCH_EXECUTABLE_5_6 = '/opt/es/elasticsearch-5.6.16/bin/elasticsearch'
+ELASTICSEARCH_EXECUTABLE_6_8 = '/opt/es/elasticsearch-6.8.2/bin/elasticsearch'
+ELASTICSEARCH_EXECUTABLE_7_3 = '/opt/es/elasticsearch-7.3.0/bin/elasticsearch'
 
 
 def elasticsearch_fixture_factory(executable, proc_name, port, **kwargs):

@@ -11,6 +11,9 @@ branches:
   except:
   - requires-io-master
   - /^dependabot.*$/
+cache:
+  directories:
+    - /opt/es/
 install:
 - pip install "setuptools>=18.5.0,<40"
 - pip install -r requirements-test.txt
