@@ -106,37 +106,8 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         """
         Get command to run elasticsearch binary based on the version.
 
-            :param tuple version elasticsearch version
+            :param tuple version: elasticsearch version
         """
-        if version < parse_version('2.0.0'):
-            return '''
-                {deamon} -p {pidfile}
-                --http.port={port}
-                --path.home={home_path}
-                --transport.tcp.port={transport_tcp_port}
-                --default.path.logs={logs_path}
-                --default.path.work={work_path}
-                --default.path.data={work_path}
-                --default.path.conf={conf_path}
-                --cluster.name={cluster}
-                --network.publish_host='{network_publish_host}'
-                --index.store.type={index_store_type}
-                --discovery.zen.ping.multicast.enabled={multicast_enabled}
-            '''
-        if version < parse_version('3.0.0'):
-            return '''
-                {deamon} -p {pidfile}
-                --http.port={port}
-                --path.home={home_path}
-                --transport.tcp.port={transport_tcp_port}
-                --default.path.logs={logs_path}
-                --default.path.work={work_path}
-                --default.path.data={work_path}
-                --default.path.conf={conf_path}
-                --cluster.name={cluster}
-                --network.publish_host='{network_publish_host}'
-                --index.store.type={index_store_type}
-            '''
         # it is known to work for 5.x.x; 6.x.x;
         if version >= parse_version('5.0.0'):
             return '''

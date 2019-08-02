@@ -4,6 +4,7 @@ CHANGELOG
 unreleased
 -------
 
+- [cleanup] Drop support for elasticsearch older than 5
 - [cleanup] Drop support for python versions older than 3.5
 
 1.3.0
