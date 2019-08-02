@@ -5,8 +5,8 @@ function install_from_zip {
     wget $1 -O out
     unzip out
     sudo mv $2 $INSTALL_PATH
-    /opt/es/$2/bin/elasticsearch -Vv
   fi
+  /opt/es/$2/bin/elasticsearch -Vv
 }
 
 function install_from_targz {
@@ -15,8 +15,8 @@ function install_from_targz {
     wget $1 -O out
     tar -zxf out
     sudo mv $2 $INSTALL_PATH
-    /opt/es/$2/bin/elasticsearch -Vv
   fi
+  /opt/es/$2/bin/elasticsearch -Vv
 }
 
 install_from_zip https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.16.zip elasticsearch-5.6.16
