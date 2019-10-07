@@ -9,3 +9,4 @@ of pytest-elasticsearch along its history.
 * Tomasz Karbownicki
 * Karolina Blümke
 * Marcin Maślany
+* Damian Skrzypczak

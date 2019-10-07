@@ -1,3 +1,7 @@
+.. image:: https://raw.githubusercontent.com/ClearcodeHQ/pytest-elasticsearch/master/logo.svg
+    :width: 100px
+    :height: 100px
+    
 pytest-elasticsearch
 ====================
 
