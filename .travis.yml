@@ -5,7 +5,8 @@ python:
 - 3.5
 - 3.6
 - 3.7
-- 3.8-dev
+- 3.8
+- nightly
 - pypy3
 # blocklist branches
 branches:
@@ -16,9 +17,8 @@ cache:
   directories:
     - /opt/es/
 install:
-- pip install "setuptools>=18.5.0,<40"
+- pip install "setuptools>=18.5.0,<40" coveralls
 - pip install -r requirements-test.txt
-- pip install -e .[tests] coveralls wheel
 before_script:
 - bash .travis.install-elasticsearch.sh
 script:
@@ -28,13 +28,12 @@ after_success:
 jobs:
   include:
     - stage: xdist
-      python: 3.7
+      python: 3.8
       script: py.test -n 1 --cov src/pytest_elasticsearch tests
     - stage: linters
-      python: 3.7
+      python: 3.8
       install:
       - pip install -r requirements-lint.txt
-      - pip install .[tests]
       script:
       - pycodestyle
       - pydocstyle
@@ -42,7 +41,7 @@ jobs:
       - pyroma .
       after_success: skip
     - stage: deploy
-      python: 3.7
+      python: 3.8
       if: tag IS present
       before_script: skip
       script: skip
@@ -55,5 +54,4 @@ jobs:
           tags: true
           all_branches: true
           repo: ClearcodeHQ/pytest-elasticsearch
-          python: 3.6
         distributions: bdist_wheel
