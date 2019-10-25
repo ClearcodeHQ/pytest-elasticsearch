@@ -32,10 +32,6 @@ Package status
     :target: https://coveralls.io/r/ClearcodeHQ/pytest-elasticsearch?branch=v1.3.0
     :alt: Coverage Status
 
-.. image:: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements.svg?tag=v1.3.0
-     :target: https://requires.io/github/ClearcodeHQ/pytest-elasticsearch/requirements/?tag=v1.3.0
-     :alt: Requirements Status
-
 What is this?
 =============
 
