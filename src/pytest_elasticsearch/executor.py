@@ -7,7 +7,7 @@ from pkg_resources import parse_version
 
 class ElasticSearchExecutor(HTTPExecutor):
 
-    def __init__(self, executable, host, port, tcp_port, pidfile, conf_path, works_path, cluster_name, network_publish_host, index_store_type, timeout):
+    def __init__(self, executable, host, port, tcp_port, pidfile, conf_path, logs_path, works_path, cluster_name, network_publish_host, index_store_type, timeout):
         self._version = None
         self.executable = executable
         self.host = host
@@ -15,6 +15,7 @@ class ElasticSearchExecutor(HTTPExecutor):
         self.tcp_port = tcp_port
         self.pidfile = pidfile
         self.conf_path = conf_path
+        self.logs_path = logs_path
         self.works_path = works_path
         self.cluster_name = cluster_name
         self.network_publish_host = network_publish_host
