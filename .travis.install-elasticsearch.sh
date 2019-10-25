@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -v
 function install_from_zip {
   INSTALL_PATH=/opt/es/$2
   if [ ! -d "$INSTALL_PATH" ]; then
@@ -24,10 +24,7 @@ function install_from_targz {
 
 function remove_if_erroneus {
   if [ ! -f "/opt/es/$1/bin/elasticsearch" ]; then
-    ls -l /opt/es/
-    ls -l /opt/es/$1
-    ls -l /opt/es/$1/bin
-    rm -r /opt/es/$1
+    rm -rv /opt/es/$1
   fi
 }
 
