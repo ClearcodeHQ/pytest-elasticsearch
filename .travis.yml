@@ -34,6 +34,7 @@ jobs:
       python: 3.8
       install:
       - pip install -r requirements-lint.txt
+      before_script: skip
       script:
       - pycodestyle
       - pydocstyle
