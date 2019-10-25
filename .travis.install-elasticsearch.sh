@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -v
 function install_from_zip {
   INSTALL_PATH=/opt/es/$2
   if [ ! -d "$INSTALL_PATH" ]; then
@@ -7,6 +7,8 @@ function install_from_zip {
     sudo mv $2 $INSTALL_PATH
   fi
   /opt/es/$2/bin/elasticsearch -Vv
+  remove_if_erroneus $2
+
 }
 
 function install_from_targz {
@@ -17,6 +19,13 @@ function install_from_targz {
     sudo mv $2 $INSTALL_PATH
   fi
   /opt/es/$2/bin/elasticsearch -Vv
+  remove_if_erroneus $2
+}
+
+function remove_if_erroneus {
+  if [ ! -f "/opt/es/$1/bin/elasticsearch" ]; then
+    rm -rv /opt/es/$1
+  fi
 }
 
 install_from_zip https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.16.zip elasticsearch-5.6.16
