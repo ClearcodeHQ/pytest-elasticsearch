@@ -72,7 +72,6 @@ def test_default_configuration(request):
     assert config['host'] == '127.0.0.1'
     assert not config['cluster_name']
     assert config['network_publish_host'] == '127.0.0.1'
-    assert config['discovery_zen_ping_multicast_enabled'] == 'false'
     assert config['index_store_type'] == 'memory'
     assert config['logs_prefix'] == ''
 
