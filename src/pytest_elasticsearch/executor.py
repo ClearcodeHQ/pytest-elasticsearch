@@ -21,11 +21,13 @@ class ElasticSearchExecutor(HTTPExecutor):
         self.network_publish_host = network_publish_host
         self.index_store_type = index_store_type
         super().__init__(
-            self.exec_command,
+            self._exec_command(),
             'http://{host}:{port}'.format(
                 host=self.host,
                 port=self.port,
-            ), timeout)
+            ),
+            timeout=timeout
+        )
 
     @property
     def version(self):
@@ -51,8 +53,7 @@ class ElasticSearchExecutor(HTTPExecutor):
                 )
             return self._version
 
-    @property
-    def exec_command(self):
+    def _exec_command(self):
         """
         Get command to run elasticsearch binary based on the version.
 
