@@ -51,7 +51,7 @@ class ElasticSearchExecutor(HTTPExecutor):
                 raise RuntimeError(
                     "'%s' does not point to elasticsearch." % self.executable
                 )
-            return self._version
+        return self._version
 
     def _exec_command(self):
         """
