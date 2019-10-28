@@ -7,7 +7,11 @@ from pkg_resources import parse_version
 
 class ElasticSearchExecutor(HTTPExecutor):
 
-    def __init__(self, executable,  host, port, tcp_port, pidfile, conf_path, logs_path, works_path, cluster_name, network_publish_host, index_store_type, timeout):
+    def __init__(
+            self, executable,  host, port, tcp_port, pidfile,
+            conf_path, logs_path, works_path,
+            cluster_name, network_publish_host, index_store_type, timeout
+    ):
         self._version = None
         self.executable = executable
         self.host = host
@@ -36,7 +40,8 @@ class ElasticSearchExecutor(HTTPExecutor):
             try:
                 output = check_output([self.executable, '-Vv']).decode('utf-8')
                 match = re.match(
-                    r'Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d+)', output
+                    r'Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d+)',
+                    output
                 )
                 if not match:
                     raise RuntimeError(
@@ -45,7 +50,9 @@ class ElasticSearchExecutor(HTTPExecutor):
                         "Output is: " + output)
                 version = match.groupdict()
                 self._version = parse_version(
-                    '.'.join([version['major'], version['minor'], version['patch']])
+                    '.'.join([
+                        version['major'], version['minor'], version['patch']
+                    ])
                 )
             except OSError:
                 raise RuntimeError(

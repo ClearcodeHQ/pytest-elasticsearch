@@ -42,7 +42,7 @@ def test_version_extraction(executable, expected_version):
         executable,
         '127.0.0.1', 8888,
         None, None, None, None, None, None, None, None,
-         10
+        10
     )
     assert executor.version == parse_version(expected_version)
 
