@@ -4,6 +4,8 @@ CHANGELOG
 unreleased
 -------
 
+- [enhancement] Created a specified Executor to manage elasticsearch
+- [cleanup] Drop support for unused discovery_zen_ping_multicast option
 - [cleanup] Drop support for elasticsearch older than 5
 - [cleanup] Drop support for python versions older than 3.5
 
