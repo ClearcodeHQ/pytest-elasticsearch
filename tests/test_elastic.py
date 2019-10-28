@@ -37,7 +37,7 @@ elasticsearch_proc_7_3, elasticsearch_7_3 = elasticsearch_fixture_factory(
     (ELASTICSEARCH_EXECUTABLE_7_3, '7.3.0'),
 ))
 def test_version_extraction(executable, expected_version):
-    """Verfiy if we can properly extract elasticsearch version."""
+    """Verify if we can properly extract elasticsearch version."""
     executor = ElasticSearchExecutor(
         executable,
         '127.0.0.1', 8888,
