@@ -146,7 +146,7 @@ def pytest_addoption(parser):
         '--elasticsearch-transport-tcp-port',
         action='store',
         dest='elasticsearch_transport_tcp_port',
-        # TODO: help text
+        help=_help_elasticsearch_transport_tcp_port
     )
 
     parser.addoption(

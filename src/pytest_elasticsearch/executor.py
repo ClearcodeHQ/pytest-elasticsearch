@@ -1,3 +1,5 @@
+"""Elasticsearch executor."""
+
 import re
 from subprocess import check_output
 
@@ -5,13 +7,15 @@ from mirakuru import HTTPExecutor
 from pkg_resources import parse_version
 
 
+# pylint:disable=too-many-instance-attributes
 class ElasticSearchExecutor(HTTPExecutor):
+    """Elasticsearch executor."""
 
     def __init__(
-            self, executable,  host, port, tcp_port, pidfile,
+            self, executable, host, port, tcp_port, pidfile,
             conf_path, logs_path, works_path,
             cluster_name, network_publish_host, index_store_type, timeout
-    ):
+    ):   # pylint:disable=too-many-arguments
         self._version = None
         self.executable = executable
         self.host = host
