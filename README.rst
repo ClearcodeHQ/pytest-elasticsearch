@@ -43,7 +43,7 @@ How to use
 
 .. warning::
 
-    This fixture requires at least version 1.0 of elasticsearch to work.
+    This plugin requires at least version 5.0 of elasticsearch to work.
 
 The plugin contains two fixtures:
 
@@ -93,8 +93,6 @@ You can pick which you prefer, but remember that these settings are handled in t
 | network publish host | network_publish_host                 | --elasticsearch-network-publish-host                 | elasticsearch_network_publish_host                 | 127.0.0.1                    |
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
 | logs prefix          | logs_prefix                          | --elasticsearch-logs-prefix                          | elasticsearch_logs_prefix                          |                              |
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
-| enable zen discovery | discovery_zen_ping_multicast_enabled | --elasticsearch-discovery-zen-ping-multicast-enabled | elasticsearch_discovery_zen_ping_multicast_enabled | False                        |
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
 | transport tcp port   | transport_tcp_port                   | --elasticsearch-transport-tcp-port                   | elasticsearch_transport_tcp_port                   | random                       |
 +----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+

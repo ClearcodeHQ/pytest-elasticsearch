@@ -1,8 +1,10 @@
 """Pytest-elasticsearch tests."""
 from tempfile import gettempdir
 import pytest
+from pkg_resources import parse_version
 
 from pytest_elasticsearch import factories
+from pytest_elasticsearch.executor import ElasticSearchExecutor
 
 ELASTICSEARCH_EXECUTABLE_5_6 = '/opt/es/elasticsearch-5.6.16/bin/elasticsearch'
 ELASTICSEARCH_EXECUTABLE_6_8 = '/opt/es/elasticsearch-6.8.2/bin/elasticsearch'
@@ -35,9 +37,14 @@ elasticsearch_proc_7_3, elasticsearch_7_3 = elasticsearch_fixture_factory(
     (ELASTICSEARCH_EXECUTABLE_7_3, '7.3.0'),
 ))
 def test_version_extraction(executable, expected_version):
-    """Verfiy if we can properly extract elasticsearch version."""
-    ver = factories.get_version_parts(executable)
-    assert ver.base_version == expected_version
+    """Verify if we can properly extract elasticsearch version."""
+    executor = ElasticSearchExecutor(
+        executable,
+        '127.0.0.1', 8888,
+        None, None, None, None, None, None, None,
+        10
+    )
+    assert executor.version == parse_version(expected_version)
 
 
 @pytest.mark.parametrize('elasticsearch_proc_name', (
@@ -72,7 +79,6 @@ def test_default_configuration(request):
     assert config['host'] == '127.0.0.1'
     assert not config['cluster_name']
     assert config['network_publish_host'] == '127.0.0.1'
-    assert config['discovery_zen_ping_multicast_enabled'] == 'false'
     assert config['index_store_type'] == 'memory'
     assert config['logs_prefix'] == ''
 

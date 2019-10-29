@@ -31,10 +31,8 @@ _help_index_store_type = \
 _help_network_publish_host = \
     'network host to which elasticsearch publish to connect to cluseter'
 _help_logs_prefix = 'prefix for the logs file'
-_help_discovery_zen_ping_multicast_enabled = 'Use zen discovery'
 _help_elasticsearch_transport_tcp_port = 'The tcp ansport port used \
     for internal communication between nodes within the cluster'
-_help_configuration_path = 'Config file location'
 
 
 def pytest_addoption(parser):
@@ -59,25 +57,20 @@ def pytest_addoption(parser):
 
     parser.addini(
         name='elasticsearch_index_store_type',
-        help='',
+        help=_help_index_store_type,
         default='memory'
     )
 
     parser.addini(
         name='elasticsearch_network_publish_host',
-        help='',
-        default='127.0.0.1')
-
-    parser.addini(
-        name='elasticsearch_logs_prefix',
-        help='',
-        default=''
+        help=_help_network_publish_host,
+        default='127.0.0.1'
     )
 
     parser.addini(
-        name='elasticsearch_discovery_zen_ping_multicast_enabled',
-        help='',
-        default='false',
+        name='elasticsearch_logs_prefix',
+        help=_help_logs_prefix,
+        default=''
     )
 
     parser.addini(
@@ -89,12 +82,6 @@ def pytest_addoption(parser):
     parser.addini(
         'elasticsearch_transport_tcp_port',
         help=_help_elasticsearch_transport_tcp_port,
-        default=None
-    )
-
-    parser.addini(
-        'elasticsearch_configuration_path',
-        help=_help_configuration_path,
         default=None
     )
 
@@ -124,24 +111,21 @@ def pytest_addoption(parser):
         '--elasticsearch-index-store-type',
         action='store',
         dest='elasticsearch_index_store_type',
+        help=_help_index_store_type,
     )
 
     parser.addoption(
         '--elasticsearch-network-publish-host',
         action='store',
         dest='elasticsearch_network_publish_host',
+        help=_help_network_publish_host,
     )
 
     parser.addoption(
         '--elasticsearch-logs-prefix',
         action='store',
         dest='elasticsearch_logs_prefix',
-    )
-
-    parser.addoption(
-        '--elasticsearch-discovery-zen-ping-multicast-enabled',
-        action='store',
-        dest='elasticsearch_discovery_zen_ping_multicast_enabled',
+        help=_help_logs_prefix,
     )
 
     parser.addoption(
@@ -155,12 +139,7 @@ def pytest_addoption(parser):
         '--elasticsearch-transport-tcp-port',
         action='store',
         dest='elasticsearch_transport_tcp_port',
-    )
-
-    parser.addoption(
-        '--elasticsearch-configuration-path',
-        action='store',
-        dest='elasticsearch_configuration_path'
+        help=_help_elasticsearch_transport_tcp_port
     )
 
 

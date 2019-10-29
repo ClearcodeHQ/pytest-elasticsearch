@@ -16,16 +16,14 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
 """Fixture factories."""
-import re
 import os.path
 import shutil
 from tempfile import gettempdir
-import subprocess
 
 import pytest
-from pkg_resources import parse_version
 from elasticsearch import Elasticsearch
-from mirakuru import HTTPExecutor
+
+from pytest_elasticsearch.executor import ElasticSearchExecutor
 from pytest_elasticsearch.port import get_port
 
 
@@ -34,8 +32,8 @@ def return_config(request):
     config = {}
     options = [
         'port', 'transport_tcp_port', 'host', 'cluster_name',
-        'network_publish_host', 'discovery_zen_ping_multicast_enabled',
-        'index_store_type', 'logs_prefix', 'logsdir', 'configuration_path'
+        'network_publish_host',
+        'index_store_type', 'logs_prefix', 'logsdir'
     ]
     for option in options:
         option_name = 'elasticsearch_' + option
@@ -45,35 +43,11 @@ def return_config(request):
     return config
 
 
-def get_version_parts(executable):
-    """Get the given elasticsearch executable version parts."""
-    try:
-        output = subprocess.check_output([executable, '-Vv']).decode('utf-8')
-        match = re.match(
-            r'Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d+)', output
-        )
-        if not match:
-            raise RuntimeError(
-                "Elasticsearch version is not recognized. "
-                "It is probably not supported. \n"
-                "Output is: " + output)
-        version = match.groupdict()
-        return parse_version(
-            '.'.join([version['major'], version['minor'], version['patch']])
-        )
-    except OSError:
-        raise RuntimeError(
-            "'%s' does not point to elasticsearch." % executable
-        )
-
-
 def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                        host=None, port=-1, transport_tcp_port=None,
                        cluster_name=None, network_publish_host=None,
-                       discovery_zen_ping_multicast_enabled=None,
                        index_store_type=None, logs_prefix=None,
-                       elasticsearch_logsdir=None,
-                       configuration_path='/etc/elasticsearch'):
+                       elasticsearch_logsdir=None):
     """
     Create elasticsearch process fixture.
 
@@ -93,34 +67,12 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         Used for autodiscovery. By default each node is in it's own cluser.
     :param str network_publish_host: host to publish itself within cluser
         http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-network.html
-    :param bool discovery_zen_ping_multicast_enabled: whether to enable or
-        disable host discovery
-        http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/modules-discovery-zen.html
     :param str index_store_type: index.store.type setting. *memory* by default
         to speed up tests
     :param str logs_prefix: prefix for log filename
     :param str elasticsearch_logsdir: path for logs.
     :param elasticsearch_logsdir: path for elasticsearch logs
     """
-    def command_from(version):
-        """
-        Get command to run elasticsearch binary based on the version.
-
-            :param tuple version: elasticsearch version
-        """
-        # it is known to work for 5.x.x; 6.x.x;
-        if version >= parse_version('5.0.0'):
-            return '''
-                {deamon} -p {pidfile}
-                -E http.port={port}
-                -E transport.tcp.port={transport_tcp_port}
-                -E path.logs={logs_path}
-                -E path.data={work_path}
-                -E cluster.name={cluster}
-                -E network.host='{network_publish_host}'
-                -E index.store.type={index_store_type}
-            '''
-        raise RuntimeError("This elasticsearch version is not supported.")
 
     @pytest.fixture(scope='session')
     def elasticsearch_proc_fixture(request):
@@ -150,51 +102,27 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
 
         pidfile = os.path.join(
             gettempdir(), 'elasticsearch.{0}.pid'.format(elasticsearch_port))
-        home_path = os.path.join(
-            gettempdir(), 'elasticsearch_{0}'.format(elasticsearch_port))
-        work_path = '{0}_tmp'.format(home_path)
-        conf_path = configuration_path or config['configuration_path']
+        work_path = os.path.join(
+            gettempdir(), 'elasticsearch_{0}_tmp'.format(elasticsearch_port))
 
-        if discovery_zen_ping_multicast_enabled is not None:
-            multicast_enabled = str(
-                discovery_zen_ping_multicast_enabled).lower()
-        else:
-            multicast_enabled = config['discovery_zen_ping_multicast_enabled']
-
-        command = command_from(version=get_version_parts(executable))
-
-        command_exec = command.format(
-            deamon=executable,
-            pidfile=pidfile,
-            port=elasticsearch_port,
-            transport_tcp_port=elasticsearch_transport_port,
-            conf_path=conf_path,
-            home_path=home_path,
-            logs_path=logs_path,
-            work_path=work_path,
-            cluster=elasticsearch_cluster_name,
-            network_publish_host=elasticsearch_network_publish_host,
-            multicast_enabled=multicast_enabled,
-            index_store_type=elasticsearch_index_store_type
-        )
-
-        elasticsearch_executor = HTTPExecutor(
-            command_exec, 'http://{host}:{port}'.format(
-                host=elasticsearch_host,
-                port=elasticsearch_port
-            ),
+        elasticsearch_executor = ElasticSearchExecutor(
+            executable,
+            elasticsearch_host,
+            elasticsearch_port,
+            elasticsearch_transport_port,
+            pidfile,
+            logs_path,
+            work_path,
+            elasticsearch_cluster_name,
+            elasticsearch_network_publish_host,
+            elasticsearch_index_store_type,
             timeout=60,
         )
 
-        elasticsearch_executor.start()
-
-        def finalize_elasticsearch():
-            elasticsearch_executor.stop()
-            shutil.rmtree(work_path)
-            shutil.rmtree(logs_path)
-
-        request.addfinalizer(finalize_elasticsearch)
-        return elasticsearch_executor
+        with elasticsearch_executor:
+            yield elasticsearch_executor
+        shutil.rmtree(work_path)
+        shutil.rmtree(logs_path)
 
     return elasticsearch_proc_fixture
 
