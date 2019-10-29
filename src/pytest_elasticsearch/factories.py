@@ -33,7 +33,7 @@ def return_config(request):
     options = [
         'port', 'transport_tcp_port', 'host', 'cluster_name',
         'network_publish_host',
-        'index_store_type', 'logs_prefix', 'logsdir', 'configuration_path'
+        'index_store_type', 'logs_prefix', 'logsdir'
     ]
     for option in options:
         option_name = 'elasticsearch_' + option
