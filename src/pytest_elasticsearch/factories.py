@@ -47,8 +47,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
                        host=None, port=-1, transport_tcp_port=None,
                        cluster_name=None, network_publish_host=None,
                        index_store_type=None, logs_prefix=None,
-                       elasticsearch_logsdir=None,
-                       configuration_path='/etc/elasticsearch'):
+                       elasticsearch_logsdir=None):
     """
     Create elasticsearch process fixture.
 
@@ -105,7 +104,6 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             gettempdir(), 'elasticsearch.{0}.pid'.format(elasticsearch_port))
         work_path = os.path.join(
             gettempdir(), 'elasticsearch_{0}_tmp'.format(elasticsearch_port))
-        conf_path = configuration_path or config['configuration_path']
 
         elasticsearch_executor = ElasticSearchExecutor(
             executable,
@@ -113,7 +111,6 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             elasticsearch_port,
             elasticsearch_transport_port,
             pidfile,
-            conf_path,
             logs_path,
             work_path,
             elasticsearch_cluster_name,

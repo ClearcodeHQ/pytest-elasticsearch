@@ -12,17 +12,33 @@ class ElasticSearchExecutor(HTTPExecutor):
     """Elasticsearch executor."""
 
     def __init__(
-            self, executable, host, port, tcp_port, pidfile,
-            conf_path, logs_path, works_path,
+            self, executable, host, port, tcp_port,
+            pidfile, logs_path, works_path,
             cluster_name, network_publish_host, index_store_type, timeout
     ):   # pylint:disable=too-many-arguments
+        """
+        Initialize ElasticSearchExecutor.
+
+        :param pathlib.Path executable: Executable path
+        :param str host: hostname under which elasticsearch will be running
+        :param int port: port elasticsearch listens on
+        :param int tcp_port: port used for unternal communication
+        :param pathlib.Path pidfile: pidfile location
+        :param pathlib.Path logs_path: log files location
+        :param pathlib.Path works_path: workdir location
+        :param str cluster_name: cluster name
+        :param str network_publish_host: network host to which elasticsearch
+            publish to connect to cluseter'
+        :param str index_store_type: type of the index to use in the
+            elasticsearch process fixture
+        :param int timeout: Time after which to give up to start elasticsearch
+        """
         self._version = None
         self.executable = executable
         self.host = host
         self.port = port
         self.tcp_port = tcp_port
         self.pidfile = pidfile
-        self.conf_path = conf_path
         self.logs_path = logs_path
         self.works_path = works_path
         self.cluster_name = cluster_name
@@ -39,7 +55,12 @@ class ElasticSearchExecutor(HTTPExecutor):
 
     @property
     def version(self):
-        """Get the given elasticsearch executable version parts."""
+        """
+        Get the given elasticsearch executable version parts.
+
+        :return: Elasticsearch version
+        :rtype: pkg_resources.Version
+        """
         if not self._version:
             try:
                 output = check_output([self.executable, '-Vv']).decode('utf-8')
@@ -68,7 +89,8 @@ class ElasticSearchExecutor(HTTPExecutor):
         """
         Get command to run elasticsearch binary based on the version.
 
-            :param tuple version: elasticsearch version
+        :return: command to run elasticsearch
+        :rtype: str
         """
         if self.version < parse_version('5.0.0'):
             raise RuntimeError("This elasticsearch version is not supported.")
