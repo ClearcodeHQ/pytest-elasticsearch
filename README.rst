@@ -77,27 +77,59 @@ You can pick which you prefer, but remember that these settings are handled in t
 2. Command line option
 3. Configuration option in your pytest.ini file
 
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
-| Elasticsearch option | Fixture factory argument             | Command line option                                  | pytest.ini option                                  | Default                      |
-+======================+======================================+======================================================+====================================================+==============================+
-| logs directory       | logsdir                              | --elasticsearch-logsdir                              | elasticsearch_logsdir                              | $TMPDIR                      |
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
-| host                 | host                                 | --elasticsearch-host                                 | elasticsearch_host                                 | 127.0.0.1                    |
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
-| port                 | port                                 | --elasticsearch-port                                 | elasticsearch_port                                 | random                       |
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
-| cluster_name         | cluster_name                         | --elasticsearch-cluster-name                         | elasticsearch_cluster_name                         | elasticsearch_cluster_<port> |
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
-| index store type     | index_store_type                     | --elasticsearch-index-store-type                     | elasticsearch_index_store_type                     | memory                       |
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
-| network publish host | network_publish_host                 | --elasticsearch-network-publish-host                 | elasticsearch_network_publish_host                 | 127.0.0.1                    |
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
-| logs prefix          | logs_prefix                          | --elasticsearch-logs-prefix                          | elasticsearch_logs_prefix                          |                              |
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
-| transport tcp port   | transport_tcp_port                   | --elasticsearch-transport-tcp-port                   | elasticsearch_transport_tcp_port                   | random                       |
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
-| configuration path   | configuration_path                   | --elasticsearch-configuration-path                   | elasticsearch_configuration_path                   | /etc/elasticsearch           |
-+----------------------+--------------------------------------+------------------------------------------------------+----------------------------------------------------+------------------------------+
+.. list-table:: Configuration options
+   :header-rows: 1
+
+   * - ElasticSearch option
+     - Fixture factory argument
+     - Command line option
+     - pytest.ini option
+     - Default
+   * - logs directory
+     - logsdir
+     - --elasticsearch-logsdir
+     - elasticsearch_logsdir
+     - $TMPDIR
+   * - host
+     - host
+     - --elasticsearch-host
+     - elasticsearch_host
+     - 127.0.0.1
+   * - port
+     - port
+     - -elasticsearch-port
+     - elasticsearch_port
+     - random
+   * - Elasticsearch cluster name
+     - cluster_name
+     - --elasticsearch-cluster-name
+     - elasticsearch_cluster_name
+     - elasticsearch_cluster_<port>
+   * - index storage type
+     - index_store_type
+     - --elasticsearch-index-store-type
+     - elasticsearch_index_store_type
+     - memory
+   * - network publish host
+     - network_publish_host
+     - --elasticsearch-network-publish-host
+     - elasticsearch_network_publish_host
+     - 127.0.0.1
+   * - logs prefix
+     - logs_prefix
+     - --elasticsearch-logs-prefix
+     - elasticsearch_logs_prefix
+     -
+   * - transport tcp port
+     - transport_tcp_port
+     - --elasticsearch-transport-tcp-port
+     - elasticsearch_transport_tcp_port
+     - random
+   * - configuration path
+     - configuration_path
+     - --elasticsearch-configuration-path
+     - elasticsearch_configuration_path
+     - /etc/elasticsearch
 
 Example usage:
 
