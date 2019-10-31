@@ -1,5 +1,4 @@
 """Pytest-elasticsearch tests."""
-from io import StringIO
 from tempfile import gettempdir
 
 import mock
