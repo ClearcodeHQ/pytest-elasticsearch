@@ -1,5 +1,7 @@
 """Pytest-elasticsearch tests."""
 from tempfile import gettempdir
+
+import mock
 import pytest
 from pkg_resources import parse_version
 
@@ -9,6 +11,24 @@ from pytest_elasticsearch.executor import ElasticSearchExecutor
 ELASTICSEARCH_EXECUTABLE_5_6 = '/opt/es/elasticsearch-5.6.16/bin/elasticsearch'
 ELASTICSEARCH_EXECUTABLE_6_8 = '/opt/es/elasticsearch-6.8.2/bin/elasticsearch'
 ELASTICSEARCH_EXECUTABLE_7_3 = '/opt/es/elasticsearch-7.3.0/bin/elasticsearch'
+
+VERSION_STRING_5_6 = (
+    'OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was '
+    'deprecated in version 9.0 and will likely be removed in a future release.'
+    '\nVersion: 5.6.16, Build: 3a740d1/2019-03-13T15:33:36.565Z, JVM: 11.0.2'
+)
+VERSION_STRING_6_8 = (
+    'OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was '
+    'deprecated in version 9.0 and will likely be removed in a future release.'
+    '\nVersion: 6.8.2, Build: default/zip/b506955/2019-07-24T15:24:41.545295Z, '
+    'JVM: 11.0.2'
+)
+VERSION_STRING_7_3 = (
+    'OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was '
+    'deprecated in version 9.0 and will likely be removed in a future release.'
+    '\nVersion: 7.3.0, Build: default/tar/de777fa/2019-07-24T18:30:11.767338Z, '
+    'JVM: 11.0.2'
+)
 
 
 def elasticsearch_fixture_factory(executable, proc_name, port, **kwargs):
@@ -31,20 +51,24 @@ elasticsearch_proc_7_3, elasticsearch_7_3 = elasticsearch_fixture_factory(
 # pylint:enable=invalid-name
 
 
-@pytest.mark.parametrize('executable, expected_version', (
-    (ELASTICSEARCH_EXECUTABLE_5_6, '5.6.16'),
-    (ELASTICSEARCH_EXECUTABLE_6_8, '6.8.2'),
-    (ELASTICSEARCH_EXECUTABLE_7_3, '7.3.0'),
+@pytest.mark.parametrize('output, expected_version', (
+    (VERSION_STRING_5_6, '5.6.16'),
+    (VERSION_STRING_6_8, '6.8.2'),
+    (VERSION_STRING_7_3, '7.3.0'),
 ))
-def test_version_extraction(executable, expected_version):
+def test_version_extraction(output, expected_version):
     """Verify if we can properly extract elasticsearch version."""
-    executor = ElasticSearchExecutor(
-        executable,
-        '127.0.0.1', 8888,
-        None, None, None, None, None, None, None,
-        10
-    )
-    assert executor.version == parse_version(expected_version)
+    with mock.patch(
+            'pytest_elasticsearch.executor.check_output',
+            lambda *args: output.encode('utf8')
+    ):
+        executor = ElasticSearchExecutor(
+            'elasticsearch',
+            '127.0.0.1', 8888,
+            None, None, None, None, None, None, None,
+            10
+        )
+        assert executor.version == parse_version(expected_version)
 
 
 @pytest.mark.parametrize('elasticsearch_proc_name', (

@@ -64,7 +64,7 @@ class ElasticSearchExecutor(HTTPExecutor):
         if not self._version:
             try:
                 output = check_output([self.executable, '-Vv']).decode('utf-8')
-                match = re.match(
+                match = re.search(
                     r'Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d+)',
                     output
                 )
