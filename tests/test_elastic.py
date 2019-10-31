@@ -9,8 +9,9 @@ from pytest_elasticsearch import factories
 from pytest_elasticsearch.executor import ElasticSearchExecutor
 
 ELASTICSEARCH_EXECUTABLE_5_6 = '/opt/es/elasticsearch-5.6.16/bin/elasticsearch'
-ELASTICSEARCH_EXECUTABLE_6_8 = '/opt/es/elasticsearch-6.8.2/bin/elasticsearch'
-ELASTICSEARCH_EXECUTABLE_7_3 = '/opt/es/elasticsearch-7.3.0/bin/elasticsearch'
+ELASTICSEARCH_EXECUTABLE_6_8 = '/opt/es/elasticsearch-6.8.3/bin/elasticsearch'
+ELASTICSEARCH_EXECUTABLE_7_3 = '/opt/es/elasticsearch-7.3.2/bin/elasticsearch'
+ELASTICSEARCH_EXECUTABLE_7_4 = '/opt/es/elasticsearch-7.4.1/bin/elasticsearch'
 
 VERSION_STRING_5_6 = (
     'OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was '
@@ -48,6 +49,9 @@ elasticsearch_proc_6_8, elasticsearch_6_8 = elasticsearch_fixture_factory(
 elasticsearch_proc_7_3, elasticsearch_7_3 = elasticsearch_fixture_factory(
     ELASTICSEARCH_EXECUTABLE_7_3, 'elasticsearch_proc_7_3', port=None
 )
+elasticsearch_proc_7_4, elasticsearch_7_4 = elasticsearch_fixture_factory(
+    ELASTICSEARCH_EXECUTABLE_7_4, 'elasticsearch_proc_7_4', port=None
+)
 # pylint:enable=invalid-name
 
 
@@ -75,6 +79,7 @@ def test_version_extraction(output, expected_version):
     'elasticsearch_proc_5_6',
     'elasticsearch_proc_6_8',
     'elasticsearch_proc_7_3',
+    'elasticsearch_proc_7_4',
 ))
 def test_elastic_process(request, elasticsearch_proc_name):
     """Simple test for starting elasticsearch_proc."""
@@ -86,6 +91,7 @@ def test_elastic_process(request, elasticsearch_proc_name):
     'elasticsearch_5_6',
     'elasticsearch_6_8',
     'elasticsearch_7_3',
+    'elasticsearch_7_4',
 ))
 def test_elasticsarch(request, elasticsearch_name):
     """Test if elasticsearch fixtures connects to process."""
