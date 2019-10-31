@@ -19,6 +19,7 @@ lib
 lib64
 .cache/
 tests/.cache/
+.pytest_cache/
 
 
 # Installer logs
