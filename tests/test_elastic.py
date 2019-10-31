@@ -24,11 +24,29 @@ VERSION_STRING_6_8 = (
     '\nVersion: 6.8.2, Build: default/zip/b506955/2019-07-24T15:24:41.545295Z, '
     'JVM: 11.0.2'
 )
+VERSION_STRING_6_8_3 = (
+    'OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was '
+    'deprecated in version 9.0 and will likely be removed in a future release.'
+    '\nVersion: 6.8.3, Build: default/zip/0c48c0e/2019-08-29T19:05:24.312154Z, '
+    'JVM: 11.0.2'
+)
 VERSION_STRING_7_3 = (
     'OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was '
     'deprecated in version 9.0 and will likely be removed in a future release.'
     '\nVersion: 7.3.0, Build: default/tar/de777fa/2019-07-24T18:30:11.767338Z, '
     'JVM: 11.0.2'
+)
+VERSION_STRING_7_3_2 = (
+    'OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was '
+    'deprecated in version 9.0 and will likely be removed in a future release.'
+    '\nVersion: 7.3.2, Build: default/tar/1c1faf1/2019-09-06T14:40:30.409026Z, '
+    'JVM: 11.0.2'
+)
+VERSION_STRING_7_4 = (
+    'OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was '
+    'deprecated in version 9.0 and will likely be removed in a future release.'
+    '\nVersion: 7.4.1, Build: default/tar/fc0eeb6e2c25915d63d871d344e3d0b45ea0e'
+    'a1e/2019-10-22T17:16:35.176724Z, JVM: 11.0.2'
 )
 
 
@@ -58,7 +76,10 @@ elasticsearch_proc_7_4, elasticsearch_7_4 = elasticsearch_fixture_factory(
 @pytest.mark.parametrize('output, expected_version', (
     (VERSION_STRING_5_6, '5.6.16'),
     (VERSION_STRING_6_8, '6.8.2'),
+    (VERSION_STRING_6_8_3, '6.8.3'),
     (VERSION_STRING_7_3, '7.3.0'),
+    (VERSION_STRING_7_3_2, '7.3.2'),
+    (VERSION_STRING_7_4, '7.4.1'),
 ))
 def test_version_extraction(output, expected_version):
     """Verify if we can properly extract elasticsearch version."""
