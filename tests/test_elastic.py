@@ -59,6 +59,14 @@ def elasticsearch_fixture_factory(executable, proc_name, port, **kwargs):
 
 
 # pylint:disable=invalid-name
+elasticsearch_proc2 = factories.elasticsearch_proc(executable=ELASTICSEARCH_EXECUTABLE_7_4, port=6381)
+elasticsearch_nooproc2 = factories.elasticsearch_noproc(port=6381)
+elasticsearch2 = factories.elasticsearch('elasticsearch_proc2')
+elasticsearch2_noop = factories.elasticsearch('elasticsearch_nooproc2')
+# pylint:enable=invalid-name
+
+
+# pylint:disable=invalid-name
 elasticsearch_proc_5_6, elasticsearch_5_6 = elasticsearch_fixture_factory(
     ELASTICSEARCH_EXECUTABLE_5_6, 'elasticsearch_proc_5_6', port=None
 )
