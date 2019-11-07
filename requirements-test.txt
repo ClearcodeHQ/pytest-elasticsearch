@@ -4,4 +4,5 @@ pytest==5.2.2
 port-for==0.4
 mirakuru==2.1.0; python_version>'3.5'
 mirakuru<2.1.0; python_version<='3.5'
+elasticsearch==7.0.5
 -e .[tests]

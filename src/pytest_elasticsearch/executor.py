@@ -1,10 +1,31 @@
 """Elasticsearch executor."""
 
 import re
+from collections import namedtuple
 from subprocess import check_output
 
 from mirakuru import HTTPExecutor
 from pkg_resources import parse_version
+
+
+class NoopElasticsearch:
+    """No operation Elasticsearch executor mock."""
+
+    def __init__(self, host, port):
+        """
+        Initialize Elasticsearch executor mock
+        :param str host: hostname under which elasticsearch is available
+        :param int port: port under which elasticsearch is available
+        """
+        self.host = host
+        self.port = port
+
+    @staticmethod
+    def running():
+        return True
+
+    def start(self):
+        return self
 
 
 # pylint:disable=too-many-instance-attributes

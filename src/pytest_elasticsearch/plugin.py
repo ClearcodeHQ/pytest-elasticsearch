@@ -144,4 +144,5 @@ def pytest_addoption(parser):
 
 
 elasticsearch_proc = factories.elasticsearch_proc()
+elasticsearch_nooproc = factories.elasticsearch_noproc()
 elasticsearch = factories.elasticsearch('elasticsearch_proc')

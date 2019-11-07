@@ -1,4 +1,5 @@
 """Pytest-elasticsearch tests."""
+from datetime import datetime
 from tempfile import gettempdir
 
 import mock
@@ -114,7 +115,7 @@ def test_elastic_process(request, elasticsearch_proc_name):
     'elasticsearch_7_3',
     'elasticsearch_7_4',
 ))
-def test_elasticsarch(request, elasticsearch_name):
+def test_elasticsearch(request, elasticsearch_name):
     """Test if elasticsearch fixtures connects to process."""
     elasticsearch = request.getfixturevalue(elasticsearch_name)
     info = elasticsearch.cluster.health()
@@ -138,3 +139,23 @@ def test_default_configuration(request):
 
     assert logsdir_ini == '/tmp'
     assert logsdir_option is None
+
+
+def test_external_redis(elasticsearch2, elasticsearch2_noop):
+    """Check that nooproc connects to the same redis."""
+    doc = {
+        'author': 'kimchy',
+        'text': 'Elasticsearch: cool. bonsai cool.',
+        'timestamp': datetime.utcnow(),
+    }
+    res = elasticsearch2.index(index="test-index", doc_type='tweet', id=1, body=doc)
+    print(res['result'])
+
+    res = elasticsearch2_noop.get(index="test-index", doc_type='tweet', id=1)
+    print(res['_source'])
+    elasticsearch2.indices.refresh(index="test-index")
+
+    res = elasticsearch2_noop.search(index="test-index", body={"query": {"match_all": {}}})
+    print("Got %d Hits:" % res['hits']['total']['value'])
+    for hit in res['hits']['hits']:
+        print("%(timestamp)s %(author)s: %(text)s" % hit["_source"])

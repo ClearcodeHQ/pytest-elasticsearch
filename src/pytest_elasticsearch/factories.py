@@ -23,7 +23,7 @@ from tempfile import gettempdir
 import pytest
 from elasticsearch import Elasticsearch
 
-from pytest_elasticsearch.executor import ElasticSearchExecutor
+from pytest_elasticsearch.executor import ElasticSearchExecutor, NoopElasticsearch
 from pytest_elasticsearch.port import get_port
 
 
@@ -125,6 +125,40 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         shutil.rmtree(logs_path)
 
     return elasticsearch_proc_fixture
+
+
+
+
+def elasticsearch_noproc(host=None, port=None):
+    """
+    Elasticsearch noprocess factory.
+
+    :param str host: hostname
+    :param str|int port: exact port (e.g. '8000', 8000)
+    :rtype: func
+    :returns: function which makes a elasticsearch process
+    """
+    @pytest.fixture(scope='session')
+    def elasticsearch_noproc_fixture(request):
+        """
+        Noop Process fixture for PostgreSQL.
+
+        :param FixtureRequest request: fixture request object
+        :rtype: pytest_dbfixtures.executors.TCPExecutor
+        :returns: tcp executor-like object
+        """
+        config = return_config(request)
+        pg_host = host or config['host']
+        pg_port = port or config['port'] or 9300
+
+        noop_exec = NoopElasticsearch(
+            host=pg_host,
+            port=pg_port
+        )
+
+        yield noop_exec
+
+    return elasticsearch_noproc_fixture
 
 
 def elasticsearch(process_fixture_name):
