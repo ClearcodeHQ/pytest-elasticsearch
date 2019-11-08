@@ -84,7 +84,7 @@ Some projects are using already running Elasticsearch servers
     es_external = factories.elasticsearch('elasticsearch_nooproc')
 
 By default the  ``elasticsearch_nooproc`` fixture would connect to elasticsearch
-instance using **6300** port.
+instance using **9300** port.
 
 Configuration
 =============
