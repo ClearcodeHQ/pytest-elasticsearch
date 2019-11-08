@@ -23,7 +23,10 @@ from tempfile import gettempdir
 import pytest
 from elasticsearch import Elasticsearch
 
-from pytest_elasticsearch.executor import ElasticSearchExecutor, NoopElasticsearch
+from pytest_elasticsearch.executor import (
+    ElasticSearchExecutor,
+    NoopElasticsearch
+)
 from pytest_elasticsearch.port import get_port
 
 
@@ -125,8 +128,6 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         shutil.rmtree(logs_path)
 
     return elasticsearch_proc_fixture
-
-
 
 
 def elasticsearch_noproc(host=None, port=None):

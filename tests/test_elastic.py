@@ -9,10 +9,6 @@ from pkg_resources import parse_version
 from pytest_elasticsearch import factories
 from pytest_elasticsearch.executor import ElasticSearchExecutor
 
-ELASTICSEARCH_EXECUTABLE_5_6 = '/opt/es/elasticsearch-5.6.16/bin/elasticsearch'
-ELASTICSEARCH_EXECUTABLE_6_8 = '/opt/es/elasticsearch-6.8.3/bin/elasticsearch'
-ELASTICSEARCH_EXECUTABLE_7_3 = '/opt/es/elasticsearch-7.3.2/bin/elasticsearch'
-ELASTICSEARCH_EXECUTABLE_7_4 = '/opt/es/elasticsearch-7.4.1/bin/elasticsearch'
 
 VERSION_STRING_5_6 = (
     'OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was '
@@ -49,37 +45,6 @@ VERSION_STRING_7_4 = (
     '\nVersion: 7.4.1, Build: default/tar/fc0eeb6e2c25915d63d871d344e3d0b45ea0e'
     'a1e/2019-10-22T17:16:35.176724Z, JVM: 11.0.2'
 )
-
-
-def elasticsearch_fixture_factory(executable, proc_name, port, **kwargs):
-    """Create elasticsearch fixture pairs."""
-    proc = factories.elasticsearch_proc(executable, port=port, **kwargs)
-    elasticsearch = factories.elasticsearch(proc_name)
-    return proc, elasticsearch
-
-
-# pylint:disable=invalid-name
-elasticsearch_proc2 = factories.elasticsearch_proc(executable=ELASTICSEARCH_EXECUTABLE_7_4, port=9393)
-elasticsearch_nooproc2 = factories.elasticsearch_noproc(port=9393)
-elasticsearch2 = factories.elasticsearch('elasticsearch_proc2')
-elasticsearch2_noop = factories.elasticsearch('elasticsearch_nooproc2')
-# pylint:enable=invalid-name
-
-
-# pylint:disable=invalid-name
-elasticsearch_proc_5_6, elasticsearch_5_6 = elasticsearch_fixture_factory(
-    ELASTICSEARCH_EXECUTABLE_5_6, 'elasticsearch_proc_5_6', port=None
-)
-elasticsearch_proc_6_8, elasticsearch_6_8 = elasticsearch_fixture_factory(
-    ELASTICSEARCH_EXECUTABLE_6_8, 'elasticsearch_proc_6_8', port=None
-)
-elasticsearch_proc_7_3, elasticsearch_7_3 = elasticsearch_fixture_factory(
-    ELASTICSEARCH_EXECUTABLE_7_3, 'elasticsearch_proc_7_3', port=None
-)
-elasticsearch_proc_7_4, elasticsearch_7_4 = elasticsearch_fixture_factory(
-    ELASTICSEARCH_EXECUTABLE_7_4, 'elasticsearch_proc_7_4', port=None
-)
-# pylint:enable=invalid-name
 
 
 @pytest.mark.parametrize('output, expected_version', (
@@ -157,12 +122,16 @@ def test_external_elastic(elasticsearch2, elasticsearch2_noop):
         'text': 'Elasticsearch: cool. bonsai cool.',
         'timestamp': datetime.utcnow(),
     }
-    res = elasticsearch2.index(index="test-index", doc_type='tweet', id=1, body=doc)
+    res = elasticsearch2.index(
+        index="test-index", doc_type='tweet', id=1, body=doc
+    )
     assert res['result'] == 'created'
 
     res = elasticsearch2_noop.get(index="test-index", doc_type='tweet', id=1)
-    assert res['found'] == True
+    assert res['found'] is True
     elasticsearch2.indices.refresh(index="test-index")
 
-    res = elasticsearch2_noop.search(index="test-index", body={"query": {"match_all": {}}})
+    res = elasticsearch2_noop.search(
+        index="test-index", body={"query": {"match_all": {}}}
+    )
     assert res['hits']['total']['value'] == 1
