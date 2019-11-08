@@ -28,6 +28,13 @@ after_success:
 jobs:
   include:
     - stage: external
+      python:
+        - 3.5
+        - 3.6
+        - 3.7
+        - 3.8
+        - nightly
+        - pypy3
       script: py.test -n 0 -k test_external_elastic
     - stage: xdist
       python: 3.8
