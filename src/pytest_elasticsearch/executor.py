@@ -24,10 +24,6 @@ class NoopElasticsearch:
         """Mock method pretending the executor is running."""
         return True
 
-    def start(self):
-        """Mock method pretending the executor can be started."""
-        return self
-
 
 # pylint:disable=too-many-instance-attributes
 class ElasticSearchExecutor(HTTPExecutor):
