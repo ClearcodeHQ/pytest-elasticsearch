@@ -134,7 +134,7 @@ You can pick which you prefer, but remember that these settings are handled in t
      - --elasticsearch-index-store-type
      - elasticsearch_index_store_type
      - -
-     - memory
+     - mmapfs
    * - network publish host
      - network_publish_host
      - --elasticsearch-network-publish-host

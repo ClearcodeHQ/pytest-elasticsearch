@@ -59,8 +59,8 @@ def elasticsearch_fixture_factory(executable, proc_name, port, **kwargs):
 
 
 # pylint:disable=invalid-name
-elasticsearch_proc2 = factories.elasticsearch_proc(executable=ELASTICSEARCH_EXECUTABLE_7_4, port=6381)
-elasticsearch_nooproc2 = factories.elasticsearch_noproc(port=6381)
+elasticsearch_proc2 = factories.elasticsearch_proc(executable=ELASTICSEARCH_EXECUTABLE_7_4, port=9393)
+elasticsearch_nooproc2 = factories.elasticsearch_noproc(port=9393)
 elasticsearch2 = factories.elasticsearch('elasticsearch_proc2')
 elasticsearch2_noop = factories.elasticsearch('elasticsearch_nooproc2')
 # pylint:enable=invalid-name
@@ -149,21 +149,21 @@ def test_default_configuration(request):
     assert logsdir_option is None
 
 
-def test_external_redis(elasticsearch2, elasticsearch2_noop):
+def test_external_elastic(elasticsearch2, elasticsearch2_noop):
     """Check that nooproc connects to the same redis."""
+    elasticsearch2.indices.create(index='test-index', ignore=400)
     doc = {
         'author': 'kimchy',
         'text': 'Elasticsearch: cool. bonsai cool.',
         'timestamp': datetime.utcnow(),
     }
+    import pdb; pdb.set_trace()
     res = elasticsearch2.index(index="test-index", doc_type='tweet', id=1, body=doc)
-    print(res['result'])
+    assert res['result'] == 'created'
 
     res = elasticsearch2_noop.get(index="test-index", doc_type='tweet', id=1)
-    print(res['_source'])
+    assert res['found'] == True
     elasticsearch2.indices.refresh(index="test-index")
 
     res = elasticsearch2_noop.search(index="test-index", body={"query": {"match_all": {}}})
-    print("Got %d Hits:" % res['hits']['total']['value'])
-    for hit in res['hits']['hits']:
-        print("%(timestamp)s %(author)s: %(text)s" % hit["_source"])
+    assert res['hits']['total']['value'] == 1

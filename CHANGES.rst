@@ -5,10 +5,14 @@ unreleased
 -------
 
 - [enhancement] Created a specified Executor to manage elasticsearch
+- [enhancement] added new elasticsearch_nooproc fixture to connect to already
+  existing elasticsearch index
 - [cleanup] Drop support for unused discovery_zen_ping_multicast
   and elasticsearch_configuration_path option
 - [cleanup] Drop support for elasticsearch older than 5
 - [cleanup] Drop support for python versions older than 3.5
+- [bugfix] changed default index.memory type to mmapfs, over long invalid
+  memory type
 
 1.3.0
 -------

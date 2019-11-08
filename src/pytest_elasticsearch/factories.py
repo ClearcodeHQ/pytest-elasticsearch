@@ -174,9 +174,7 @@ def elasticsearch(process_fixture_name):
         if not process.running():
             process.start()
 
-        hosts = f'{process.host!s}:{process.port!s}'
-
-        client = Elasticsearch(hosts=hosts)
+        client = Elasticsearch([{'host': process.host, 'port': process.port}])
 
         def drop_indexes():
             client.indices.delete(index='*')
