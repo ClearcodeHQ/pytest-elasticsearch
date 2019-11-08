@@ -22,9 +22,11 @@ class NoopElasticsearch:
 
     @staticmethod
     def running():
+        """Mock method pretending the executor is running."""
         return True
 
     def start(self):
+        """Mock method pretending the executor can be started."""
         return self
 
 
