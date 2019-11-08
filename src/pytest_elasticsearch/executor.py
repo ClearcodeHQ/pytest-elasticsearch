@@ -1,7 +1,6 @@
 """Elasticsearch executor."""
 
 import re
-from collections import namedtuple
 from subprocess import check_output
 
 from mirakuru import HTTPExecutor
