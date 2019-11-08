@@ -24,12 +24,12 @@ pytest-elasticsearch
 Package status
 --------------
 
-.. image:: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch.svg?branch=v1.3.0
+.. image:: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch.svg?branch=v2.0.0
     :target: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch
     :alt: Tests
 
-.. image:: https://coveralls.io/repos/ClearcodeHQ/pytest-elasticsearch/badge.png?branch=v1.3.0
-    :target: https://coveralls.io/r/ClearcodeHQ/pytest-elasticsearch?branch=v1.3.0
+.. image:: https://coveralls.io/repos/ClearcodeHQ/pytest-elasticsearch/badge.png?branch=v2.0.0
+    :target: https://coveralls.io/r/ClearcodeHQ/pytest-elasticsearch?branch=v2.0.0
     :alt: Coverage Status
 
 What is this?

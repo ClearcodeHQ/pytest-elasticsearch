@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-unreleased
+2.0.0
 -------
 
 - [enhancement] Created a specified Executor to manage elasticsearch
