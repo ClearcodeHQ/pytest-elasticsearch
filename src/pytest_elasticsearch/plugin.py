@@ -58,7 +58,7 @@ def pytest_addoption(parser):
     parser.addini(
         name='elasticsearch_index_store_type',
         help=_help_index_store_type,
-        default='memory'
+        default='mmapfs'
     )
 
     parser.addini(
@@ -144,4 +144,5 @@ def pytest_addoption(parser):
 
 
 elasticsearch_proc = factories.elasticsearch_proc()
+elasticsearch_nooproc = factories.elasticsearch_noproc()
 elasticsearch = factories.elasticsearch('elasticsearch_proc')

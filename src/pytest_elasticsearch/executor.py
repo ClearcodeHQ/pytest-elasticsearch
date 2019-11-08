@@ -7,6 +7,24 @@ from mirakuru import HTTPExecutor
 from pkg_resources import parse_version
 
 
+class NoopElasticsearch:  # pylint:disable=too-few-public-methods
+    """No operation Elasticsearch executor mock."""
+
+    def __init__(self, host, port):
+        """
+        Initialize Elasticsearch executor mock
+        :param str host: hostname under which elasticsearch is available
+        :param int port: port under which elasticsearch is available
+        """
+        self.host = host
+        self.port = port
+
+    @staticmethod
+    def running():
+        """Mock method pretending the executor is running."""
+        return True
+
+
 # pylint:disable=too-many-instance-attributes
 class ElasticSearchExecutor(HTTPExecutor):
     """Elasticsearch executor."""

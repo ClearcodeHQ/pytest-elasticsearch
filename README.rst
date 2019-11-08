@@ -47,8 +47,12 @@ How to use
 
 The plugin contains two fixtures:
 
-* **elasticsearch** - a client fixture that has functional scope, and which cleans Elasticsearch at the end of each test.
-* **elasticsearch_proc** - a session scoped fixture, that starts Elasticsearch instance at its first use and stops at the end of the tests.
+* **elasticsearch** - a client fixture that has functional scope, and which
+  cleans Elasticsearch at the end of each test.
+* **elasticsearch_proc** - a session scoped fixture, that starts Elasticsearch
+  instance at its first use and stops at the end of the tests.
+* **elasticsearch_nooproc** - a nooprocess fixture, that's holds connection data
+  to already running elasticsearch
 
 Simply include one of these fixtures into your tests fixture list.
 
@@ -67,6 +71,21 @@ You can also create additional elasticsearch client and process fixtures if you'
 
     Each elasticsearch process fixture can be configured in a different way than the others through the fixture factory arguments.
 
+
+Connecting to already existing Elasticsearch service
+----------------------------------------------------
+
+Some projects are using already running Elasticsearch servers
+(ie on docker instances). In order to connect to them, one would be using the
+``elasticsearch_nooproc`` fixture.
+
+.. code-block:: python
+
+    es_external = factories.elasticsearch('elasticsearch_nooproc')
+
+By default the  ``elasticsearch_nooproc`` fixture would connect to elasticsearch
+instance using **9300** port.
+
 Configuration
 =============
 
@@ -84,51 +103,61 @@ You can pick which you prefer, but remember that these settings are handled in t
      - Fixture factory argument
      - Command line option
      - pytest.ini option
+     - Noop process fixture
      - Default
    * - logs directory
      - logsdir
      - --elasticsearch-logsdir
      - elasticsearch_logsdir
+     - -
      - $TMPDIR
    * - host
      - host
      - --elasticsearch-host
      - elasticsearch_host
+     - host
      - 127.0.0.1
    * - port
      - port
      - -elasticsearch-port
      - elasticsearch_port
+     - 6300
      - random
    * - Elasticsearch cluster name
      - cluster_name
      - --elasticsearch-cluster-name
      - elasticsearch_cluster_name
+     - -
      - elasticsearch_cluster_<port>
    * - index storage type
      - index_store_type
      - --elasticsearch-index-store-type
      - elasticsearch_index_store_type
-     - memory
+     - -
+     - mmapfs
    * - network publish host
      - network_publish_host
      - --elasticsearch-network-publish-host
      - elasticsearch_network_publish_host
+     - -
      - 127.0.0.1
    * - logs prefix
      - logs_prefix
      - --elasticsearch-logs-prefix
      - elasticsearch_logs_prefix
+     - -
      -
    * - transport tcp port
      - transport_tcp_port
      - --elasticsearch-transport-tcp-port
      - elasticsearch_transport_tcp_port
+     - -
      - random
    * - configuration path
      - configuration_path
      - --elasticsearch-configuration-path
      - elasticsearch_configuration_path
+     - -
      - /etc/elasticsearch
 
 Example usage:
