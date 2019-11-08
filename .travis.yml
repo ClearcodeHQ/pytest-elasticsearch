@@ -28,7 +28,6 @@ after_success:
 jobs:
   include:
     - stage: external
-      python: 3.5
       script: py.test -n 0 -k test_external_elastic
     - python: 3.6
     - python: 3.7

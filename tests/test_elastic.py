@@ -157,7 +157,6 @@ def test_external_elastic(elasticsearch2, elasticsearch2_noop):
         'text': 'Elasticsearch: cool. bonsai cool.',
         'timestamp': datetime.utcnow(),
     }
-    import pdb; pdb.set_trace()
     res = elasticsearch2.index(index="test-index", doc_type='tweet', id=1, body=doc)
     assert res['result'] == 'created'
 
