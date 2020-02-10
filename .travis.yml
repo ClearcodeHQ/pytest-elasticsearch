@@ -2,10 +2,10 @@ dist: xenial
 sudo: true
 language: python
 python:
-- 3.5
-- 3.6
-- 3.7
 - 3.8
+- 3.7
+- 3.6
+- 3.9-dev
 - nightly
 - pypy3
 # blocklist branches
@@ -20,7 +20,7 @@ before_cache:
   - rm -f /opt/es/*/*/*.log
   - rm -f /opt/es/*/*/*.log.*
 install:
-- pip install "setuptools>=18.5.0,<40" coveralls
+- pip install "setuptools>=18.5.0" coveralls
 - pip install -r requirements-test.txt
 before_script:
 - bash .travis.install-elasticsearch.sh
@@ -29,14 +29,16 @@ script:
 after_success:
 - coveralls
 jobs:
+  allow_failures:
+    - python: 3.9-dev
+    - python: nightly
   include:
     - stage: external
       script: py.test -n 0 -k test_external_elastic
-    - python: 3.6
     - python: 3.7
-    - python: 3.8
+    - python: 3.6
+    - python: 3.9-dev
     - stage: xdist
-      python: 3.8
       script: py.test -n 1 -k "not test_external_elastic"
     - stage: linters
       python: 3.8
@@ -50,7 +52,6 @@ jobs:
       - pyroma .
       after_success: skip
     - stage: deploy
-      python: 3.8
       if: tag IS present
       before_script: skip
       script: skip
