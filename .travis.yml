@@ -29,6 +29,9 @@ script:
 after_success:
 - coveralls
 jobs:
+  allow_failures:
+    - python: 3.9-dev
+    - python: nightly
   include:
     - stage: external
       script: py.test -n 0 -k test_external_elastic
