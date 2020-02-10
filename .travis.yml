@@ -20,7 +20,7 @@ before_cache:
   - rm -f /opt/es/*/*/*.log
   - rm -f /opt/es/*/*/*.log.*
 install:
-- pip install "setuptools>=18.5.0,<40" coveralls
+- pip install "setuptools>=18.5.0" coveralls
 - pip install -r requirements-test.txt
 before_script:
 - bash .travis.install-elasticsearch.sh
