@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+unreleased
+-------
+
+- [cleanup] Drop support for python versions older than 3.6
+
 2.0.0
 -------
 
