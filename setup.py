@@ -55,7 +55,7 @@ extras_require = {
 
 setup(
     name='pytest-elasticsearch',
-    version='2.0.0',
+    version='2.0.1',
     description='Elasticsearch process and client fixtures for py.test.',
     long_description=(
         read('README.rst') + '\n\n' + read('CHANGES.rst')
