@@ -22,6 +22,7 @@ from tempfile import gettempdir
 
 import pytest
 from elasticsearch import Elasticsearch
+from mirakuru import ProcessExitedWithError
 
 from pytest_elasticsearch.executor import (
     ElasticSearchExecutor,
@@ -122,8 +123,12 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             timeout=60,
         )
 
-        with elasticsearch_executor:
-            yield elasticsearch_executor
+        elasticsearch_executor.start()
+        yield elasticsearch_executor
+        try:
+            elasticsearch_executor.stop()
+        except ProcessExitedWithError:
+            pass
         shutil.rmtree(work_path)
         shutil.rmtree(logs_path)
 
