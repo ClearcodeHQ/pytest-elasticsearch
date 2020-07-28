@@ -1,6 +1,6 @@
 # test runs requirements (versions we'll be testing against) - automatically updated by requires.io
 pytest==5.4.3
-pytest-xdist==1.33.0
+pytest-xdist==1.34.0
 pytest-cov==2.10.0
 coverage==5.2.1 # pytest-cov
 mock==4.0.2
