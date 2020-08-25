@@ -97,10 +97,10 @@ class ElasticSearchExecutor(HTTPExecutor):
                         version['major'], version['minor'], version['patch']
                     ])
                 )
-            except OSError:
+            except OSError as exc:
                 raise RuntimeError(
                     "'%s' does not point to elasticsearch." % self.executable
-                )
+                ) from exc
         return self._version
 
     def _exec_command(self):
