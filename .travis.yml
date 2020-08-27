@@ -1,5 +1,4 @@
 dist: xenial
-sudo: true
 language: python
 python:
 - 3.8
@@ -8,6 +7,9 @@ python:
 - 3.9-dev
 - nightly
 - pypy3
+env:
+  global:
+    - ES_JAVA_OPTS="-Xms256m -Xmx256m"
 # blocklist branches
 branches:
   except:
@@ -25,7 +27,7 @@ install:
 before_script:
 - bash .travis.install-elasticsearch.sh
 script:
-- py.test -n 0 -k "not test_external_elastic"
+- py.test -n 0
 after_success:
 - coveralls
 jobs:
@@ -33,13 +35,8 @@ jobs:
     - python: 3.9-dev
     - python: nightly
   include:
-    - stage: external
-      script: py.test -n 0 -k test_external_elastic
-    - python: 3.7
-    - python: 3.6
-    - python: 3.9-dev
     - stage: xdist
-      script: py.test -n 1 -k "not test_external_elastic"
+      script: py.test -n 1
     - stage: linters
       python: 3.8
       install:
