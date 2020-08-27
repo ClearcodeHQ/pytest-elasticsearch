@@ -153,12 +153,6 @@ You can pick which you prefer, but remember that these settings are handled in t
      - elasticsearch_transport_tcp_port
      - -
      - random
-   * - configuration path
-     - configuration_path
-     - --elasticsearch-configuration-path
-     - elasticsearch_configuration_path
-     - -
-     - /etc/elasticsearch
 
 Example usage:
 

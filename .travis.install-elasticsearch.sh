@@ -29,6 +29,10 @@ function remove_if_erroneus {
 }
 
 install_from_zip https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.16.zip elasticsearch-5.6.16
-install_from_zip https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.3.zip elasticsearch-6.8.3
-install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.3.2-linux-x86_64.tar.gz elasticsearch-7.3.2
-install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.4.1-linux-x86_64.tar.gz elasticsearch-7.4.1
+install_from_zip https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.12.zip elasticsearch-6.8.12
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.4.2-linux-x86_64.tar.gz elasticsearch-7.4.2
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.5.2-linux-x86_64.tar.gz elasticsearch-7.5.2
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.2-linux-x86_64.tar.gz elasticsearch-7.6.2
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.7.1-linux-x86_64.tar.gz elasticsearch-7.7.1
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.1-linux-x86_64.tar.gz elasticsearch-7.8.1
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.9.0-linux-x86_64.tar.gz elasticsearch-7.9.0
