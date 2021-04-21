@@ -42,7 +42,7 @@ def return_config(request):
     for option in options:
         option_name = 'elasticsearch_' + option
         conf = request.config.getoption(option_name) or \
-               request.config.getini(option_name)
+            request.config.getini(option_name)
         config[option] = conf
     return config
 
