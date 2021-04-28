@@ -19,9 +19,9 @@
 import os.path
 import shutil
 from tempfile import gettempdir
-
+import asyncio
 import pytest
-from elasticsearch import Elasticsearch
+from elasticsearch import Elasticsearch, AsyncElasticsearch
 from mirakuru import ProcessExitedWithError
 
 from pytest_elasticsearch.executor import (
@@ -86,16 +86,16 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
 
         elasticsearch_port = get_port(port) or get_port(config['port'])
         elasticsearch_transport_port = get_port(transport_tcp_port) or \
-            get_port(config['transport_tcp_port'])
+                                       get_port(config['transport_tcp_port'])
 
         elasticsearch_cluster_name = \
             cluster_name or config['cluster_name'] or \
             'elasticsearch_cluster_{0}'.format(elasticsearch_port)
         elasticsearch_logs_prefix = logs_prefix or config['logs_prefix']
         elasticsearch_index_store_type = index_store_type or \
-            config['index_store_type']
+                                         config['index_store_type']
         elasticsearch_network_publish_host = network_publish_host or \
-            config['network_publish_host']
+                                             config['network_publish_host']
 
         logsdir = elasticsearch_logsdir or config['logsdir']
         logs_path = os.path.join(
@@ -186,6 +186,35 @@ def elasticsearch(process_fixture_name):
             client.indices.delete(index='*')
 
         request.addfinalizer(drop_indexes)
+
+        return client
+
+    return elasticsearch_fixture
+
+
+def async_elasticsearch(process_fixture_name):
+    """
+    Create Elasticsearch client fixture.
+
+    :param str process_fixture_name: elasticsearch process fixture name
+    """
+    @pytest.fixture
+    async def elasticsearch_fixture(request):
+        """Elasticsearch client fixture."""
+        process = request.getfixturevalue(process_fixture_name)
+        if not process.running():
+            process.start()
+
+        client = AsyncElasticsearch([{'host': process.host, 'port': process.port}])
+
+        async def drop_indexes():
+            await client.indices.delete(index='*')
+            await client.close()
+
+        def sync_drop_indexes():
+            asyncio.get_event_loop().run_until_complete(drop_indexes())
+
+        request.addfinalizer(sync_drop_indexes)
 
         return client
 
