@@ -1,7 +1,7 @@
 """Elasticsearch executor."""
 
 import re
-from subprocess import check_output
+from subprocess import check_output, STDOUT
 
 from mirakuru import HTTPExecutor
 from pkg_resources import parse_version
@@ -81,7 +81,7 @@ class ElasticSearchExecutor(HTTPExecutor):
         """
         if not self._version:
             try:
-                output = check_output([self.executable, '-Vv']).decode('utf-8')
+                output = check_output([self.executable, '-Vv'], stderr=STDOUT).decode('utf-8')
                 match = re.search(
                     r'Version: (?P<major>\d)\.(?P<minor>\d)\.(?P<patch>\d+)',
                     output
