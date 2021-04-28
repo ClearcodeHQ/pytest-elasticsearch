@@ -87,7 +87,7 @@ def test_version_extraction(output, expected_version):
     """Verify if we can properly extract elasticsearch version."""
     with mock.patch(
             'pytest_elasticsearch.executor.check_output',
-            lambda *args: output.encode('utf8')
+            lambda *args, **kwargs: output.encode('utf8')
     ):
         executor = ElasticSearchExecutor(
             'elasticsearch',
