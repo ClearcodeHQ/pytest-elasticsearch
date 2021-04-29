@@ -24,6 +24,7 @@ from pytest_elasticsearch import factories
 # pylint:disable=invalid-name
 _help_logsdir = 'Elasticsearch logs directory'
 _help_host = 'Elasticsearch host'
+_help_executable = 'Elasticsearch executable'
 _help_port = 'Elasticsearch port'
 _help_cluster_name = 'Cluster name of the elasticsearch process fixture'
 _help_index_store_type = \
@@ -50,6 +51,12 @@ def pytest_addoption(parser):
     )
 
     parser.addini(
+        name='elasticsearch_executable',
+        help=_help_host,
+        default='/usr/share/elasticsearch/bin/elasticsearch'
+    )
+
+    parser.addini(
         name='elasticsearch_cluster_name',
         help=_help_cluster_name,
         default=''
@@ -68,8 +75,7 @@ def pytest_addoption(parser):
     )
 
     parser.addini(
-        name='elasticsearch_logs_prefix',
-        help=_help_logs_prefix,
+        name='elasticsearch_logs_prefix', help=_help_logs_prefix,
         default=''
     )
 
@@ -98,6 +104,14 @@ def pytest_addoption(parser):
         action='store',
         dest='elasticsearch_host',
         help=_help_host,
+    )
+
+    parser.addoption(
+        '--elasticsearch_executable',
+        action='store',
+        dest='elasticsearch_executable',
+        help=_help_host,
+        default='/usr/share/elasticsearch/bin/elasticsearch'
     )
 
     parser.addoption(
