@@ -70,6 +70,14 @@ VERSION_STRING_7_9 = (
     '667/2020-08-11T21:36:48.204330Z, JVM: 11.0.2'
 )
 
+VERSION_STRING_7_10 = (
+    'OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was '
+    'deprecated in version 9.0 and will likely be removed in a future release.'
+    '\nVersion: 7.10.0, '
+    'Build: default/tar/a479a2a7fce0389512d6a9361301708b92dff667/'
+    '2020-08-11T21:36:48.204330Z, JVM: 11.0.2'
+)
+
 
 @pytest.mark.parametrize('output, expected_version', (
     (VERSION_STRING_5_6, '5.6.16'),
@@ -82,6 +90,7 @@ VERSION_STRING_7_9 = (
     (VERSION_STRING_7_7, '7.7.1'),
     (VERSION_STRING_7_8, '7.8.1'),
     (VERSION_STRING_7_9, '7.9.0'),
+    (VERSION_STRING_7_10, '7.10.0'),
 ))
 def test_version_extraction(output, expected_version):
     """Verify if we can properly extract elasticsearch version."""

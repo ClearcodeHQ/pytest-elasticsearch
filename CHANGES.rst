@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+unreleased
+-------
+
+- [bugfix] Handle properly elasticsearch versions with two-digit minor version
+
+
 2.0.1
 -------
 
