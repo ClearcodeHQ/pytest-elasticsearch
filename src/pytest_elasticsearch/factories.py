@@ -24,10 +24,7 @@ import pytest
 from elasticsearch import Elasticsearch
 from mirakuru import ProcessExitedWithError
 
-from pytest_elasticsearch.executor import (
-    ElasticSearchExecutor,
-    NoopElasticsearch
-)
+from pytest_elasticsearch.executor import ElasticSearchExecutor, NoopElasticsearch
 from pytest_elasticsearch.port import get_port
 
 
@@ -35,23 +32,34 @@ def return_config(request):
     """Return a dictionary with config options."""
     config = {}
     options = [
-        'port', 'transport_tcp_port', 'host', 'cluster_name',
-        'network_publish_host',
-        'index_store_type', 'logs_prefix', 'logsdir', 'executable'
+        "port",
+        "transport_tcp_port",
+        "host",
+        "cluster_name",
+        "network_publish_host",
+        "index_store_type",
+        "logs_prefix",
+        "logsdir",
+        "executable",
     ]
     for option in options:
-        option_name = 'elasticsearch_' + option
-        conf = request.config.getoption(option_name) or \
-            request.config.getini(option_name)
+        option_name = "elasticsearch_" + option
+        conf = request.config.getoption(option_name) or request.config.getini(option_name)
         config[option] = conf
     return config
 
 
-def elasticsearch_proc(executable=None,
-                       host=None, port=-1, transport_tcp_port=None,
-                       cluster_name=None, network_publish_host=None,
-                       index_store_type=None, logs_prefix=None,
-                       elasticsearch_logsdir=None):
+def elasticsearch_proc(
+    executable=None,
+    host=None,
+    port=-1,
+    transport_tcp_port=None,
+    cluster_name=None,
+    network_publish_host=None,
+    index_store_type=None,
+    logs_prefix=None,
+    elasticsearch_logsdir=None,
+):
 
     """
     Create elasticsearch process fixture.
@@ -79,37 +87,37 @@ def elasticsearch_proc(executable=None,
     :param elasticsearch_logsdir: path for elasticsearch logs
     """
 
-    @pytest.fixture(scope='session')
+    @pytest.fixture(scope="session")
     def elasticsearch_proc_fixture(request):
         """Elasticsearch process starting fixture."""
         config = return_config(request)
-        elasticsearch_host = host or config['host']
-        elasticsearch_executable = executable or config['executable']
+        elasticsearch_host = host or config["host"]
+        elasticsearch_executable = executable or config["executable"]
 
-        elasticsearch_port = get_port(port) or get_port(config['port'])
-        elasticsearch_transport_port = get_port(transport_tcp_port) or \
-            get_port(config['transport_tcp_port'])
+        elasticsearch_port = get_port(port) or get_port(config["port"])
+        elasticsearch_transport_port = get_port(transport_tcp_port) or get_port(
+            config["transport_tcp_port"]
+        )
 
-        elasticsearch_cluster_name = \
-            cluster_name or config['cluster_name'] or \
-            'elasticsearch_cluster_{0}'.format(elasticsearch_port)
-        elasticsearch_logs_prefix = logs_prefix or config['logs_prefix']
-        elasticsearch_index_store_type = index_store_type or \
-            config['index_store_type']
-        elasticsearch_network_publish_host = network_publish_host or \
-            config['network_publish_host']
+        elasticsearch_cluster_name = (
+            cluster_name
+            or config["cluster_name"]
+            or "elasticsearch_cluster_{0}".format(elasticsearch_port)
+        )
+        elasticsearch_logs_prefix = logs_prefix or config["logs_prefix"]
+        elasticsearch_index_store_type = index_store_type or config["index_store_type"]
+        elasticsearch_network_publish_host = network_publish_host or config["network_publish_host"]
 
-        logsdir = elasticsearch_logsdir or config['logsdir']
+        logsdir = elasticsearch_logsdir or config["logsdir"]
         logs_path = os.path.join(
-            logsdir, '{prefix}elasticsearch_{port}_logs'.format(
-                prefix=elasticsearch_logs_prefix,
-                port=elasticsearch_port
-            ))
+            logsdir,
+            "{prefix}elasticsearch_{port}_logs".format(
+                prefix=elasticsearch_logs_prefix, port=elasticsearch_port
+            ),
+        )
 
-        pidfile = os.path.join(
-            gettempdir(), 'elasticsearch.{0}.pid'.format(elasticsearch_port))
-        work_path = os.path.join(
-            gettempdir(), 'elasticsearch_{0}_tmp'.format(elasticsearch_port))
+        pidfile = os.path.join(gettempdir(), "elasticsearch.{0}.pid".format(elasticsearch_port))
+        work_path = os.path.join(gettempdir(), "elasticsearch_{0}_tmp".format(elasticsearch_port))
 
         elasticsearch_executor = ElasticSearchExecutor(
             elasticsearch_executable,
@@ -146,7 +154,8 @@ def elasticsearch_noproc(host=None, port=None):
     :rtype: func
     :returns: function which makes a elasticsearch process
     """
-    @pytest.fixture(scope='session')
+
+    @pytest.fixture(scope="session")
     def elasticsearch_noproc_fixture(request):
         """
         Noop Process fixture for PostgreSQL.
@@ -156,13 +165,10 @@ def elasticsearch_noproc(host=None, port=None):
         :returns: tcp executor-like object
         """
         config = return_config(request)
-        pg_host = host or config['host']
-        pg_port = port or config['port'] or 9300
+        pg_host = host or config["host"]
+        pg_port = port or config["port"] or 9300
 
-        noop_exec = NoopElasticsearch(
-            host=pg_host,
-            port=pg_port
-        )
+        noop_exec = NoopElasticsearch(host=pg_host, port=pg_port)
 
         yield noop_exec
 
@@ -175,6 +181,7 @@ def elasticsearch(process_fixture_name):
 
     :param str process_fixture_name: elasticsearch process fixture name
     """
+
     @pytest.fixture
     def elasticsearch_fixture(request):
         """Elasticsearch client fixture."""
@@ -182,10 +189,10 @@ def elasticsearch(process_fixture_name):
         if not process.running():
             process.start()
 
-        client = Elasticsearch([{'host': process.host, 'port': process.port}])
+        client = Elasticsearch([{"host": process.host, "port": process.port}])
 
         def drop_indexes():
-            client.indices.delete(index='*')
+            client.indices.delete(index="*")
 
         request.addfinalizer(drop_indexes)
 

@@ -30,10 +30,19 @@ class ElasticSearchExecutor(HTTPExecutor):
     """Elasticsearch executor."""
 
     def __init__(
-            self, executable, host, port, tcp_port,
-            pidfile, logs_path, works_path,
-            cluster_name, network_publish_host, index_store_type, timeout
-    ):   # pylint:disable=too-many-arguments
+        self,
+        executable,
+        host,
+        port,
+        tcp_port,
+        pidfile,
+        logs_path,
+        works_path,
+        cluster_name,
+        network_publish_host,
+        index_store_type,
+        timeout,
+    ):  # pylint:disable=too-many-arguments
         """
         Initialize ElasticSearchExecutor.
 
@@ -64,11 +73,11 @@ class ElasticSearchExecutor(HTTPExecutor):
         self.index_store_type = index_store_type
         super().__init__(
             self._exec_command(),
-            'http://{host}:{port}'.format(
+            "http://{host}:{port}".format(
                 host=self.host,
                 port=self.port,
             ),
-            timeout=timeout
+            timeout=timeout,
         )
 
     @property
@@ -81,21 +90,17 @@ class ElasticSearchExecutor(HTTPExecutor):
         """
         if not self._version:
             try:
-                output = check_output([self.executable, '-Vv']).decode('utf-8')
-                match = re.search(
-                    r'Version: (?P<major>\d)\.(?P<minor>\d+)\.(?P<patch>\d+)',
-                    output
-                )
+                output = check_output([self.executable, "-Vv"]).decode("utf-8")
+                match = re.search(r"Version: (?P<major>\d)\.(?P<minor>\d+)\.(?P<patch>\d+)", output)
                 if not match:
                     raise RuntimeError(
                         "Elasticsearch version is not recognized. "
                         "It is probably not supported. \n"
-                        "Output is: " + output)
+                        "Output is: " + output
+                    )
                 version = match.groupdict()
                 self._version = parse_version(
-                    '.'.join([
-                        version['major'], version['minor'], version['patch']
-                    ])
+                    ".".join([version["major"], version["minor"], version["patch"]])
                 )
             except OSError as exc:
                 raise RuntimeError(
@@ -110,9 +115,9 @@ class ElasticSearchExecutor(HTTPExecutor):
         :return: command to run elasticsearch
         :rtype: str
         """
-        if self.version < parse_version('5.0.0'):
+        if self.version < parse_version("5.0.0"):
             raise RuntimeError("This elasticsearch version is not supported.")
-        return '''
+        return """
             {deamon} -p {pidfile}
             -E http.port={port}
             -E transport.tcp.port={tcp_port}
@@ -121,7 +126,7 @@ class ElasticSearchExecutor(HTTPExecutor):
             -E cluster.name={cluster}
             -E network.host='{network_publish_host}'
             -E index.store.type={index_store_type}
-        '''.format(
+        """.format(
             deamon=self.executable,
             pidfile=self.pidfile,
             port=self.port,
