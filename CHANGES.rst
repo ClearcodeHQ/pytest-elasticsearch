@@ -2,7 +2,7 @@ CHANGELOG
 =========
 
 unreleased
--------
+----------
 
 Features
 ++++++++
@@ -13,6 +13,12 @@ Bugfix
 ++++++
 
 - Handle properly elasticsearch versions with two-digit minor version
+
+Misc
+++++
+
+- Migrated CI/CD to Github Actions
+- Blackified Codebase
 
 2.0.1
 -------

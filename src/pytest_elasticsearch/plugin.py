@@ -22,140 +22,118 @@ from tempfile import gettempdir
 from pytest_elasticsearch import factories
 
 # pylint:disable=invalid-name
-_help_logsdir = 'Elasticsearch logs directory'
-_help_host = 'Elasticsearch host'
-_help_executable = 'Elasticsearch executable'
-_help_port = 'Elasticsearch port'
-_help_cluster_name = 'Cluster name of the elasticsearch process fixture'
-_help_index_store_type = \
-    'type of the index to use in the elasticsearch process fixture'
-_help_network_publish_host = \
-    'network host to which elasticsearch publish to connect to cluseter'
-_help_logs_prefix = 'prefix for the logs file'
-_help_elasticsearch_transport_tcp_port = 'The tcp ansport port used \
-    for internal communication between nodes within the cluster'
+_help_logsdir = "Elasticsearch logs directory"
+_help_host = "Elasticsearch host"
+_help_executable = "Elasticsearch executable"
+_help_port = "Elasticsearch port"
+_help_cluster_name = "Cluster name of the elasticsearch process fixture"
+_help_index_store_type = "type of the index to use in the elasticsearch process fixture"
+_help_network_publish_host = "network host to which elasticsearch publish to connect to cluseter"
+_help_logs_prefix = "prefix for the logs file"
+_help_elasticsearch_transport_tcp_port = "The tcp ansport port used \
+    for internal communication between nodes within the cluster"
 
 
 def pytest_addoption(parser):
     """Add plugin's configuration options."""
-    parser.addini(
-        name='elasticsearch_logsdir',
-        help=_help_logsdir,
-        default=gettempdir()
-    )
+    parser.addini(name="elasticsearch_logsdir", help=_help_logsdir, default=gettempdir())
+
+    parser.addini(name="elasticsearch_host", help=_help_host, default="127.0.0.1")
 
     parser.addini(
-        name='elasticsearch_host',
-        help=_help_host,
-        default='127.0.0.1'
-    )
-
-    parser.addini(
-        name='elasticsearch_executable',
+        name="elasticsearch_executable",
         help=_help_executable,
-        default='/usr/share/elasticsearch/bin/elasticsearch'
+        default="/usr/share/elasticsearch/bin/elasticsearch",
+    )
+
+    parser.addini(name="elasticsearch_cluster_name", help=_help_cluster_name, default="")
+
+    parser.addini(
+        name="elasticsearch_index_store_type", help=_help_index_store_type, default="mmapfs"
     )
 
     parser.addini(
-        name='elasticsearch_cluster_name',
-        help=_help_cluster_name,
-        default=''
-    )
-
-    parser.addini(
-        name='elasticsearch_index_store_type',
-        help=_help_index_store_type,
-        default='mmapfs'
-    )
-
-    parser.addini(
-        name='elasticsearch_network_publish_host',
+        name="elasticsearch_network_publish_host",
         help=_help_network_publish_host,
-        default='127.0.0.1'
+        default="127.0.0.1",
     )
 
-    parser.addini(
-        name='elasticsearch_logs_prefix', help=_help_logs_prefix,
-        default=''
-    )
+    parser.addini(name="elasticsearch_logs_prefix", help=_help_logs_prefix, default="")
 
     parser.addini(
-        name='elasticsearch_port',
+        name="elasticsearch_port",
         help=_help_port,
         default=None,
     )
 
     parser.addini(
-        'elasticsearch_transport_tcp_port',
+        "elasticsearch_transport_tcp_port",
         help=_help_elasticsearch_transport_tcp_port,
-        default=None
+        default=None,
     )
 
     parser.addoption(
-        '--elasticsearch-logsdir',
-        action='store',
-        metavar='path',
-        dest='elasticsearch_logsdir',
-        help=_help_logsdir
+        "--elasticsearch-logsdir",
+        action="store",
+        metavar="path",
+        dest="elasticsearch_logsdir",
+        help=_help_logsdir,
     )
 
     parser.addoption(
-        '--elasticsearch-host',
-        action='store',
-        dest='elasticsearch_host',
+        "--elasticsearch-host",
+        action="store",
+        dest="elasticsearch_host",
         help=_help_host,
     )
 
     parser.addoption(
-        '--elasticsearch_executable',
-        action='store',
-        dest='elasticsearch_executable',
+        "--elasticsearch-executable",
+        action="store",
+        dest="elasticsearch_executable",
         help=_help_executable,
     )
 
     parser.addoption(
-        '--elasticsearch-cluster-name',
-        action='store',
-        dest='elasticsearch_cluster_name',
+        "--elasticsearch-cluster-name",
+        action="store",
+        dest="elasticsearch_cluster_name",
         help=_help_cluster_name,
     )
 
     parser.addoption(
-        '--elasticsearch-index-store-type',
-        action='store',
-        dest='elasticsearch_index_store_type',
+        "--elasticsearch-index-store-type",
+        action="store",
+        dest="elasticsearch_index_store_type",
         help=_help_index_store_type,
     )
 
     parser.addoption(
-        '--elasticsearch-network-publish-host',
-        action='store',
-        dest='elasticsearch_network_publish_host',
+        "--elasticsearch-network-publish-host",
+        action="store",
+        dest="elasticsearch_network_publish_host",
         help=_help_network_publish_host,
     )
 
     parser.addoption(
-        '--elasticsearch-logs-prefix',
-        action='store',
-        dest='elasticsearch_logs_prefix',
+        "--elasticsearch-logs-prefix",
+        action="store",
+        dest="elasticsearch_logs_prefix",
         help=_help_logs_prefix,
     )
 
     parser.addoption(
-        '--elasticsearch-port',
-        action='store',
-        dest='elasticsearch_port',
-        help=_help_port
+        "--elasticsearch-port", action="store", dest="elasticsearch_port", help=_help_port
     )
 
     parser.addoption(
-        '--elasticsearch-transport-tcp-port',
-        action='store',
-        dest='elasticsearch_transport_tcp_port',
-        help=_help_elasticsearch_transport_tcp_port
+        "--elasticsearch-transport-tcp-port",
+        action="store",
+        dest="elasticsearch_transport_tcp_port",
+        help=_help_elasticsearch_transport_tcp_port,
     )
 
 
 elasticsearch_proc = factories.elasticsearch_proc()
 elasticsearch_nooproc = factories.elasticsearch_noproc()
-elasticsearch = factories.elasticsearch('elasticsearch_proc')
+elasticsearch = factories.elasticsearch("elasticsearch_proc")

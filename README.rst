@@ -22,17 +22,6 @@ pytest-elasticsearch
     :target: https://pypi.python.org/pypi/pytest-elasticsearch/
     :alt: License
 
-Package status
---------------
-
-.. image:: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch.svg?branch=v2.0.1
-    :target: https://travis-ci.org/ClearcodeHQ/pytest-elasticsearch
-    :alt: Tests
-
-.. image:: https://coveralls.io/repos/ClearcodeHQ/pytest-elasticsearch/badge.png?branch=v2.0.1
-    :target: https://coveralls.io/r/ClearcodeHQ/pytest-elasticsearch?branch=v2.0.1
-    :alt: Coverage Status
-
 What is this?
 =============
 
@@ -108,7 +97,7 @@ You can pick which you prefer, but remember that these settings are handled in t
      - Default
    * - Elasticsearch executable
      - executable
-     - --elasticsearch_executable
+     - --elasticsearch-executable
      - elasticsearch_executable
      -
      - /usr/share/elasticsearch/bin/elasticsearch
