@@ -4,8 +4,15 @@ CHANGELOG
 unreleased
 -------
 
-- [bugfix] Handle properly elasticsearch versions with two-digit minor version
+Features
+++++++++
 
+- Add command line and ini configuration option for the executable.
+
+Bugfix
+++++++
+
+- Handle properly elasticsearch versions with two-digit minor version
 
 2.0.1
 -------

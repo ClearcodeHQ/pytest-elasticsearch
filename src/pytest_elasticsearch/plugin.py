@@ -52,7 +52,7 @@ def pytest_addoption(parser):
 
     parser.addini(
         name='elasticsearch_executable',
-        help=_help_host,
+        help=_help_executable,
         default='/usr/share/elasticsearch/bin/elasticsearch'
     )
 
@@ -110,8 +110,7 @@ def pytest_addoption(parser):
         '--elasticsearch_executable',
         action='store',
         dest='elasticsearch_executable',
-        help=_help_host,
-        default='/usr/share/elasticsearch/bin/elasticsearch'
+        help=_help_executable,
     )
 
     parser.addoption(
