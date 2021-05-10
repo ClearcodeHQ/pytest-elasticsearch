@@ -37,7 +37,7 @@ def return_config(request):
     options = [
         'port', 'transport_tcp_port', 'host', 'cluster_name',
         'network_publish_host',
-        'index_store_type', 'logs_prefix', 'logsdir'
+        'index_store_type', 'logs_prefix', 'logsdir', 'executable'
     ]
     for option in options:
         option_name = 'elasticsearch_' + option
@@ -47,11 +47,12 @@ def return_config(request):
     return config
 
 
-def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
+def elasticsearch_proc(executable=None,
                        host=None, port=-1, transport_tcp_port=None,
                        cluster_name=None, network_publish_host=None,
                        index_store_type=None, logs_prefix=None,
                        elasticsearch_logsdir=None):
+
     """
     Create elasticsearch process fixture.
 
@@ -83,6 +84,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
         """Elasticsearch process starting fixture."""
         config = return_config(request)
         elasticsearch_host = host or config['host']
+        elasticsearch_executable = executable or config['executable']
 
         elasticsearch_port = get_port(port) or get_port(config['port'])
         elasticsearch_transport_port = get_port(transport_tcp_port) or \
@@ -110,7 +112,7 @@ def elasticsearch_proc(executable='/usr/share/elasticsearch/bin/elasticsearch',
             gettempdir(), 'elasticsearch_{0}_tmp'.format(elasticsearch_port))
 
         elasticsearch_executor = ElasticSearchExecutor(
-            executable,
+            elasticsearch_executable,
             elasticsearch_host,
             elasticsearch_port,
             elasticsearch_transport_port,

@@ -1,3 +1,4 @@
+
 .. image:: https://raw.githubusercontent.com/ClearcodeHQ/pytest-elasticsearch/master/logo.png
     :width: 100px
     :height: 100px
@@ -105,6 +106,12 @@ You can pick which you prefer, but remember that these settings are handled in t
      - pytest.ini option
      - Noop process fixture
      - Default
+   * - Elasticsearch executable
+     - executable
+     - --elasticsearch_executable
+     - elasticsearch_executable
+     -
+     - /usr/share/elasticsearch/bin/elasticsearch
    * - logs directory
      - logsdir
      - --elasticsearch-logsdir
