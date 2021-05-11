@@ -175,6 +175,20 @@ Example usage:
         [pytest]
         elasticsearch_cluster_name = awsome_cluster
 
+Known issues
+------------
+
+It might happen, that the process can't be started due to lack of permissions.
+The files that user running tests has to have access to are:
+
+* /etc/default/elasticsearch
+
+Make sure that you either run tests as a user that has access to these files,
+or you give user proper permissions or add it to proper user groups.
+
+In CI at the moment, we install elasticsearch from tar/zip archives,
+which do not set up additional permission restrictions, so it's not a problem on the CI/CD.
+
 Package resources
 -----------------
 
