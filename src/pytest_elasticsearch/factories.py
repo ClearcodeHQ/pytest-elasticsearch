@@ -100,9 +100,7 @@ def elasticsearch_proc(
         )
 
         elasticsearch_cluster_name = (
-            cluster_name
-            or config["cluster_name"]
-            or "elasticsearch_cluster_{0}".format(elasticsearch_port)
+            cluster_name or config["cluster_name"] or f"elasticsearch_cluster_{elasticsearch_port}"
         )
         elasticsearch_logs_prefix = logs_prefix or config["logs_prefix"]
         elasticsearch_index_store_type = index_store_type or config["index_store_type"]
@@ -111,13 +109,11 @@ def elasticsearch_proc(
         logsdir = elasticsearch_logsdir or config["logsdir"]
         logs_path = os.path.join(
             logsdir,
-            "{prefix}elasticsearch_{port}_logs".format(
-                prefix=elasticsearch_logs_prefix, port=elasticsearch_port
-            ),
+            f"{elasticsearch_logs_prefix}elasticsearch_{elasticsearch_port}_logs",
         )
 
-        pidfile = os.path.join(gettempdir(), "elasticsearch.{0}.pid".format(elasticsearch_port))
-        work_path = os.path.join(gettempdir(), "elasticsearch_{0}_tmp".format(elasticsearch_port))
+        pidfile = os.path.join(gettempdir(), f"elasticsearch.{elasticsearch_port}.pid")
+        work_path = os.path.join(gettempdir(), f"elasticsearch_{elasticsearch_port}_tmp")
 
         elasticsearch_executor = ElasticSearchExecutor(
             elasticsearch_executable,
