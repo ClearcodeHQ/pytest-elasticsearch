@@ -73,10 +73,7 @@ class ElasticSearchExecutor(HTTPExecutor):
         self.index_store_type = index_store_type
         super().__init__(
             self._exec_command(),
-            "http://{host}:{port}".format(
-                host=self.host,
-                port=self.port,
-            ),
+            f"http://{self.host}:{self.port}",
             timeout=timeout,
         )
 
@@ -117,23 +114,13 @@ class ElasticSearchExecutor(HTTPExecutor):
         """
         if self.version < parse_version("5.0.0"):
             raise RuntimeError("This elasticsearch version is not supported.")
-        return """
-            {deamon} -p {pidfile}
-            -E http.port={port}
-            -E transport.tcp.port={tcp_port}
-            -E path.logs={logs_path}
-            -E path.data={work_path}
-            -E cluster.name={cluster}
-            -E network.host='{network_publish_host}'
-            -E index.store.type={index_store_type}
-        """.format(
-            deamon=self.executable,
-            pidfile=self.pidfile,
-            port=self.port,
-            tcp_port=self.tcp_port,
-            logs_path=self.logs_path,
-            work_path=self.works_path,
-            cluster=self.cluster_name,
-            network_publish_host=self.network_publish_host,
-            index_store_type=self.index_store_type,
-        )
+        return f"""
+            {self.executable} -p {self.pidfile}
+            -E http.port={self.port}
+            -E transport.tcp.port={self.tcp_port}
+            -E path.logs={self.logs_path}
+            -E path.data={self.works_path}
+            -E cluster.name={self.cluster_name}
+            -E network.host='{self.network_publish_host}'
+            -E index.store.type={self.index_store_type}
+        """

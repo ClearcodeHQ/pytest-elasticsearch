@@ -8,6 +8,7 @@ Features
 ++++++++
 
 - Add command line and ini configuration option for the executable.
+- Require python 3.7 and up
 
 Bugfix
 ++++++
