@@ -19,8 +19,11 @@
 import os.path
 import shutil
 from tempfile import gettempdir
+from warnings import warn
 
 import pytest
+from _pytest.fixtures import FixtureRequest
+from _pytest.tmpdir import TempdirFactory
 from elasticsearch import Elasticsearch
 from mirakuru import ProcessExitedWithError
 
@@ -88,7 +91,9 @@ def elasticsearch_proc(
     """
 
     @pytest.fixture(scope="session")
-    def elasticsearch_proc_fixture(request):
+    def elasticsearch_proc_fixture(
+        request: FixtureRequest, tmpdir_factory: TempdirFactory
+    ) -> ElasticSearchExecutor:
         """Elasticsearch process starting fixture."""
         config = return_config(request)
         elasticsearch_host = host or config["host"]
@@ -102,18 +107,38 @@ def elasticsearch_proc(
         elasticsearch_cluster_name = (
             cluster_name or config["cluster_name"] or f"elasticsearch_cluster_{elasticsearch_port}"
         )
-        elasticsearch_logs_prefix = logs_prefix or config["logs_prefix"]
         elasticsearch_index_store_type = index_store_type or config["index_store_type"]
         elasticsearch_network_publish_host = network_publish_host or config["network_publish_host"]
+        tmpdir = tmpdir_factory.mktemp(f"pytest-elasticsearch-{request.fixturename}")
 
+        elasticsearch_logs_prefix = logs_prefix or config["logs_prefix"]
+        if elasticsearch_logs_prefix:
+            warn(
+                f"logs_prefix and logs_prefix config option is deprecated, "
+                f"and will be dropped in future releases. All fixture related "
+                f"data resides within {tmpdir}",
+                DeprecationWarning,
+            )
         logsdir = elasticsearch_logsdir or config["logsdir"]
-        logs_path = os.path.join(
-            logsdir,
-            f"{elasticsearch_logs_prefix}elasticsearch_{elasticsearch_port}_logs",
-        )
+        if logsdir:
+            warn(
+                f"elasticsearch_logsdir and logsdir config option is deprecated, "
+                f"and will be dropped in future releases. Once dropped all fixture "
+                f"related data resides within {tmpdir}",
+                DeprecationWarning,
+            )
+            logs_path = os.path.join(
+                logsdir,
+                f"{elasticsearch_logs_prefix}elasticsearch_{elasticsearch_port}_logs",
+            )
+        else:
+            if elasticsearch_logs_prefix:
+                logs_path = tmpdir.mkdir(f"{elasticsearch_logs_prefix}_logs")
+            else:
+                logs_path = tmpdir.mkdir("logs")
 
-        pidfile = os.path.join(gettempdir(), f"elasticsearch.{elasticsearch_port}.pid")
-        work_path = os.path.join(gettempdir(), f"elasticsearch_{elasticsearch_port}_tmp")
+        pidfile = tmpdir / f"elasticsearch.{elasticsearch_port}.pid"
+        work_path = tmpdir / f"workdir_{elasticsearch_port}"
 
         elasticsearch_executor = ElasticSearchExecutor(
             elasticsearch_executable,
