@@ -9,6 +9,16 @@ Features
 
 - Add command line and ini configuration option for the executable.
 - Require python 3.7 and up
+- Unify handling of a temporary directory, now temporary directory holding logs,
+  workdir, pid will be named after fixture name.
+
+Deprecations
+++++++++++++
+
+- Deprecated `logs_prefix` process fixture parameter, `--elasticsearch-logsdir`
+  command parameter and `elasticsearch_logsdir` ini configuration option
+- Deprecated `elasticsearch_logsdir` process fixture parameter `--elasticsearch-logs-prefix`
+  command parameter and `elasticsearch_logs_prefix` ini configuration option
 
 Bugfix
 ++++++
