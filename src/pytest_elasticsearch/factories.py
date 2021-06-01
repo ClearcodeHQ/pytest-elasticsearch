@@ -26,9 +26,9 @@ from _pytest.fixtures import FixtureRequest
 from _pytest.tmpdir import TempdirFactory
 from elasticsearch import Elasticsearch
 from mirakuru import ProcessExitedWithError
+from port_for import get_port
 
 from pytest_elasticsearch.executor import ElasticSearchExecutor, NoopElasticsearch
-from pytest_elasticsearch.port import get_port
 
 
 def return_config(request):
