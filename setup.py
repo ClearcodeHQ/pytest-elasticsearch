@@ -19,6 +19,4 @@
 """Installation file for pytest-elasticsearch."""
 from setuptools import setup
 
-setup(
-    entry_points={"pytest11": ["pytest_elasticsearch = pytest_elasticsearch.plugin"]},
-)
+setup()
