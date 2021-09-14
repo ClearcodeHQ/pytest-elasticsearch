@@ -112,7 +112,7 @@ class ElasticSearchExecutor(HTTPExecutor):
         :return: command to run elasticsearch
         :rtype: str
         """
-        if self.version < parse_version("5.0.0"):
+        if self.version < parse_version("6.0.0"):
             raise RuntimeError("This elasticsearch version is not supported.")
         return f"""
             {self.executable} -p {self.pidfile}

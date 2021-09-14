@@ -4,6 +4,11 @@ CHANGELOG
 unreleased
 ----------
 
+Support
++++++++
+
+- support only elasticsearch 6.x and up, same as the most recent elasticsearch library
+
 Misc
 ++++
 

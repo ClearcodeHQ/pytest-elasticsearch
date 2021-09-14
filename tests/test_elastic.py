@@ -10,11 +10,6 @@ from pytest_elasticsearch import factories
 from pytest_elasticsearch.executor import ElasticSearchExecutor
 
 
-VERSION_STRING_5_6 = (
-    "OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was "
-    "deprecated in version 9.0 and will likely be removed in a future release."
-    "\nVersion: 5.6.16, Build: 3a740d1/2019-03-13T15:33:36.565Z, JVM: 11.0.2"
-)
 VERSION_STRING_6_8 = (
     "OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was "
     "deprecated in version 9.0 and will likely be removed in a future release."
@@ -83,11 +78,17 @@ VERSION_STRING_7_12 = (
     "2021-04-20T20:56:39.040728659Z, JVM: 16"
 )
 
+VERSION_STRING_7_14 = (
+    "OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was "
+    "deprecated in version 9.0 and will likely be removed in a future release."
+    "\nVersion: 7.14.1, Build: default/tar/66b55ebfa59c92c15db3f69a335d500018b3331e/"
+    "2021-08-26T09:01:05.390870785Z, JVM: 11.0.11"
+)
+
 
 @pytest.mark.parametrize(
     "output, expected_version",
     (
-        (VERSION_STRING_5_6, "5.6.16"),
         (VERSION_STRING_6_8, "6.8.12"),
         (VERSION_STRING_7_3, "7.3.0"),
         (VERSION_STRING_7_3_2, "7.3.2"),
@@ -99,6 +100,7 @@ VERSION_STRING_7_12 = (
         (VERSION_STRING_7_9, "7.9.0"),
         (VERSION_STRING_7_10, "7.10.0"),
         (VERSION_STRING_7_12, "7.12.1"),
+        (VERSION_STRING_7_14, "7.14.1"),
     ),
 )
 def test_version_extraction(output, expected_version):
