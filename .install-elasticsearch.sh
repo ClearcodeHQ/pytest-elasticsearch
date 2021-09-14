@@ -34,9 +34,8 @@ if [ ! -f "$HOME/es" ]; then
   mkdir $HOME/es
 fi
 
-install_from_zip https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.16.zip elasticsearch-5.6.16
-install_from_zip https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.15.zip elasticsearch-6.8.15
-install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.9.3-linux-x86_64.tar.gz elasticsearch-7.9.3
-install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.2-linux-x86_64.tar.gz elasticsearch-7.10.2
+install_from_zip https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.18.zip elasticsearch-6.8.18
 install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.11.2-linux-x86_64.tar.gz elasticsearch-7.11.2
 install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.12.1-linux-x86_64.tar.gz elasticsearch-7.12.1
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.13.4-linux-x86_64.tar.gz elasticsearch-7.13.4
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.14.1-linux-x86_64.tar.gz elasticsearch-7.14.1
