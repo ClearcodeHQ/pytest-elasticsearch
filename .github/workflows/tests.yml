@@ -42,7 +42,7 @@ jobs:
       run: |
         pytest --elasticsearch-executable=/home/runner/es/elasticsearch-7.14.1/bin/elasticsearch -n 1 --cov-report=xml:coverage-xdist.xml
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2.1.0
       with:
         flags: linux, elastic-7.14
         env_vars: OS, PYTHON
@@ -54,7 +54,7 @@ jobs:
       run: |
         pytest --elasticsearch-executable=/home/runner/es/elasticsearch-7.13.4/bin/elasticsearch -n 1 --cov-report=xml:coverage-xdist.xml
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2.1.0
       with:
         flags: linux, elastic-7.13
         env_vars: OS, PYTHON
@@ -66,7 +66,7 @@ jobs:
       run: |
         pytest --elasticsearch-executable=/home/runner/es/elasticsearch-7.12.1/bin/elasticsearch -n 1 --cov-report=xml:coverage-xdist.xml
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2.1.0
       with:
         flags: linux, elastic-7.12
         env_vars: OS, PYTHON
@@ -78,7 +78,7 @@ jobs:
       run: |
         pytest --elasticsearch-executable=/home/runner/es/elasticsearch-7.11.2/bin/elasticsearch -n 1 --cov-report=xml:coverage-xdist.xml
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2.1.0
       with:
         flags: linux, elastic-7.11
         env_vars: OS, PYTHON
@@ -90,7 +90,7 @@ jobs:
       run: |
         pytest --elasticsearch-executable=/home/runner/es/elasticsearch-6.8.18/bin/elasticsearch -n 1 --cov-report=xml:coverage-xdist.xml
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2.1.0
       with:
         flags: linux, elastic-6.8
         env_vars: OS, PYTHON
