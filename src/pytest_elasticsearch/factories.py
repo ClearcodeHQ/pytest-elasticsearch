@@ -23,7 +23,11 @@ from warnings import warn
 
 import pytest
 from _pytest.fixtures import FixtureRequest
-from _pytest.tmpdir import TempdirFactory
+try:
+    from _pytest.tmpdir import TempdirFactory
+except(ImportError):
+    # pytest 7.0+
+    from _pytest.legacypath import TempdirFactory
 from elasticsearch import Elasticsearch
 from mirakuru import ProcessExitedWithError
 from port_for import get_port
