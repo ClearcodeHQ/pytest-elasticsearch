@@ -25,7 +25,7 @@ import pytest
 from _pytest.fixtures import FixtureRequest
 try:
     from _pytest.tmpdir import TempdirFactory
-except(ImportError):
+except ImportError:
     # pytest 7.0+
     from _pytest.legacypath import TempdirFactory
 from elasticsearch import Elasticsearch
