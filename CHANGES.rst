@@ -11,6 +11,15 @@ Features
   Require at least pytest 6.2
 - Replace tmpdir_factory with tmp_path_factory
 
+Removals
+++++++++
+
+
+- Removed `logs_prefix` process fixture parameter, `--elasticsearch-logsdir`
+  command parameter and `elasticsearch_logsdir` ini configuration option
+- Removed `elasticsearch_logsdir` process fixture parameter `--elasticsearch-logs-prefix`
+  command parameter and `elasticsearch_logs_prefix` ini configuration option
+
 Support
 +++++++
 

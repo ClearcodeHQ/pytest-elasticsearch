@@ -129,19 +129,11 @@ def test_default_configuration(request):
     """Test default configuration."""
     config = factories.return_config(request)
 
-    assert config["logsdir"] == gettempdir()
     assert not config["port"]
     assert config["host"] == "127.0.0.1"
     assert not config["cluster_name"]
     assert config["network_publish_host"] == "127.0.0.1"
     assert config["index_store_type"] == "mmapfs"
-    assert config["logs_prefix"] == ""
-
-    logsdir_ini = request.config.getini("elasticsearch_logsdir")
-    logsdir_option = request.config.getoption("elasticsearch_logsdir")
-
-    assert logsdir_ini == "/tmp"
-    assert logsdir_option is None
 
 
 def test_external_elastic(elasticsearch2, elasticsearch_proc2, elasticsearch2_noop):
