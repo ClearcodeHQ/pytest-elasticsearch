@@ -8,6 +8,7 @@ on:
       # List all required workflow names here.
       - 'Run tests'
       - 'Test build package'
+      - 'Run linters'
 
 jobs:
   merge-me:
