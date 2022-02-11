@@ -3,17 +3,13 @@ from datetime import datetime
 
 import mock
 import pytest
+from elasticsearch import Elasticsearch
 from pkg_resources import parse_version
+from pytest import FixtureRequest
 
 from pytest_elasticsearch import factories
 from pytest_elasticsearch.executor import ElasticSearchExecutor
 
-VERSION_STRING_6_8 = (
-    "OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was "
-    "deprecated in version 9.0 and will likely be removed in a future release."
-    "\nVersion: 6.8.12, Build: default/zip/7a15d2a/2020-08-12T07:27:20.804867Z,"
-    " JVM: 11.0.2"
-)
 VERSION_STRING_7_3 = (
     "OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was "
     "deprecated in version 9.0 and will likely be removed in a future release."
@@ -83,11 +79,22 @@ VERSION_STRING_7_14 = (
     "2021-08-26T09:01:05.390870785Z, JVM: 11.0.11"
 )
 
+VERSION_STRING_7_17 = (
+    "OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was "
+    "deprecated in version 9.0 and will likely be removed in a future release."
+    "\nVersion: 7.17.0, Build: default/tar/bee86328705acaa9a6daede7140defd4d9ec56bd/"
+    "2022-01-28T08:36:04.875279988Z, JVM: 11.0.14"
+)
+
+VERSION_STRING_8_0 = (
+    "Version: 8.0.0, Build: default/tar/1b6a7ece17463df5ff54a3e1302d825889aa1161/"
+    "2022-02-03T16:47:57.507843096Z, JVM: 17.0.1"
+)
+
 
 @pytest.mark.parametrize(
     "output, expected_version",
     (
-        (VERSION_STRING_6_8, "6.8.12"),
         (VERSION_STRING_7_3, "7.3.0"),
         (VERSION_STRING_7_3_2, "7.3.2"),
         (VERSION_STRING_7_4, "7.4.2"),
@@ -99,6 +106,8 @@ VERSION_STRING_7_14 = (
         (VERSION_STRING_7_10, "7.10.0"),
         (VERSION_STRING_7_12, "7.12.1"),
         (VERSION_STRING_7_14, "7.14.1"),
+        (VERSION_STRING_7_17, "7.17.0"),
+        (VERSION_STRING_8_0, "8.0.0"),
     ),
 )
 def test_version_extraction(output, expected_version):
@@ -123,7 +132,7 @@ def test_elasticsearch(elasticsearch):
     assert info["status"] == "green"
 
 
-def test_default_configuration(request):
+def test_default_configuration(request: FixtureRequest):
     """Test default configuration."""
     config = factories.return_config(request)
 
@@ -134,22 +143,23 @@ def test_default_configuration(request):
     assert config["index_store_type"] == "mmapfs"
 
 
-def test_external_elastic(elasticsearch2, elasticsearch_proc2, elasticsearch2_noop):
+def test_external_elastic(
+    elasticsearch2: Elasticsearch,
+    elasticsearch2_noop: Elasticsearch,
+):
     """Check that nooproc connects to the same redis."""
-    if elasticsearch_proc2.version < parse_version("7.0.0"):
-        pytest.skip("Search response differes for earlier versions")
-    elasticsearch2.indices.create(index="test-index", ignore=400)
+    elasticsearch2.indices.create(index="test-index")
     doc = {
         "author": "kimchy",
         "text": "Elasticsearch: cool. bonsai cool.",
         "timestamp": datetime.utcnow(),
     }
-    res = elasticsearch2.index(index="test-index", doc_type="tweet", id=1, body=doc)
+    res = elasticsearch2.index(index="test-index", id=1, document=doc)
     assert res["result"] == "created"
 
-    res = elasticsearch2_noop.get(index="test-index", doc_type="tweet", id=1)
+    res = elasticsearch2_noop.get(index="test-index", id=1)
     assert res["found"] is True
     elasticsearch2.indices.refresh(index="test-index")
 
-    res = elasticsearch2_noop.search(index="test-index", body={"query": {"match_all": {}}})
+    res = elasticsearch2_noop.search(index="test-index", query={"match_all": {}})
     assert res["hits"]["total"]["value"] == 1

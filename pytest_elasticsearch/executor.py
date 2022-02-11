@@ -48,7 +48,7 @@ class ElasticSearchExecutor(HTTPExecutor):
         :param pathlib.Path executable: Executable path
         :param str host: hostname under which elasticsearch will be running
         :param int port: port elasticsearch listens on
-        :param int tcp_port: port used for unternal communication
+        :param int tcp_port: port used for internal communication
         :param pathlib.Path pidfile: pidfile location
         :param pathlib.Path logs_path: log files location
         :param pathlib.Path works_path: workdir location
@@ -63,6 +63,7 @@ class ElasticSearchExecutor(HTTPExecutor):
         self.executable = executable
         self.host = host
         self.port = port
+        # TODO: rename to transport_port
         self.tcp_port = tcp_port
         self.pidfile = pidfile
         self.logs_path = logs_path
@@ -109,15 +110,21 @@ class ElasticSearchExecutor(HTTPExecutor):
         :return: command to run elasticsearch
         :rtype: str
         """
-        if self.version < parse_version("6.0.0"):
+        port_param = "transport.port"
+        if self.version < parse_version("7.0.0"):
             raise RuntimeError("This elasticsearch version is not supported.")
+        elif self.version < parse_version("8.0.0"):
+            port_param = "transport.tcp.port"
+        else:
+            port_param = "transport.port"
         return f"""
             {self.executable} -p {self.pidfile}
             -E http.port={self.port}
-            -E transport.tcp.port={self.tcp_port}
+            -E {port_param}={self.tcp_port}
             -E path.logs={self.logs_path}
             -E path.data={self.works_path}
             -E cluster.name={self.cluster_name}
             -E network.host='{self.network_publish_host}'
             -E index.store.type={self.index_store_type}
+            -E xpack.security.enabled=false
         """

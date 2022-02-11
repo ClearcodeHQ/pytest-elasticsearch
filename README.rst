@@ -108,7 +108,7 @@ You can pick which you prefer, but remember that these settings are handled in t
      - 127.0.0.1
    * - port
      - port
-     - -elasticsearch-port
+     - --elasticsearch-port
      - elasticsearch_port
      - 6300
      - random
