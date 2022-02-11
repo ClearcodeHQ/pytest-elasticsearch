@@ -18,12 +18,10 @@
 """Fixture factories."""
 import os.path
 import shutil
-from tempfile import gettempdir
 from warnings import warn
 
 import pytest
-from _pytest.fixtures import FixtureRequest
-from _pytest.tmpdir import TempdirFactory
+from pytest import FixtureRequest, TempPathFactory
 from elasticsearch import Elasticsearch
 from mirakuru import ProcessExitedWithError
 from port_for import get_port
@@ -92,7 +90,7 @@ def elasticsearch_proc(
 
     @pytest.fixture(scope="session")
     def elasticsearch_proc_fixture(
-        request: FixtureRequest, tmpdir_factory: TempdirFactory
+        request: FixtureRequest, tmp_path_factory: TempPathFactory
     ) -> ElasticSearchExecutor:
         """Elasticsearch process starting fixture."""
         config = return_config(request)
@@ -109,7 +107,7 @@ def elasticsearch_proc(
         )
         elasticsearch_index_store_type = index_store_type or config["index_store_type"]
         elasticsearch_network_publish_host = network_publish_host or config["network_publish_host"]
-        tmpdir = tmpdir_factory.mktemp(f"pytest-elasticsearch-{request.fixturename}")
+        tmpdir = tmp_path_factory.mktemp(f"pytest-elasticsearch-{request.fixturename}")
 
         elasticsearch_logs_prefix = logs_prefix or config["logs_prefix"]
         if elasticsearch_logs_prefix:
