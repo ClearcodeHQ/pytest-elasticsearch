@@ -53,8 +53,7 @@ You can also create additional elasticsearch client and process fixtures if you'
 
     from pytest_elasticsearch import factories
 
-    elasticsearch_my_proc = factories.elasticsearch_proc(
-        port=None, logsdir='/tmp')
+    elasticsearch_my_proc = factories.elasticsearch_proc(port=None)
     elasticsearch_my = factories.elasticsearch('elasticsearch_my_proc')
 
 .. note::
@@ -101,12 +100,6 @@ You can pick which you prefer, but remember that these settings are handled in t
      - elasticsearch_executable
      -
      - /usr/share/elasticsearch/bin/elasticsearch
-   * - logs directory
-     - logsdir
-     - --elasticsearch-logsdir
-     - elasticsearch_logsdir
-     - -
-     - $TMPDIR
    * - host
      - host
      - --elasticsearch-host
@@ -137,12 +130,6 @@ You can pick which you prefer, but remember that these settings are handled in t
      - elasticsearch_network_publish_host
      - -
      - 127.0.0.1
-   * - logs prefix
-     - logs_prefix
-     - --elasticsearch-logs-prefix
-     - elasticsearch_logs_prefix
-     - -
-     -
    * - transport tcp port
      - transport_tcp_port
      - --elasticsearch-transport-tcp-port
@@ -158,12 +145,6 @@ Example usage:
 
         elasticsearch_proc = factories.elasticsearch_proc(
             cluster_name='awsome_cluster)
-
-* use ``--elasticsearch-logsdir`` command line option when you run your tests
-
-    .. code-block::
-
-        py.test tests --elasticsearch-cluster-name=awsome_cluster
 
 
 * specify your directory as ``elasticsearch_cluster_name`` in your ``pytest.ini`` file.

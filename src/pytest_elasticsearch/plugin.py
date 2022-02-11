@@ -17,26 +17,22 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
 """Pytest-elasticsearch py.test's plugin configuration."""
-from tempfile import gettempdir
 
 from pytest_elasticsearch import factories
 
 # pylint:disable=invalid-name
-_help_logsdir = "Elasticsearch logs directory"
 _help_host = "Elasticsearch host"
 _help_executable = "Elasticsearch executable"
 _help_port = "Elasticsearch port"
 _help_cluster_name = "Cluster name of the elasticsearch process fixture"
 _help_index_store_type = "type of the index to use in the elasticsearch process fixture"
 _help_network_publish_host = "network host to which elasticsearch publish to connect to cluseter"
-_help_logs_prefix = "prefix for the logs file"
 _help_elasticsearch_transport_tcp_port = "The tcp ansport port used \
     for internal communication between nodes within the cluster"
 
 
 def pytest_addoption(parser):
     """Add plugin's configuration options."""
-    parser.addini(name="elasticsearch_logsdir", help=_help_logsdir, default=gettempdir())
 
     parser.addini(name="elasticsearch_host", help=_help_host, default="127.0.0.1")
 
@@ -58,8 +54,6 @@ def pytest_addoption(parser):
         default="127.0.0.1",
     )
 
-    parser.addini(name="elasticsearch_logs_prefix", help=_help_logs_prefix, default="")
-
     parser.addini(
         name="elasticsearch_port",
         help=_help_port,
@@ -70,14 +64,6 @@ def pytest_addoption(parser):
         "elasticsearch_transport_tcp_port",
         help=_help_elasticsearch_transport_tcp_port,
         default=None,
-    )
-
-    parser.addoption(
-        "--elasticsearch-logsdir",
-        action="store",
-        metavar="path",
-        dest="elasticsearch_logsdir",
-        help=_help_logsdir,
     )
 
     parser.addoption(
@@ -113,13 +99,6 @@ def pytest_addoption(parser):
         action="store",
         dest="elasticsearch_network_publish_host",
         help=_help_network_publish_host,
-    )
-
-    parser.addoption(
-        "--elasticsearch-logs-prefix",
-        action="store",
-        dest="elasticsearch_logs_prefix",
-        help=_help_logs_prefix,
     )
 
     parser.addoption(
