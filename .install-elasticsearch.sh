@@ -17,7 +17,8 @@ function install_from_targz {
   echo $INSTALL_PATH
   if [ ! -d "$INSTALL_PATH" ]; then
     wget -nv $1 -O out
-    tar -zxf out
+    mkdir $2
+    tar -zxf out -C $2 --strip-components 1
     mv $2 $INSTALL_PATH
   fi
   $INSTALL_PATH/bin/elasticsearch -Vv
@@ -35,8 +36,8 @@ if [ ! -f "$HOME/es" ]; then
 fi
 
 install_from_zip https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.18.zip elasticsearch-6.8.18
-install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.14.2-linux-x86_64.tar.gz elasticsearch-7.14.2
-install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.15.2-linux-x86_64.tar.gz elasticsearch-7.15.2
-install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.16.2-linux-x86_64.tar.gz elasticsearch-7.16.2
-install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.0-linux-x86_64.tar.gz elasticsearch-7.17.0
-install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.0.0-linux-x86_64.tar.gz elasticsearch-8.0.0
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.14.2-linux-x86_64.tar.gz elasticsearch-7.14
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.15.2-linux-x86_64.tar.gz elasticsearch-7.15
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.16.2-linux-x86_64.tar.gz elasticsearch-7.16
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.0-linux-x86_64.tar.gz elasticsearch-7.17
+install_from_targz https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-8.0.0-linux-x86_64.tar.gz elasticsearch-8.0
