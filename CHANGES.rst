@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+unreleased
+----------
+
+CI
+++
+
+- Refactored testing workflow, takes longer, but requires smaller amount of ram.
+
 3.0.0
 ----------
 
