@@ -4,7 +4,7 @@ pytest-xdist==2.5.0
 pytest-cov==4.0.0
 coverage==6.5.0 # pytest-cov
 mock==4.0.3
-port-for==0.6.2
+port-for==0.6.3
 mirakuru==2.4.2
 elasticsearch==7.17.0
 -e .[tests]
