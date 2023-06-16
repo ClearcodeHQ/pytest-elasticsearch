@@ -1,0 +1,1 @@
+Use towncrier to manage project's changelog
