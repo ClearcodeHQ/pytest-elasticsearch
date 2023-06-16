@@ -4,6 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pytest = "==7.2.0"
+port-for = "==0.6.2"
+mirakuru = "==2.4.2"
+elasticsearch = "==7.17.0"
 
 [dev-packages]
 towncrier = "==22.12"
+pycodestyle = "==2.9.1"
+pydocstyle = "==6.1.1"
+black = "==22.10.0"
+pytest-xdist = "==2.5.0"
+pytest-cov = "==4.0.0"
+mock = "==4.0.3"
