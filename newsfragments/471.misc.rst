@@ -1,0 +1,1 @@
+Migrate to the automerge flow using Github App to generate tokens.
