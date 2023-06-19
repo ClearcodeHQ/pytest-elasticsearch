@@ -12,7 +12,7 @@ elasticsearch = "==7.17.0"
 [dev-packages]
 towncrier = "==23.6.0"
 pycodestyle = "==2.10.0"
-pydocstyle = "==6.1.1"
+pydocstyle = "==6.3.0"
 black = "==23.3.0"
 pytest-xdist = "==3.3.1"
 pytest-cov = "==4.1.0"
