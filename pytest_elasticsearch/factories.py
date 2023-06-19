@@ -55,7 +55,6 @@ def elasticsearch_proc(
     network_publish_host=None,
     index_store_type=None,
 ):
-
     """
     Create elasticsearch process fixture.
 
