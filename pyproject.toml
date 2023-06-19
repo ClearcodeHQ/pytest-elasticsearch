@@ -7,6 +7,16 @@ line-length = 100
 target-version = ['py38']
 include = '.*\.pyi?$'
 
+[tool.ruff]
+# Decrease the maximum line length to 79 characters.
+line-length = 100
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "I",   # isort
+    "D",   # pydocstyle
+]
+
 [tool.towncrier]
 directory = "newsfragments"
 single_file=true

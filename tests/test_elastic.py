@@ -1,6 +1,5 @@
 """Pytest-elasticsearch tests."""
 from datetime import datetime
-from tempfile import gettempdir
 
 import mock
 import pytest
@@ -8,7 +7,6 @@ from pkg_resources import parse_version
 
 from pytest_elasticsearch import factories
 from pytest_elasticsearch.executor import ElasticSearchExecutor
-
 
 VERSION_STRING_6_8 = (
     "OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was "
