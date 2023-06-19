@@ -10,7 +10,7 @@ mirakuru = "==2.4.2"
 elasticsearch = "==7.17.0"
 
 [dev-packages]
-towncrier = "==22.12"
+towncrier = "==23.6.0"
 pycodestyle = "==2.9.1"
 pydocstyle = "==6.1.1"
 black = "==23.3.0"
