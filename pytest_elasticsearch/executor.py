@@ -11,10 +11,10 @@ class NoopElasticsearch:  # pylint:disable=too-few-public-methods
     """No operation Elasticsearch executor mock."""
 
     def __init__(self, host, port):
-        """
-        Initialize Elasticsearch executor mock
+        """Initialize Elasticsearch executor mock.
+
         :param str host: hostname under which elasticsearch is available
-        :param int port: port under which elasticsearch is available
+        :param int port: port under which elasticsearch is available.
         """
         self.host = host
         self.port = port
@@ -43,8 +43,7 @@ class ElasticSearchExecutor(HTTPExecutor):
         index_store_type,
         timeout,
     ):  # pylint:disable=too-many-arguments
-        """
-        Initialize ElasticSearchExecutor.
+        """Initialize ElasticSearchExecutor.
 
         :param pathlib.Path executable: Executable path
         :param str host: hostname under which elasticsearch will be running
@@ -79,8 +78,7 @@ class ElasticSearchExecutor(HTTPExecutor):
 
     @property
     def version(self):
-        """
-        Get the given elasticsearch executable version parts.
+        """Get the given elasticsearch executable version parts.
 
         :return: Elasticsearch version
         :rtype: pkg_resources.Version
@@ -106,8 +104,7 @@ class ElasticSearchExecutor(HTTPExecutor):
         return self._version
 
     def _exec_command(self):
-        """
-        Get command to run elasticsearch binary based on the version.
+        """Get command to run elasticsearch binary based on the version.
 
         :return: command to run elasticsearch
         :rtype: str

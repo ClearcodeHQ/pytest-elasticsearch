@@ -33,7 +33,6 @@ _help_elasticsearch_transport_tcp_port = "The tcp ansport port used \
 
 def pytest_addoption(parser):
     """Add plugin's configuration options."""
-
     parser.addini(name="elasticsearch_host", help=_help_host, default="127.0.0.1")
 
     parser.addini(

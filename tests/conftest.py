@@ -1,8 +1,8 @@
 """Tests main conftest file."""
 import warnings
 
-from pytest_elasticsearch.plugin import *
 from pytest_elasticsearch import factories
+from pytest_elasticsearch.plugin import *  # noqa: F403
 
 warnings.simplefilter("error", category=DeprecationWarning)
 

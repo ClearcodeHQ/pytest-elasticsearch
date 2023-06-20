@@ -19,10 +19,10 @@
 import shutil
 
 import pytest
-from pytest import FixtureRequest, TempPathFactory
 from elasticsearch import Elasticsearch
 from mirakuru import ProcessExitedWithError
 from port_for import get_port
+from pytest import FixtureRequest, TempPathFactory
 
 from pytest_elasticsearch.executor import ElasticSearchExecutor, NoopElasticsearch
 
@@ -55,8 +55,7 @@ def elasticsearch_proc(
     network_publish_host=None,
     index_store_type=None,
 ):
-    """
-    Create elasticsearch process fixture.
+    """Create elasticsearch process fixture.
 
     .. warning::
 
@@ -131,8 +130,7 @@ def elasticsearch_proc(
 
 
 def elasticsearch_noproc(host=None, port=None):
-    """
-    Elasticsearch noprocess factory.
+    """Elasticsearch noprocess factory.
 
     :param str host: hostname
     :param str|int port: exact port (e.g. '8000', 8000)
@@ -142,8 +140,7 @@ def elasticsearch_noproc(host=None, port=None):
 
     @pytest.fixture(scope="session")
     def elasticsearch_noproc_fixture(request):
-        """
-        Noop Process fixture for PostgreSQL.
+        """Noop Process fixture for PostgreSQL.
 
         :param FixtureRequest request: fixture request object
         :rtype: pytest_dbfixtures.executors.TCPExecutor
@@ -161,8 +158,7 @@ def elasticsearch_noproc(host=None, port=None):
 
 
 def elasticsearch(process_fixture_name):
-    """
-    Create Elasticsearch client fixture.
+    """Create Elasticsearch client fixture.
 
     :param str process_fixture_name: elasticsearch process fixture name
     """

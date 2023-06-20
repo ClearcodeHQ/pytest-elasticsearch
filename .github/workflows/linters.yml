@@ -11,6 +11,5 @@ jobs:
     uses: fizyk/actions-reuse/.github/workflows/linters-python.yml@v2.1.2
     with:
       pipenv-install-options: "--skip-lock"
-      pydocstyle: true
-      pycodestyle: true
+      ruff: true
       black: true
