@@ -14,3 +14,4 @@ jobs:
       ruff: true
       black: true
       mypy: true
+      rstcheck: true
