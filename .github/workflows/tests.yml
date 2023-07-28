@@ -7,12 +7,46 @@ on:
     branches: [ main ]
 
 jobs:
-  tests_8_0:
+  tests_8_2:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
         python-version: [3.7, 3.8, 3.9, "3.10", "3.11", pypy-3.8]
+    env:
+      OS: ubuntu-latest
+      PYTHON: ${{ matrix.python-version }}
+      ES_JAVA_OPTS: "-Xms256m -Xmx512m"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/pytest
+        with:
+          python-version: ${{ matrix.python-version }}
+          elasticsearch: "8.2"
+  tests_8_1:
+    needs: [tests_8_2]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: [3.8, 3.9, "3.10", "3.11", pypy-3.8]
+    env:
+      OS: ubuntu-latest
+      PYTHON: ${{ matrix.python-version }}
+      ES_JAVA_OPTS: "-Xms256m -Xmx512m"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/pytest
+        with:
+          python-version: ${{ matrix.python-version }}
+          elasticsearch: "8.1"
+  tests_8_0:
+    needs: [tests_8_1]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: [3.8, 3.9, "3.10", "3.11", pypy-3.8]
     env:
       OS: ubuntu-latest
       PYTHON: ${{ matrix.python-version }}
@@ -44,7 +78,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: [3.7, 3.8, 3.9, "3.10", "3.11", pypy-3.8]
+        python-version: [3.9, "3.10", "3.11"]
     env:
       OS: ubuntu-latest
       PYTHON: ${{ matrix.python-version }}
@@ -60,7 +94,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: ["3.11", pypy-3.8]
+        python-version: ["3.11"]
     env:
       OS: ubuntu-latest
       PYTHON: ${{ matrix.python-version }}
