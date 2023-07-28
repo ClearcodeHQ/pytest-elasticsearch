@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
 """Pytest-elasticsearch py.test's plugin configuration."""
+from pytest import Parser
 
 from pytest_elasticsearch import factories
 
@@ -31,7 +32,7 @@ _help_elasticsearch_transport_tcp_port = "The tcp ansport port used \
     for internal communication between nodes within the cluster"
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser: Parser) -> None:
     """Add plugin's configuration options."""
     parser.addini(name="elasticsearch_host", help=_help_host, default="127.0.0.1")
 

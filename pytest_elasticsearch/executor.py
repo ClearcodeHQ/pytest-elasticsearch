@@ -1,16 +1,18 @@
 """Elasticsearch executor."""
 
 import re
+from pathlib import Path
 from subprocess import check_output
+from typing import Literal, Optional
 
 from mirakuru import HTTPExecutor
-from pkg_resources import parse_version
+from packaging.version import Version
 
 
 class NoopElasticsearch:  # pylint:disable=too-few-public-methods
     """No operation Elasticsearch executor mock."""
 
-    def __init__(self, host, port):
+    def __init__(self, host: str, port: int) -> None:
         """Initialize Elasticsearch executor mock.
 
         :param str host: hostname under which elasticsearch is available
@@ -20,7 +22,7 @@ class NoopElasticsearch:  # pylint:disable=too-few-public-methods
         self.port = port
 
     @staticmethod
-    def running():
+    def running() -> Literal[True]:
         """Mock method pretending the executor is running."""
         return True
 
@@ -31,35 +33,35 @@ class ElasticSearchExecutor(HTTPExecutor):
 
     def __init__(
         self,
-        executable,
-        host,
-        port,
-        tcp_port,
-        pidfile,
-        logs_path,
-        works_path,
-        cluster_name,
-        network_publish_host,
-        index_store_type,
-        timeout,
-    ):  # pylint:disable=too-many-arguments
+        executable: Path,
+        host: str,
+        port: int,
+        tcp_port: int,
+        pidfile: Path,
+        logs_path: Path,
+        works_path: Path,
+        cluster_name: str,
+        network_publish_host: str,
+        index_store_type: str,
+        timeout: int,
+    ) -> None:  # pylint:disable=too-many-arguments
         """Initialize ElasticSearchExecutor.
 
-        :param pathlib.Path executable: Executable path
-        :param str host: hostname under which elasticsearch will be running
-        :param int port: port elasticsearch listens on
-        :param int tcp_port: port used for internal communication
-        :param pathlib.Path pidfile: pidfile location
-        :param pathlib.Path logs_path: log files location
-        :param pathlib.Path works_path: workdir location
-        :param str cluster_name: cluster name
-        :param str network_publish_host: network host to which elasticsearch
+        :param executable: Executable path
+        :param host: hostname under which elasticsearch will be running
+        :param port: port elasticsearch listens on
+        :param tcp_port: port used for internal communication
+        :param pidfile: pidfile location
+        :param logs_path: log files location
+        :param works_path: workdir location
+        :param cluster_name: cluster name
+        :param network_publish_host: network host to which elasticsearch
             publish to connect to cluseter'
-        :param str index_store_type: type of the index to use in the
+        :param index_store_type: type of the index to use in the
             elasticsearch process fixture
-        :param int timeout: Time after which to give up to start elasticsearch
+        :param timeout: Time after which to give up to start elasticsearch
         """
-        self._version = None
+        self._version: Optional[Version] = None
         self.executable = executable
         self.host = host
         self.port = port
@@ -78,11 +80,10 @@ class ElasticSearchExecutor(HTTPExecutor):
         )
 
     @property
-    def version(self):
+    def version(self) -> Version:
         """Get the given elasticsearch executable version parts.
 
         :return: Elasticsearch version
-        :rtype: pkg_resources.Version
         """
         if not self._version:
             try:
@@ -95,7 +96,7 @@ class ElasticSearchExecutor(HTTPExecutor):
                         "Output is: " + output
                     )
                 version = match.groupdict()
-                self._version = parse_version(
+                self._version = Version(
                     ".".join([version["major"], version["minor"], version["patch"]])
                 )
             except OSError as exc:
@@ -104,16 +105,15 @@ class ElasticSearchExecutor(HTTPExecutor):
                 ) from exc
         return self._version
 
-    def _exec_command(self):
+    def _exec_command(self) -> str:
         """Get command to run elasticsearch binary based on the version.
 
         :return: command to run elasticsearch
-        :rtype: str
         """
         port_param = "transport.port"
-        if self.version < parse_version("7.0.0"):
+        if self.version < Version("7.0.0"):
             raise RuntimeError("This elasticsearch version is not supported.")
-        elif self.version < parse_version("8.0.0"):
+        elif self.version < Version("8.0.0"):
             port_param = "transport.tcp.port"
         else:
             port_param = "transport.port"
