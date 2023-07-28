@@ -1,5 +1,5 @@
 Contribute to pytest-elasticsearch
-==============
+==================================
 
 Thank you for taking time to contribute to pytest-elasticsearch!
 
