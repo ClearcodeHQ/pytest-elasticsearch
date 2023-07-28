@@ -1,13 +1,14 @@
 """Pytest-elasticsearch tests."""
 from datetime import datetime
+from pathlib import Path
 
 import mock
 import pytest
 from elasticsearch import Elasticsearch
-from pkg_resources import parse_version
+from packaging.version import Version
 from pytest import FixtureRequest
 
-from pytest_elasticsearch import factories
+import pytest_elasticsearch.config
 from pytest_elasticsearch.executor import ElasticSearchExecutor
 
 VERSION_STRING_7_3 = (
@@ -110,31 +111,41 @@ VERSION_STRING_8_0 = (
         (VERSION_STRING_8_0, "8.0.0"),
     ),
 )
-def test_version_extraction(output, expected_version):
+def test_version_extraction(output: str, expected_version: str) -> None:
     """Verify if we can properly extract elasticsearch version."""
     with mock.patch(
         "pytest_elasticsearch.executor.check_output", lambda *args: output.encode("utf8")
     ):
         executor = ElasticSearchExecutor(
-            "elasticsearch", "127.0.0.1", 8888, None, None, None, None, None, None, None, 10
+            executable=Path("elasticsearch"),
+            host="127.0.0.1",
+            port=8888,
+            tcp_port=8889,
+            pidfile=Path("elasticsearch.pid"),
+            logs_path=Path("logs"),
+            works_path=Path("works"),
+            cluster_name="dontstart",
+            network_publish_host="localhost",
+            index_store_type="memory",
+            timeout=10,
         )
-        assert executor.version == parse_version(expected_version)
+        assert executor.version == Version(expected_version)
 
 
-def test_elastic_process(elasticsearch_proc):
+def test_elastic_process(elasticsearch_proc: ElasticSearchExecutor) -> None:
     """Simple test for starting elasticsearch_proc."""
     assert elasticsearch_proc.running() is True
 
 
-def test_elasticsearch(elasticsearch):
+def test_elasticsearch(elasticsearch: Elasticsearch) -> None:
     """Test if elasticsearch fixtures connects to process."""
     info = elasticsearch.cluster.health()
     assert info["status"] == "green"
 
 
-def test_default_configuration(request: FixtureRequest):
+def test_default_configuration(request: FixtureRequest) -> None:
     """Test default configuration."""
-    config = factories.return_config(request)
+    config = pytest_elasticsearch.config.get_config(request)
 
     assert not config["port"]
     assert config["host"] == "127.0.0.1"
@@ -146,7 +157,7 @@ def test_default_configuration(request: FixtureRequest):
 def test_external_elastic(
     elasticsearch2: Elasticsearch,
     elasticsearch2_noop: Elasticsearch,
-):
+) -> None:
     """Check that nooproc connects to the same redis."""
     elasticsearch2.indices.create(index="test-index")
     doc = {
@@ -154,10 +165,10 @@ def test_external_elastic(
         "text": "Elasticsearch: cool. bonsai cool.",
         "timestamp": datetime.utcnow(),
     }
-    res = elasticsearch2.index(index="test-index", id=1, document=doc)
+    res = elasticsearch2.index(index="test-index", id="1", document=doc)
     assert res["result"] == "created"
 
-    res = elasticsearch2_noop.get(index="test-index", id=1)
+    res = elasticsearch2_noop.get(index="test-index", id="1")
     assert res["found"] is True
     elasticsearch2.indices.refresh(index="test-index")
 
