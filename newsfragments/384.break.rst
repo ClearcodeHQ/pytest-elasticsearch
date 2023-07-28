@@ -1,1 +1,0 @@
-Drop support for elastisearch older than 7

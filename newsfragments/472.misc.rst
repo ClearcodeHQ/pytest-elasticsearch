@@ -1,1 +1,0 @@
-Replace pycodestyle and pydocstyle with ruff

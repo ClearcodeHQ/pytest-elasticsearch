@@ -1,1 +1,0 @@
-Lint rst files with rstcheck

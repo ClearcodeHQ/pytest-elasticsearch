@@ -3,6 +3,30 @@ CHANGELOG
 
 .. towncrier release notes start
 
+4.0.0 (2023-07-28)
+==================
+
+Breaking changes
+----------------
+
+- Drop support for elastisearch older than 7 (`#384 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/384>`__)
+- Dropped support for python 3.7 (`#474 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/474>`__)
+
+
+Features
+--------
+
+- Support elasticsearch up to 8.9 (`#384 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/384>`__)
+- Package is fully typed and mypy checked. (`#474 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/474>`__)
+- Support Python 3.11 (`#475 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/475>`__)
+
+
+Miscellaneus
+------------
+
+- `#384 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/384>`__, `#469 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/469>`__, `#470 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/470>`__, `#471 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/471>`__, `#472 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/472>`__, `#473 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/473>`__, `#476 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/476>`__, `#484 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/484>`__, `#486 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/486>`__, `#488 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/488>`__, `#505 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/505>`__
+
+
 3.0.0
 =====
 
