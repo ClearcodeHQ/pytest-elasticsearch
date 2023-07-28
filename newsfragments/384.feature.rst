@@ -1,1 +1,1 @@
-Support elasticsearch up to 8.6
+Support elasticsearch up to 8.9
