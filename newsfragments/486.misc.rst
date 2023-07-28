@@ -1,0 +1,1 @@
+Switched custom elasticsearch installation script to `ankane/setup-elasticsearch@v1`
