@@ -22,6 +22,9 @@ runs:
     uses: ankane/setup-elasticsearch@v1
     with:
       elasticsearch-version: ${{ inputs.elasticsearch }}
+  - name: Stop running elasticsearch
+    shell: bash
+    run: killall elasticsearch
   - name: Run test
     uses: fizyk/actions-reuse/.github/actions/pipenv@v2.1.2
     with:
