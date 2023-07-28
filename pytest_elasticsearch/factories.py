@@ -116,6 +116,7 @@ def elasticsearch_proc(
             elasticsearch_index_store_type,
             timeout=60,
         )
+        print(elasticsearch_executor.command)
 
         elasticsearch_executor.start()
         yield elasticsearch_executor
@@ -169,14 +170,15 @@ def elasticsearch(process_fixture_name):
         process = request.getfixturevalue(process_fixture_name)
         if not process.running():
             process.start()
+        client = Elasticsearch(
+            hosts=[{"host": process.host, "port": process.port, "scheme": "http"}],
+            request_timeout=30,
+            verify_certs=False,
+        )
+        client.options(ignore_status=400)
 
-        client = Elasticsearch([{"host": process.host, "port": process.port}])
-
-        def drop_indexes():
-            client.indices.delete(index="*")
-
-        request.addfinalizer(drop_indexes)
-
-        return client
+        yield client
+        for index in client.indices.get_alias():
+            client.indices.delete(index=index)
 
     return elasticsearch_fixture
