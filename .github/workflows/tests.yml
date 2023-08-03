@@ -157,3 +157,19 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           elasticsearch: "7.17"
+  tests_7_17_lib_7:
+    needs: [tests_7_17]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.11"]
+    env:
+      OS: ubuntu-latest
+      PYTHON: ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/elastic_7
+        with:
+          python-version: ${{ matrix.python-version }}
+          elasticsearch: "7.17"

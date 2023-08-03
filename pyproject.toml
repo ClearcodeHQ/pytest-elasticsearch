@@ -30,7 +30,7 @@ dependencies = [
     "pytest >= 6.2",
     "port-for >= 0.7.1",
     "mirakuru",
-    "elasticsearch",
+    "elasticsearch >= 7",
 ]
 requires-python = ">= 3.8"
 

@@ -22,6 +22,7 @@ from typing import Callable, Iterator, Optional
 
 import pytest
 from elasticsearch import Elasticsearch
+from elasticsearch import __version__ as elastic_version
 from mirakuru import ProcessExitedWithError
 from port_for import get_port
 from port_for.api import PortType
@@ -101,7 +102,6 @@ def elasticsearch_proc(
             elasticsearch_index_store_type,
             timeout=60,
         )
-        print(elasticsearch_executor.command)
 
         elasticsearch_executor.start()
         yield elasticsearch_executor
@@ -161,7 +161,8 @@ def elasticsearch(process_fixture_name: str) -> Callable[[FixtureRequest], Itera
             request_timeout=30,
             verify_certs=False,
         )
-        client.options(ignore_status=400)
+        if elastic_version >= (8, 0, 0):
+            client.options(ignore_status=400)
 
         yield client
         for index in client.indices.get_alias():
