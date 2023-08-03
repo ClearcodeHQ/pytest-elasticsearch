@@ -3,6 +3,15 @@ CHANGELOG
 
 .. towncrier release notes start
 
+4.0.1 (2023-08-03)
+==================
+
+Bugfixes
+--------
+
+- Fixed compatibility with elasticsearch client 7.x (`#512 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/512>`__)
+
+
 4.0.0 (2023-07-28)
 ==================
 
