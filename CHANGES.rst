@@ -3,6 +3,17 @@ CHANGELOG
 
 .. towncrier release notes start
 
+4.0.2 (2023-09-13)
+==================
+
+Bugfixes
+--------
+
+- The current version of pytest-elasticsearch is trying to use pytest.Parser. 
+  However, pytest.Parser is added only after pytest 7. We should update 
+  dependencies to use only pytest 7+ (`#522 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/522>`__)
+
+
 4.0.1 (2023-08-03)
 ==================
 
