@@ -27,7 +27,7 @@ classifiers = [
     "Framework :: Pytest",
 ]
 dependencies = [
-    "pytest >= 6.2",
+    "pytest >= 7.0",
     "port-for >= 0.7.1",
     "mirakuru",
     "elasticsearch >= 7",
