@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "058d8f16e1baf49be42491c6536b6fe5619b734478d7c7ed943da734e5c1eef1"
+            "sha256": "4b0c7251255f5056d0db521ff7bf3e22a26d05b07d6fdf5e7192dcfeb770cb8c"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -74,12 +74,12 @@
         },
         "port-for": {
             "hashes": [
-                "sha256:8abdaa1a7810281b0cecf718a6319da5f8538fdae3a5101d1e9afd54da0baf8c",
-                "sha256:e0f3b8d7ec8bdc388c14d88bdbab8d6441c8081ed2bdec7847b38ca6d1563f23"
+                "sha256:074f29335130578aa42fef3726985e57d01c15189e509633a8a1b0b7f9226349",
+                "sha256:16b279ab4f210bad33515c45bd9af0c6e048ab24c3b6bbd9cfc7e451782617df"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.7'",
-            "version": "==0.7.1"
+            "markers": "python_version >= '3.8'",
+            "version": "==0.7.2"
         },
         "psutil": {
             "hashes": [
@@ -122,11 +122,11 @@
     "develop": {
         "annotated-types": {
             "hashes": [
-                "sha256:47cdc3490d9ac1506ce92c7aaa76c579dc3509ff11e098fc867e5130ab7be802",
-                "sha256:58da39888f92c276ad970249761ebea80ba544b77acddaa1a4d6cf78287d45fd"
+                "sha256:0641064de18ba7a25dee8f96403ebc39113d0cb953a01429249d5c7564666a43",
+                "sha256:563339e807e53ffd9c267e99fc6d9ea23eb8443c08f112651963e24e22f84a5d"
             ],
-            "markers": "python_version >= '3.7'",
-            "version": "==0.5.0"
+            "markers": "python_version >= '3.8'",
+            "version": "==0.6.0"
         },
         "black": {
             "hashes": [
