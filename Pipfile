@@ -7,7 +7,7 @@ name = "pypi"
 pytest = "==7.4.3"
 port-for = "==0.7.2"
 mirakuru = "==2.5.2"
-elasticsearch = "==8.10.1"
+elasticsearch = "==8.11.1"
 
 [dev-packages]
 towncrier = "==23.11.0"
