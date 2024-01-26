@@ -1,0 +1,1 @@
+Adjusted code formatting with black 24.1

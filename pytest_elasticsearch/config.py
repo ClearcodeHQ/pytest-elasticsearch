@@ -1,4 +1,5 @@
 """Configuration for pytest-elasticsearch."""
+
 from pathlib import Path
 from typing import Any, Optional, TypedDict
 
