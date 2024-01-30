@@ -25,6 +25,7 @@ tests/.cache/
 
 # Installer logs
 pip-log.txt
+Pipfile.lock
 
 # Unit test / coverage reports
 .coverage

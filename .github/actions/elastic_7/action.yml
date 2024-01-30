@@ -24,7 +24,7 @@ runs:
       elasticsearch-version: ${{ inputs.elasticsearch }}
   - name: Prep environment
     shell: bash
-    run: pip install pipenv && pipenv install --dev --skip-lock
+    run: pip install pipenv && pipenv install --dev
   - name: Downgrade elasticsearch
     shell: bash
     run: pipenv run pip install "elasticsearch<8"
