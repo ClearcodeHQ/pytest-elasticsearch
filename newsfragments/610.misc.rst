@@ -1,0 +1,1 @@
+Run tests on CI Against Elasticsearch 8.12, 8.11 and 8.10
