@@ -3,6 +3,21 @@ CHANGELOG
 
 .. towncrier release notes start
 
+4.1.0 (2024-03-15)
+==================
+
+Features
+--------
+
+- Support python 3.12 (`#609 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/609>`__)
+
+
+Miscellaneus
+------------
+
+- `#582 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/582>`__, `#585 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/585>`__, `#610 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/610>`__, `#611 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/611>`__, `#612 <https://github.com/ClearcodeHQ/pytest-elasticsearch/issues/612>`__
+
+
 4.0.2 (2023-09-13)
 ==================
 

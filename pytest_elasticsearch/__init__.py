@@ -17,4 +17,4 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pytest-elasticsearch.  If not, see <http://www.gnu.org/licenses/>.
 """Main packge for pytest-elasticsearch."""
-__version__ = "4.0.2"
+__version__ = "4.1.0"
