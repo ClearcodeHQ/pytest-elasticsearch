@@ -23,12 +23,12 @@ runs:
     with:
       elasticsearch-version: ${{ inputs.elasticsearch }}
   - name: Run test
-    uses: fizyk/actions-reuse/.github/actions/pipenv@v2.2.1
+    uses: fizyk/actions-reuse/.github/actions/pipenv@v2.4.4
     with:
       python-version: ${{ matrix.python-version }}
       command: pytest --elasticsearch-executable=$ES_HOME/bin/elasticsearch -n 0 --cov-report=xml
   - name: Run xdist test
-    uses: fizyk/actions-reuse/.github/actions/pipenv@v2.2.1
+    uses: fizyk/actions-reuse/.github/actions/pipenv@v2.4.4
     with:
       python-version: ${{ matrix.python-version }}
       command: pytest --elasticsearch-executable=$ES_HOME/bin/elasticsearch -n 1 --cov-report=xml:coverage-xdist.xml
