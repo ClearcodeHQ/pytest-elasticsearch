@@ -35,7 +35,7 @@ runs:
     shell: bash
     run: pipenv run pytest --elasticsearch-executable=$ES_HOME/bin/elasticsearch -n 1 --cov-report=xml:coverage-xdist.xml
   - name: Upload coverage to Codecov
-    uses: codecov/codecov-action@v4
+    uses: codecov/codecov-action@v5
     with:
       flags: linux,elastic-${{ inputs.elasticsearch }}
       env_vars: OS, PYTHON
