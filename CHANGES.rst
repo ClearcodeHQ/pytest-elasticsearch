@@ -3,6 +3,27 @@ CHANGELOG
 
 .. towncrier release notes start
 
+4.1.1 (2024-12-03)
+==================
+
+Breaking changes
+----------------
+
+- Dropped support for Python 3.8
+
+
+Features
+--------
+
+- Marked support for Python 3.13
+
+
+Miscellaneus
+------------
+
+- Update elasticsearch in tests up Until 8.16
+
+
 4.1.0 (2024-03-15)
 ==================
 
