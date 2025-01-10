@@ -109,7 +109,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
           elasticsearch: "8.11"
   tests_7_17:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: true
       matrix:
@@ -125,7 +125,7 @@ jobs:
           elasticsearch: "7.17"
   tests_7_17_lib_7:
     needs: [tests_7_17]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: true
       matrix:
