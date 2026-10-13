@@ -714,7 +714,7 @@ release = [
 [package.metadata]
 requires-dist = [
     { name = "elasticsearch", specifier = ">=8" },
-    { name = "mirakuru" },
+    { name = "mirakuru", specifier = ">=3.0.4" },
     { name = "port-for", specifier = ">=0.7.3" },
     { name = "pytest", specifier = ">=8.4.0" },
 ]

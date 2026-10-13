@@ -75,9 +75,13 @@ class ElasticSearchExecutor(HTTPExecutor):
         self.cluster_name = cluster_name
         self.network_publish_host = network_publish_host
         self.index_store_type = index_store_type
+        # Elasticsearch serves http before it recovers the cluster state, and
+        # rejects nearly every request until then - so wait for the cluster
+        # health instead. It answers 408 until the cluster is at least yellow.
         super().__init__(
             self._exec_command(),
-            f"http://{self.host}:{self.port}",
+            f"http://{self.host}:{self.port}/_cluster/health?wait_for_status=yellow&timeout=1s",
+            method="GET",
             timeout=timeout,
         )
 
