@@ -1,6 +1,9 @@
 """Elasticsearch executor."""
 
+import json
 import re
+from http.client import HTTPConnection, HTTPException
+from logging import getLogger
 from pathlib import Path
 from subprocess import check_output
 from typing import Literal
@@ -9,6 +12,8 @@ from mirakuru import HTTPExecutor
 from packaging.version import Version
 
 from pytest_elasticsearch.exceptions import ElasticsearchRuntimeError
+
+LOG = getLogger(__name__)
 
 
 class NoopElasticsearch:  # pylint:disable=too-few-public-methods
@@ -32,6 +37,12 @@ class NoopElasticsearch:  # pylint:disable=too-few-public-methods
 # pylint:disable=too-many-instance-attributes
 class ElasticSearchExecutor(HTTPExecutor):
     """Elasticsearch executor."""
+
+    HEALTH_PATH = "/_cluster/health?wait_for_status=yellow&timeout=1s"
+    """Cluster health request that waits up to 1s for the cluster to become usable."""
+
+    HEALTH_REQUEST_TIMEOUT = 5
+    """Connection timeout for a single health request; longer than its 1s wait."""
 
     def __init__(
         self,
@@ -75,14 +86,39 @@ class ElasticSearchExecutor(HTTPExecutor):
         self.cluster_name = cluster_name
         self.network_publish_host = network_publish_host
         self.index_store_type = index_store_type
-        # Elasticsearch serves http before it recovers the cluster state, and
-        # rejects nearly every request until then - so wait for the cluster
-        # health instead. It answers 408 until the cluster is at least yellow.
         super().__init__(
             self._exec_command(),
-            f"http://{self.host}:{self.port}/_cluster/health?wait_for_status=yellow&timeout=1s",
+            f"http://{self.host}:{self.port}{self.HEALTH_PATH}",
             method="GET",
             timeout=timeout,
+        )
+
+    def after_start_check(self) -> bool:
+        """Check if the cluster is at least yellow.
+
+        Elasticsearch serves http before it recovers the cluster state, and
+        rejects nearly every request until then - so the port answering is not
+        enough. Only the health body says whether the wait succeeded; the
+        status code of a timed out wait is 200 in the docs, but 408 in practice.
+        """
+        conn = HTTPConnection(self.host, self.port, timeout=self.HEALTH_REQUEST_TIMEOUT)
+        try:
+            conn.request("GET", self.HEALTH_PATH)
+            body = conn.getresponse().read()
+        except (HTTPException, OSError) as ex:
+            LOG.debug("Encounter %s while trying to check if elasticsearch has started.", ex)
+            return False
+        finally:
+            conn.close()
+
+        try:
+            health = json.loads(body)
+        except ValueError:
+            return False
+        return (
+            isinstance(health, dict)
+            and health.get("timed_out") is False
+            and health.get("status") in ("yellow", "green")
         )
 
     @property
