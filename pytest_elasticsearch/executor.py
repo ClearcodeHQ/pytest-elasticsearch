@@ -39,10 +39,10 @@ class ElasticSearchExecutor(HTTPExecutor):
     """Elasticsearch executor."""
 
     HEALTH_PATH = "/_cluster/health?wait_for_status=yellow&timeout=1s"
-    """Cluster health request that waits up to 1s for the cluster to become usable."""
+    """Cluster health request with defined minimum required status."""
 
     HEALTH_REQUEST_TIMEOUT = 5
-    """Connection timeout for a single health request; longer than its 1s wait."""
+    """Connection timeout for a single health request."""
 
     def __init__(
         self,
@@ -96,10 +96,9 @@ class ElasticSearchExecutor(HTTPExecutor):
     def after_start_check(self) -> bool:
         """Check if the cluster is at least yellow.
 
-        Elasticsearch serves http before it recovers the cluster state, and
+        Elasticsearch serves http before it recovers the cluster state and
         rejects nearly every request until then - so the port answering is not
-        enough. Only the health body says whether the wait succeeded; the
-        status code of a timed out wait is 200 in the docs, but 408 in practice.
+        enough. Only the health body says whether the wait succeeded.
         """
         conn = HTTPConnection(self.host, self.port, timeout=self.HEALTH_REQUEST_TIMEOUT)
         try:
@@ -115,6 +114,7 @@ class ElasticSearchExecutor(HTTPExecutor):
             health = json.loads(body)
         except ValueError:
             return False
+        # the status code of a timed out wait is 200 in the docs, but 408 in practice
         return (
             isinstance(health, dict)
             and health.get("timed_out") is False
